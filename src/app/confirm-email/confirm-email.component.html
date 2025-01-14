@@ -1,0 +1,33 @@
+<div class="auth-form-container">
+  <form
+    class="auth-form"
+    [formGroup]="confirmEmailForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <h2>Confirm Your Email</h2>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" formControlName="Email" />
+    </div>
+
+    <div class="form-group">
+      <label for="token">Verification Token</label>
+      <input type="text" id="token" formControlName="Token" />
+    </div>
+
+    <button
+      type="submit"
+      class="btn-submit"
+      [disabled]="confirmEmailForm.invalid"
+    >
+      Confirm Email
+    </button>
+
+    <p *ngIf="showResendForm" class="resend">
+      <button type="button" (click)="onResendRequest()">
+        Resend Confirmation Email
+      </button>
+    </p>
+  </form>
+</div>

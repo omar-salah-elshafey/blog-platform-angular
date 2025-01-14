@@ -57,7 +57,13 @@ export class LoginComponent {
       this.authService.login(trimmedFormValue).subscribe({
         next: (response) => {
           console.log('login successful:', response);
+          // store the access and refresh tokens in the cookies
+          document.cookie = `accessToken=${response.accessToken}; path=/`;
+          document.cookie = `refreshToken=${response.refreshToken}; path=/`;
+          document.cookie = `userID=${response.userId}; path=/`;
+          document.cookie = `userName=${response.userName}; path=/`;
           this.toastr.success('Login successful!', 'Success');
+          this.loginForm.reset();
           this.router.navigate(['/login']);
         },
         error: (error) => {

@@ -81,7 +81,7 @@ export class RegistrationComponent implements OnInit {
         next: (response) => {
           console.log('Registration successful:', response);
           this.toastr.success('Login successful!', 'Success');
-          this.router.navigate(['/login']);
+          this.router.navigate(['/confirm-email']);
         },
         error: (error) => {
           this.toastr.error(error.error, 'Error');
