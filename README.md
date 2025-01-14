@@ -1,14 +1,18 @@
 # BlogPlatform
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.6.
+This project is linked to the back-end [blog-platform project](https://github.com/omar-salah-elshafey/BlogPlatformCleanArchitecture)
 
-## Development server
+## Installation
 
-To start a local development server, run:
-
-```bash
-ng serve
-```
+1. Clone this repository:  
+   ```bash
+   git clone https://github.com/omar-salah-elshafey/blog-platform-angular.git
+2. Navigate to the project directory:
+  cd smart-devices-store
+3. Install dependencies:
+  npm install
+4. Run the app locally:
+  ng serve
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
