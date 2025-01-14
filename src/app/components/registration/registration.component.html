@@ -1,0 +1,168 @@
+<div class="registration-container">
+  <form
+    class="registration-form"
+    [formGroup]="registrationForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <h2>Create an Account</h2>
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <input type="text" id="firstName" formControlName="firstName" />
+      <div
+        class="error-message"
+        *ngIf="
+          registrationForm.get('firstName')?.touched &&
+          registrationForm.get('firstName')?.invalid
+        "
+      >
+        <small *ngIf="registrationForm.get('firstName')?.errors?.['required']">
+          First Name is required.
+        </small>
+        <small *ngIf="registrationForm.get('firstName')?.errors?.['minlength']">
+          First Name must be at least 3 characters long.
+        </small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+      <input type="text" id="lastName" formControlName="lastName" />
+      <div
+        class="error-message"
+        *ngIf="
+          registrationForm.get('lastName')?.touched &&
+          registrationForm.get('lastName')?.invalid
+        "
+      >
+        <small *ngIf="registrationForm.get('lastName')?.errors?.['required']">
+          Last Name is required.
+        </small>
+        <small *ngIf="registrationForm.get('lastName')?.errors?.['minlength']">
+          Last Name must be at least 3 characters long.
+        </small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" formControlName="username" />
+      <div
+        class="error-message"
+        *ngIf="
+          registrationForm.get('username')?.touched &&
+          registrationForm.get('username')?.invalid
+        "
+      >
+        <small *ngIf="registrationForm.get('username')?.errors?.['required']">
+          Username is required.
+        </small>
+        <small *ngIf="registrationForm.get('username')?.errors?.['minlength']">
+          Username must be at least 3 characters long.
+        </small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" formControlName="email" />
+      <div
+        class="error-message"
+        *ngIf="
+          registrationForm.get('email')?.touched &&
+          registrationForm.get('email')?.invalid
+        "
+      >
+        <small *ngIf="registrationForm.get('email')?.errors?.['required']">
+          Email is required.
+        </small>
+        <small *ngIf="registrationForm.get('email')?.errors?.['email']">
+          Invalid email address. Example: example&#64;domain.com
+        </small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <div class="password-container">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          id="password"
+          formControlName="password"
+        />
+        <button
+          type="button"
+          class="toggle-password"
+          (click)="togglePasswordVisibility()"
+          aria-label="Toggle password visibility"
+        >
+          <i [ngClass]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+        </button>
+      </div>
+      <div
+        class="error-message"
+        *ngIf="
+          registrationForm.get('password')?.touched &&
+          registrationForm.get('password')?.invalid
+        "
+      >
+        <small *ngIf="registrationForm.get('password')?.errors?.['required']">
+          Password is required.
+        </small>
+        <small *ngIf="registrationForm.get('password')?.errors?.['minlength']">
+          Password must be at least 8 characters long.
+        </small>
+        <small *ngIf="registrationForm.get('password')?.errors?.['pattern']">
+          Password must contain at least 1 uppercase letter, 1 lowercase letter,
+          1 number, and 1 special character.
+        </small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="confirmPassword">Confirm Password</label>
+      <div class="password-container">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          id="confirmPassword"
+          formControlName="confirmPassword"
+        />
+        <button
+          type="button"
+          class="toggle-password"
+          (click)="togglePasswordVisibility()"
+          aria-label="Toggle password visibility"
+        >
+          <i [ngClass]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+        </button>
+      </div>
+      <div
+        class="error-message"
+        *ngIf="
+          registrationForm.get('confirmPassword')?.touched &&
+          registrationForm.get('confirmPassword')?.invalid
+        "
+      >
+        <small
+          *ngIf="registrationForm.get('confirmPassword')?.errors?.['required']"
+        >
+          Confirm Password is required.
+        </small>
+        <small
+          *ngIf="registrationForm.get('confirmPassword')?.errors?.['passwordMismatch']"
+        >
+          Passwords do not match.
+        </small>
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn-submit"
+      [disabled]="registrationForm.invalid"
+    >
+      Register
+    </button>
+    <hr />
+    <p>Already have an account? <a routerLink="/login">Login!</a></p>
+  </form>
+</div>

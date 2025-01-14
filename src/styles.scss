@@ -1,1 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+  box-sizing: border-box;
+}
+.password-container {
+  position: relative;
+
+  input {
+    width: 100%;
+    padding-right: 40px; // Adjust to provide space for the icon
+    box-sizing: border-box; // Ensures padding is included in the width
+  }
+
+  .toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    font-size: 1.2rem;
+
+    &:hover {
+      color: #333;
+    }
+  }
+}
