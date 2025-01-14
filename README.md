@@ -8,12 +8,17 @@ This project is linked to the back-end [blog-platform project](https://github.co
    ```bash
    git clone https://github.com/omar-salah-elshafey/blog-platform-angular.git
 2. Navigate to the project directory:
-  cd smart-devices-store
+   ```bash
+    cd smart-devices-store
+    ```
 3. Install dependencies:
-  npm install
+   ```bash
+    npm install
+    ```
 4. Run the app locally:
-  ng serve
-
+   ```bash
+    ng serve
+    ```
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
 ## Code scaffolding
