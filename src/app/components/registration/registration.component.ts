@@ -7,7 +7,9 @@ import {
   ReactiveFormsModule,
   AbstractControl,
 } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth/auth-service.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-registration',
@@ -19,7 +21,12 @@ export class RegistrationComponent implements OnInit {
   registrationForm!: FormGroup;
   showPassword: boolean = false;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.registrationForm = this.formBuilder.group(
@@ -61,9 +68,29 @@ export class RegistrationComponent implements OnInit {
   }
 
   onSubmit(): void {
+    const trimmedFormValue = {
+      firstName: this.registrationForm.value.firstName.trim(),
+      lastName: this.registrationForm.value.lastName.trim(),
+      username: this.registrationForm.value.username.trim(),
+      email: this.registrationForm.value.email.trim(),
+      password: this.registrationForm.value.password.trim(),
+      confirmPassword: this.registrationForm.value.confirmPassword.trim(),
+    };
     if (this.registrationForm.valid) {
-      console.log('Form Submitted', this.registrationForm.value);
+      this.authService.registerReader(trimmedFormValue).subscribe({
+        next: (response) => {
+          console.log('Registration successful:', response);
+          this.toastr.success('Login successful!', 'Success');
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          this.toastr.error(error.error, 'Error');
+          console.error('Registration failed:', error.error);
+        },
+      });
+      console.log('Form Submitted', trimmedFormValue);
     } else {
+      this.toastr.warning('Please fill in all required fields.', 'Warning');
       console.error('Form Invalid');
     }
   }

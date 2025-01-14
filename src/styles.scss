@@ -4,13 +4,11 @@
 }
 .password-container {
   position: relative;
-
   input {
     width: 100%;
     padding-right: 40px; // Adjust to provide space for the icon
     box-sizing: border-box; // Ensures padding is included in the width
   }
-
   .toggle-password {
     position: absolute;
     right: 10px;
@@ -25,5 +23,152 @@
     &:hover {
       color: #333;
     }
+  }
+}
+
+.auth-form-container {
+  width: 100%;
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: 0 auto;
+    h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .form-group {
+      margin-bottom: 15px;
+      label {
+        font-weight: 600;
+        color: #555;
+        display: block;
+        margin-bottom: 5px;
+      }
+      input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+        // color: #333;
+
+        &:focus {
+          outline: none;
+          border-color: #0066cc;
+          box-shadow: 0 0 3px rgba(0, 102, 204, 0.5);
+        }
+      }
+      .error-message {
+        color: red;
+        font-size: 0.85rem;
+        margin-top: 5px;
+      }
+    }
+
+    .btn-submit {
+      padding: 12px;
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #005bb5;
+      }
+
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+    }
+    p {
+      color: #666;
+      text-align: center;
+      padding: 10px;
+      font-size: 1.2rem;
+      a {
+        color: #0066cc;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+// Toastr Custom Styling
+.toast-container {
+  z-index: 1050;
+  position: fixed;
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// Base Toast Styles
+@mixin toast-base {
+  font-family: "Arial", sans-serif;
+  font-size: 14px;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  opacity: 0.95;
+  animation: slideIn 0.5s ease-out;
+}
+
+// Success Toast
+.toast-success {
+  @include toast-base;
+  background-color: #4caf50 !important;
+  color: #fff !important;
+  border-left: 5px solid #388e3c;
+}
+
+// Error Toast
+.toast-error {
+  @include toast-base;
+  background-color: #f44336 !important;
+  color: #fff !important;
+  border-left: 5px solid #d32f2f;
+}
+
+// Info Toast
+.toast-info {
+  @include toast-base;
+  background-color: #2196f3 !important;
+  color: #fff !important;
+  border-left: 5px solid #1976d2;
+}
+
+// Warning Toast
+.toast-warning {
+  @include toast-base;
+  background-color: #ff9800 !important;
+  color: #fff !important;
+  border-left: 5px solid #f57c00;
+}
+
+// Animation for toast visibility
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
   }
 }

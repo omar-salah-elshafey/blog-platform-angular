@@ -7,32 +7,70 @@ import {
   ReactiveFormsModule,
   AbstractControl,
 } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth/auth-service.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
   imports: [RouterModule, CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
   loginForm!: FormGroup;
   showPassword: boolean = false;
-  constructor(private formBuilder: FormBuilder) {}
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      username: ['', [Validators.required]],
-      password: ['', [Validators.required]],
+      EmailOrUserName: ['', [Validators.required]],
+      Password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern(
+            '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$'
+          ),
+        ],
+      ],
     });
   }
+
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }
+
   onSubmit(): void {
+    const trimmedFormValue = {
+      EmailOrUserName: this.loginForm.value.EmailOrUserName.trim(),
+      Password: this.loginForm.value.Password.trim(),
+    };
     if (this.loginForm.valid) {
-      console.log('Form Submitted', this.loginForm.value);
+      this.authService.login(trimmedFormValue).subscribe({
+        next: (response) => {
+          console.log('login successful:', response);
+          this.toastr.success('Login successful!', 'Success');
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          this.toastr.error(
+            error.error?.error || 'An unexpected error occurred.',
+            'Error'
+          );
+          console.error('Registration failed:', error.error);
+        },
+      });
+      console.log('Form Submitted', trimmedFormValue);
     } else {
+      this.toastr.warning('Please fill in all required fields.', 'Warning');
       console.error('Form Invalid');
     }
   }

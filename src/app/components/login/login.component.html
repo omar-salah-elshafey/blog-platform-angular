@@ -1,11 +1,11 @@
-<div class="login-container">
+<div class="auth-form-container">
   <!-- (ngSubmit)="onSubmit()" -->
-  <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <h2>Login</h2>
 
     <div class="form-group">
       <label for="username">Username or Email</label>
-      <input type="text" id="username" formControlName="username" />
+      <input type="text" id="username" formControlName="EmailOrUserName" />
     </div>
 
     <div class="form-group">
@@ -15,12 +15,11 @@
           <a href="#">Forgot Password?</a>
         </div>
       </div>
-
       <div class="password-container">
         <input
           [type]="showPassword ? 'text' : 'password'"
           id="password"
-          formControlName="password"
+          formControlName="Password"
         />
         <button
           type="button"
@@ -30,6 +29,24 @@
         >
           <i [ngClass]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
         </button>
+      </div>
+      <div
+        class="error-message"
+        *ngIf="
+          loginForm.get('Password')?.touched &&
+          loginForm.get('Password')?.invalid
+        "
+      >
+        <small *ngIf="loginForm.get('Password')?.errors?.['required']">
+          Password is required.
+        </small>
+        <small *ngIf="loginForm.get('Password')?.errors?.['minlength']">
+          Password must be at least 8 characters long.
+        </small>
+        <small *ngIf="loginForm.get('Password')?.errors?.['pattern']">
+          Password must contain at least 1 uppercase letter, 1 lowercase letter,
+          1 number, and 1 special character.
+        </small>
       </div>
     </div>
 
