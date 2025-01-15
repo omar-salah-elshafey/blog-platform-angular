@@ -6,6 +6,7 @@ import {
   FormGroup,
   Validators,
   ReactiveFormsModule,
+  AbstractControl,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
@@ -30,19 +31,18 @@ export class ResetPasswordRequestComponent {
   ngOnInit(): void {
     this.resetPasswordRequestForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
+      token: ['', [Validators.required]],
     });
   }
 
-  onSubmit() {
+  onSendToken() {
     this.passwordService
       .resetPasswordRequest(this.resetPasswordRequestForm.value.email)
       .subscribe({
         next: (response) => {
           this.tokenSent = true;
           this.toastr.success('Token sent to your email', 'Success');
-          console.log('Token sent to your email');
-          //navigate to verify-reset-password-token
-          this.router.navigate(['/varify-reset-password-token']);
+          console.log('Token sent to your email', response!);
         },
         error: (err) => {
           console.error('Error sending token', err.error!.error);
@@ -51,7 +51,7 @@ export class ResetPasswordRequestComponent {
       });
   }
 
-  onVerifyToken() {
+  onSubmit() {
     const userData = {
       email: this.resetPasswordRequestForm.value.email,
       token: this.resetPasswordRequestForm.value.token,
@@ -66,15 +66,14 @@ export class ResetPasswordRequestComponent {
           'resetToken',
           this.resetPasswordRequestForm.value.token
         );
+        this.toastr.success('Token verified successfully', 'Success');
+        console.log('Token verified successfully');
         this.router.navigate(['/reset-password']);
       },
       error: (err) => {
-        console.error('Token verification failed', err);
+        console.error('Token verification failed', err.error!.error);
+        this.toastr.error(err.error!.error, 'Error');
       },
     });
-  }
-
-  onResendToken() {
-    this.onSubmit();
   }
 }

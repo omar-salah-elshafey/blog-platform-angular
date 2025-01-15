@@ -82,6 +82,7 @@
       border-radius: 4px;
       font-size: 1rem;
       cursor: pointer;
+      text-align: center;
       transition: background-color 0.3s ease;
 
       &:hover {
@@ -98,6 +99,7 @@
       text-align: center;
       padding: 10px;
       font-size: 1.2rem;
+      margin: 10px 0px 0px;
       a {
         color: #0066cc;
         text-decoration: none;
