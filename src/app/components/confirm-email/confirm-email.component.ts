@@ -6,13 +6,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { Router, RouterModule } from '@angular/router';
-import { EmailService } from '../services/email/email.service';
+import { Router } from '@angular/router';
+import { EmailService } from '../../services/email/email.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-confirm-email',
-  imports: [RouterModule, CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './confirm-email.component.html',
   styleUrl: './confirm-email.component.scss',
 })
