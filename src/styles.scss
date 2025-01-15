@@ -106,6 +106,23 @@
         }
       }
     }
+    .label-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px 0 0;
+      a {
+        margin: 10px 0;
+        display: inline-block;
+        color: #0066cc;
+        font-size: 0.9rem;
+        text-decoration: none;
+        cursor: pointer;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
   }
 }
 
@@ -113,9 +130,9 @@
 .toast-container {
   z-index: 1050;
   position: fixed;
-  top: 5%;
+  top: 10%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
 }
 
 // Base Toast Styles
