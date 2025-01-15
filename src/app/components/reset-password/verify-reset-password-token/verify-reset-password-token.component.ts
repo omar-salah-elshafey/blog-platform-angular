@@ -68,7 +68,7 @@ export class VerifyResetPasswordTokenComponent {
         next: (response) => {
           this.tokenSent = true;
           this.toastr.success('Token sent to your email', 'Success');
-          console.log('Token sent to your email');
+          console.log('Token sent to your email', response);
         },
         error: (err) => {
           console.error('Error sending token', err.error!.error);

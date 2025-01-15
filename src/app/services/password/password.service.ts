@@ -25,6 +25,7 @@ export class PasswordService {
   }
 
   resetPassword(userData: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}reset-password`, userData);
+    console.log('test');
+    return this.http.put(`${this.baseUrl}reset-password`, userData);
   }
 }
