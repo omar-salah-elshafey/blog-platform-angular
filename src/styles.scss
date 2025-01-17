@@ -135,6 +135,12 @@ main {
   }
 }
 
+.main-container {
+  width: 80%;
+  max-width: 900px;
+  margin: 0px auto;
+}
+
 // Toastr Custom Styling
 .toast-container {
   z-index: 1050;

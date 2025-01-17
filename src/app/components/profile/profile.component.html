@@ -1,1 +1,14 @@
-<p>profile works!</p>
+<div *ngIf="loading" class="loading main-container profile-container">
+  Loading profile...
+</div>
+
+<div class="profile-container main-container" *ngIf="!loading && userProfile">
+  <h1>{{ userProfile.firstName }} {{ userProfile.lastName }}</h1>
+  <h1><small><h6>&#64;{{ userProfile.userName }}</h6></small></h1>
+  <p><strong>Email:</strong> {{ userProfile.email }}</p>
+  <p><strong>Role:</strong> {{ userProfile.role }}</p>
+</div>
+
+<div *ngIf="!loading && !userProfile" class="error main-container">
+  Failed to load profile. Please try again later.
+</div>

@@ -4,6 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth/auth-service.service';
 import { CookieService } from 'ngx-cookie-service';
 import { ToastrService } from 'ngx-toastr';
+import { ProfileService } from '../../services/profile/profile.service';
 
 @Component({
   selector: 'app-header',
@@ -16,10 +17,24 @@ export class HeaderComponent {
     public authService: AuthService,
     private router: Router,
     private toastr: ToastrService,
-    private cookieService: CookieService
+    private profileServie: ProfileService
   ) {}
 
   isMenuOpen = false;
+  firstName: string | null = null;
+
+  ngOnInit(): void {
+    if (this.isLoggedIn()) {
+      this.profileServie.getCurrentUserProfile().subscribe({
+        next: (profile) => {
+          this.firstName = profile.firstName; // Update the `firstName` dynamically
+        },
+        error: (err) => {
+          console.error('Failed to fetch user profile', err);
+        },
+      });
+    }
+  }
 
   isLoggedIn() {
     return this.authService.isLoggedIn();
