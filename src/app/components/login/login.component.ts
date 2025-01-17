@@ -59,8 +59,15 @@ export class LoginComponent {
       this.authService.login(trimmedFormValue).subscribe({
         next: (response) => {
           console.log('login successful:', response);
-          // store the access and refresh tokens in the cookies
-          document.cookie = `accessToken=${response.accessToken}; path=/`;
+          this.cookieService.set(
+            'accessToken',
+            response.accessToken,
+            1,
+            '/',
+            '',
+            true,
+            'Strict'
+          );
           this.cookieService.set(
             'refreshToken',
             encodeURIComponent(response.refreshToken),
@@ -70,10 +77,9 @@ export class LoginComponent {
             true,
             'Strict'
           );
-          //document.cookie = `refreshToken=${response.refreshToken}; path=/`;
           this.toastr.success('Login successful!', 'Success');
           this.loginForm.reset();
-          this.router.navigate(['/login']);
+          this.router.navigate(['/profile']);
         },
         error: (error) => {
           this.toastr.error(

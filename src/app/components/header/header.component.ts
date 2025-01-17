@@ -28,20 +28,16 @@ export class HeaderComponent {
     this.isMenuOpen = !this.isMenuOpen;
   }
   logout() {
-    this.authService.logout().subscribe(
-      (response) => {
-        console.log('Logout successful', response!);
-        this.cookieService.delete('refreshToken');
-        this.cookieService.delete('accessToken');
+    this.authService.logout().subscribe({
+      next: (response) => {
         this.toastr.success('Logout successful!', 'Success');
+        console.log('Logout successful', response!);
         this.router.navigate(['/login']);
       },
-      (error) => {
-        this.toastr.error(
-          error.error?.error
-        );
+      error: (error) => {
+        this.toastr.error(error.error!.error, 'error');
         console.error('Logout failed:', error.error);
-      }
-    );
+      },
+    });
   }
 }

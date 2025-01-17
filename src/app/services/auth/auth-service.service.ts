@@ -1,20 +1,57 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private baseUrl = 'https://localhost:7293/api/Auth';
-  constructor(private http: HttpClient, private cookieService: CookieService) {}
+  private accessTokenSubject = new BehaviorSubject<string | null>(null);
+  constructor(
+    private http: HttpClient,
+    private cookieService: CookieService,
+    private toastr: ToastrService
+  ) {}
+
+  private setTokens(accessToken: string, refreshToken: string) {
+    this.cookieService.set(
+      'accessToken',
+      accessToken,
+      1,
+      '/',
+      '',
+      true,
+      'Strict'
+    );
+    this.cookieService.set(
+      'refreshToken',
+      encodeURIComponent(refreshToken),
+      1,
+      '/',
+      '',
+      true,
+      'Strict'
+    );
+    this.accessTokenSubject.next(accessToken);
+  }
+
+  // Get access token from the cookies
+  getAccessToken(): string | null {
+    return (
+      this.accessTokenSubject.value || this.cookieService.get('accessToken')
+    );
+  }
 
   //register
   registerReader(userData: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/register-reader`, userData, {
-      responseType: 'text',
-    });
+    return this.http.post(`${this.baseUrl}/register-reader`, userData);
+  }
+
+  registerAuthor(userData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/register-author`, userData);
   }
 
   //login
@@ -26,26 +63,35 @@ export class AuthService {
     return this.cookieService.check('accessToken');
   }
 
+  // Refresh the token
+  refreshAccessToken(refreshToken: string) {
+    return this.http
+      .get<any>(`${this.baseUrl}/refreshtoken?refreshToken=${refreshToken}`)
+      .pipe(
+        catchError((error) => {
+          console.error('Token refresh failed:', error);
+          return throwError('Token refresh failed!');
+        })
+      );
+  }
+
   //logout
   logout(): Observable<any> {
     const accessToken = this.cookieService.get('accessToken');
     const refreshToken = this.cookieService.get('refreshToken');
-    // console.log('refreshToken From Service: ', refreshToken);
-    console.log('From Service: ', accessToken.trim());
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${accessToken}`,
-    });
-    console.log('from service: ', headers);
     return this.http
-      .post(
-        `${this.baseUrl}/logout?refreshToken=${refreshToken}`,
-        {},
-        { headers }
-      )
+      .post(`${this.baseUrl}/logout?refreshToken=${refreshToken}`, {})
       .pipe(
+        tap(() => {
+          this.cookieService.delete('accessToken', '/');
+          this.cookieService.delete('refreshToken', '/');
+          this.accessTokenSubject.next(null);
+        }),
         catchError((error) => {
           console.error('Error during logout:', error);
-          return throwError(error);
+          if (error.status == 401) this.toastr.error('Unauthorized', 'error');
+          else this.toastr.error(error.error.error, 'error');
+          return throwError(() => new error(error));
         })
       );
   }
