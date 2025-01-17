@@ -10,6 +10,7 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth/auth-service.service';
 import { ToastrService } from 'ngx-toastr';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +26,8 @@ export class LoginComponent {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cookieService: CookieService
   ) {}
 
   ngOnInit(): void {
@@ -59,9 +61,16 @@ export class LoginComponent {
           console.log('login successful:', response);
           // store the access and refresh tokens in the cookies
           document.cookie = `accessToken=${response.accessToken}; path=/`;
-          document.cookie = `refreshToken=${response.refreshToken}; path=/`;
-          document.cookie = `userID=${response.userId}; path=/`;
-          document.cookie = `userName=${response.userName}; path=/`;
+          this.cookieService.set(
+            'refreshToken',
+            encodeURIComponent(response.refreshToken),
+            1,
+            '/',
+            '',
+            true,
+            'Strict'
+          );
+          //document.cookie = `refreshToken=${response.refreshToken}; path=/`;
           this.toastr.success('Login successful!', 'Success');
           this.loginForm.reset();
           this.router.navigate(['/login']);

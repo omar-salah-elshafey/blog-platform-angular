@@ -7,7 +7,6 @@ import { ResetPasswordRequestComponent } from './components/reset-password/reset
 
 export const routes: Routes = [
   { path: 'register', component: RegistrationComponent },
-
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'confirm-email', component: ConfirmEmailComponent },
