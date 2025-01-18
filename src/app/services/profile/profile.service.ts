@@ -31,9 +31,10 @@ export class ProfileService {
     );
   }
 
-  updateUserData(userData: any): Observable<any> {
-    console.log('From the edit method');
-    return this.http.put(`${this.baseUrl}/update-user`, { userData }).pipe(
+  updateUserProfile(userData: any): Observable<any> {
+    console.log('From the edit method in service');
+    console.log(userData);
+    return this.http.put(`${this.baseUrl}/update-user`, userData).pipe(
       tap(() => {
         console.log('Updating user' + userData);
         this.toastr.success('Updating', 'success');

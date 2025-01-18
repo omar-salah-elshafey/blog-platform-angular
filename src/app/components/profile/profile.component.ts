@@ -75,6 +75,26 @@ export class ProfileComponent implements OnInit {
     this.updateMode = false;
   }
   onUpdateProfile() {
-    throw new Error('Method not implemented.');
+    console.log('From the edit method in component');
+    const userData = {
+      // add the userName of the user
+      userName: this.userProfile?.userName,
+      firstName: this.updateProfileForm.get('firstName')?.value.trim(),
+      lastName: this.updateProfileForm.get('lastName')?.value.trim(),
+    };
+    console.log(userData);
+    this.profileService.updateUserProfile(userData).subscribe({
+      next: (response) => {
+        this.toastr.success('Profile updated successfully.', 'Success');
+        this.updateMode = false;
+        this.loading = false;
+        console.log('profile updated! ' + response);
+      },
+      error: (error) => {
+        this.toastr.error(error.error!.error, 'Error');
+        console.error('Error updating user profile:', error);
+      },
+    });
+    this.ngOnInit();
   }
 }
