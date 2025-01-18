@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth/auth-service.service';
 import { CookieService } from 'ngx-cookie-service';
 import { ToastrService } from 'ngx-toastr';
 import { ProfileService } from '../../services/profile/profile.service';
+import { SharedService } from '../../services/shared.service';
 
 @Component({
   selector: 'app-header',
@@ -17,7 +18,8 @@ export class HeaderComponent {
     public authService: AuthService,
     private router: Router,
     private toastr: ToastrService,
-    private profileServie: ProfileService
+    private profileServie: ProfileService,
+    private sharedService: SharedService
   ) {}
 
   isMenuOpen = false;
@@ -25,13 +27,10 @@ export class HeaderComponent {
 
   ngOnInit(): void {
     if (this.isLoggedIn()) {
-      this.profileServie.getCurrentUserProfile().subscribe({
-        next: (profile) => {
+      this.sharedService.userProfile$.subscribe((profile) => {
+        if (profile) {
           this.firstName = profile.firstName; // Update the `firstName` dynamically
-        },
-        error: (err) => {
-          console.error('Failed to fetch user profile', err);
-        },
+        }
       });
     }
   }

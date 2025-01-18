@@ -35,10 +35,6 @@ export class ProfileService {
     console.log('From the edit method in service');
     console.log(userData);
     return this.http.put(`${this.baseUrl}/update-user`, userData).pipe(
-      tap(() => {
-        console.log('Updating user' + userData);
-        this.toastr.success('Updating', 'success');
-      }),
       catchError((error) => {
         console.error('Error during updating:', error);
         if (error.status == 401) this.toastr.error('Unauthorized', 'error');

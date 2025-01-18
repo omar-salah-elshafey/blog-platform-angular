@@ -13,6 +13,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { SharedService } from '../../services/shared.service';
 
 @Component({
   selector: 'app-profile',
@@ -30,11 +31,24 @@ export class ProfileComponent implements OnInit {
   constructor(
     private profileService: ProfileService,
     private toastr: ToastrService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private sharedService: SharedService
   ) {}
 
   ngOnInit(): void {
-    this.fetchUserProfile();
+    this.sharedService.userProfile$.subscribe((profile) => {
+      if (profile) {
+        this.userProfile = { ...this.userProfile, ...profile };
+      }
+    });
+
+    const cachedProfile = this.sharedService.getUserProfile();
+    if (!cachedProfile) {
+      this.fetchUserProfile();
+    } else {
+      this.userProfile = cachedProfile;
+      this.loading = false;
+    }
   }
 
   fetchUserProfile(): void {
@@ -42,6 +56,7 @@ export class ProfileComponent implements OnInit {
       (profile) => {
         this.userProfile = profile;
         this.loading = false;
+        this.sharedService.setUserProfile(profile);
       },
       (error) => {
         this.loading = false;
@@ -88,13 +103,18 @@ export class ProfileComponent implements OnInit {
         this.toastr.success('Profile updated successfully.', 'Success');
         this.updateMode = false;
         this.loading = false;
-        console.log('profile updated! ' + response);
+        console.log('profile updated! ' , response);
+        const updatedProfile: UserProfile = {
+          ...this.userProfile!,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+        };
+        this.sharedService.setUserProfile(updatedProfile);
       },
       error: (error) => {
         this.toastr.error(error.error!.error, 'Error');
         console.error('Error updating user profile:', error);
       },
     });
-    this.ngOnInit();
   }
 }
