@@ -18,4 +18,8 @@ export class SharedService {
   getUserProfile(): UserProfile | null {
     return this.userProfileSubject.value;
   }
+
+  clearUserProfile(): void {
+    this.userProfileSubject.next(null);
+  }
 }

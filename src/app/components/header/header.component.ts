@@ -53,5 +53,6 @@ export class HeaderComponent {
         console.error('Logout failed:', error.error);
       },
     });
+    this.sharedService.clearUserProfile();
   }
 }
