@@ -59,24 +59,6 @@ export class LoginComponent {
       this.authService.login(trimmedFormValue).subscribe({
         next: (response) => {
           console.log('login successful:', response);
-          this.cookieService.set(
-            'accessToken',
-            response.accessToken,
-            1,
-            '/',
-            '',
-            true,
-            'Strict'
-          );
-          this.cookieService.set(
-            'refreshToken',
-            encodeURIComponent(response.refreshToken),
-            1,
-            '/',
-            '',
-            true,
-            'Strict'
-          );
           this.toastr.success('Login successful!', 'Success');
           this.loginForm.reset();
           this.router.navigate(['/profile']);
@@ -86,7 +68,7 @@ export class LoginComponent {
             error.error?.error || 'An unexpected error occurred.',
             'Error'
           );
-          console.error('Registration failed:', error.error);
+          console.error('Login failed:', error.error);
         },
       });
       console.log('Form Submitted', trimmedFormValue);

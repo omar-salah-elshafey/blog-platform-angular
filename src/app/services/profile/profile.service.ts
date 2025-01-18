@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-
+import { ToastrService } from 'ngx-toastr';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 
 export interface UserProfile {
   firstName: string;
@@ -11,18 +11,39 @@ export interface UserProfile {
   role: string;
 }
 
+export interface UpdateProfile {
+  userName: string;
+  firstName: string;
+  lastName: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class ProfileService {
   private baseUrl = 'https://localhost:7293/api/UserManagement';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private toastr: ToastrService) {}
 
   getCurrentUserProfile(): Observable<UserProfile> {
     return this.http.get<UserProfile>(
       `${this.baseUrl}/get-current-user-profile`
     );
   }
-}
 
+  updateUserData(userData: any): Observable<any> {
+    console.log('From the edit method');
+    return this.http.put(`${this.baseUrl}/update-user`, { userData }).pipe(
+      tap(() => {
+        console.log('Updating user' + userData);
+        this.toastr.success('Updating', 'success');
+      }),
+      catchError((error) => {
+        console.error('Error during updating:', error);
+        if (error.status == 401) this.toastr.error('Unauthorized', 'error');
+        else this.toastr.error(error.error.error, 'error');
+        return throwError(() => new error(error));
+      })
+    );
+  }
+}

@@ -56,7 +56,32 @@ export class AuthService {
 
   //login
   login(userData: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/login`, userData);
+    return this.http.post(`${this.baseUrl}/login`, userData).pipe(
+      tap((response: any) => {
+        this.cookieService.set(
+          'accessToken',
+          response.accessToken,
+          1,
+          '/',
+          '',
+          true,
+          'Strict'
+        );
+        this.cookieService.set(
+          'refreshToken',
+          encodeURIComponent(response.refreshToken),
+          1,
+          '/',
+          '',
+          true,
+          'Strict'
+        );
+      }),
+      catchError((error) => {
+        console.error('Error while logging in: ' + error);
+        return throwError(() => error);
+      })
+    );
   }
 
   isLoggedIn() {
@@ -70,7 +95,7 @@ export class AuthService {
       .pipe(
         catchError((error) => {
           console.error('Token refresh failed:', error);
-          return throwError('Token refresh failed!');
+          return throwError(() => new error('Token refresh failed!' + error));
         })
       );
   }
