@@ -10,6 +10,8 @@ import { authGuard } from './shared/auth/auth.guard';
 import { SearchUsersComponent } from './components/search-users/search-users.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { HomeComponent } from './components/home/home.component';
+import { PostComponent } from './components/post/post.component';
 
 export const routes: Routes = [
   {
@@ -33,6 +35,8 @@ export const routes: Routes = [
     component: UserProfileComponent,
     canActivate: [authGuard],
   },
+  { path: 'home', component: HomeComponent, canActivate: [authGuard] },
+  { path: 'post', component: PostComponent, canActivate: [authGuard] },
   { path: 'not-found', component: NotFoundComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: 'login', pathMatch: 'full' },
 ];
