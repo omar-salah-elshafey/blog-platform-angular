@@ -17,6 +17,10 @@ import { SharedService } from '../../services/shared.service';
 import { CookieService } from 'ngx-cookie-service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import {
+  PostResponseModel,
+  PostService,
+} from '../../services/post/post.service';
 
 @Component({
   selector: 'app-profile',
@@ -30,6 +34,7 @@ export class ProfileComponent implements OnInit {
   updateMode = false;
   updateProfileForm!: FormGroup;
   updatedProfile: UpdateProfile | null = null;
+  posts: PostResponseModel[] = [];
 
   constructor(
     private profileService: ProfileService,
@@ -38,13 +43,15 @@ export class ProfileComponent implements OnInit {
     private sharedService: SharedService,
     private cookieService: CookieService,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private postService: PostService
   ) {}
 
   ngOnInit(): void {
     this.sharedService.userProfile$.subscribe((profile) => {
       if (profile) {
         this.userProfile = { ...this.userProfile, ...profile };
+        this.fetchUserPosts(profile.userName);
       }
     });
 
@@ -54,6 +61,7 @@ export class ProfileComponent implements OnInit {
     } else {
       this.userProfile = cachedProfile;
       this.loading = false;
+      this.fetchUserPosts(cachedProfile.userName);
     }
   }
 
@@ -151,6 +159,22 @@ export class ProfileComponent implements OnInit {
       } else {
         console.log('User canceled account deletion');
       }
+    });
+  }
+
+  fetchUserPosts(userName: string): void {
+    this.postService.getPostsByUser(userName).subscribe({
+      next: (posts) => {
+        this.posts = posts;
+        console.log('Fetched user posts:', posts);
+      },
+      error: (error) => {
+        this.toastr.error(
+          'Failed to fetch posts. Please try again later.',
+          'Error'
+        );
+        console.error('Error fetching user posts:', error);
+      },
     });
   }
 }

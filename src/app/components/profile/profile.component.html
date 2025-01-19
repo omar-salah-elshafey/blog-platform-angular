@@ -13,7 +13,9 @@
   <p><strong>Role:</strong> {{ userProfile.role }}</p>
   <div class="profile-buttons">
     <button (click)="toggleEditForm()" class="edit-btn">Edit Profile</button>
-    <button (click)="onDeleteProfile()" class="delete-btn">Delete Account</button>
+    <button (click)="onDeleteProfile()" class="delete-btn">
+      Delete Account
+    </button>
   </div>
   <form
     *ngIf="updateMode"
@@ -96,6 +98,26 @@
       </button>
     </div>
   </form>
+  <div *ngIf="posts.length > 0; else noPosts" class="user-posts">
+    <h2>User's Posts</h2>
+    <ul>
+      <li *ngFor="let post of posts">
+        <h3>{{ post.title }}</h3>
+        <p>{{ post.content }}</p>
+        <small>Published on {{ post.createdDate | date : "medium" }}</small>
+        <br>
+        <small>
+          <span *ngIf="post.modifiedDate">
+            | Modified: {{ post.modifiedDate | date : "medium" }}
+          </span>
+        </small>
+      </li>
+    </ul>
+  </div>
+
+  <ng-template #noPosts>
+    <p class="no-posts">This user has not authored any posts yet.</p>
+  </ng-template>
 </div>
 
 <div *ngIf="!loading && !userProfile" class="error main-container">
