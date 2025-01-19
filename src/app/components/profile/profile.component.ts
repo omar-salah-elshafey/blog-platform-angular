@@ -58,21 +58,21 @@ export class ProfileComponent implements OnInit {
   }
 
   fetchUserProfile(): void {
-    this.profileService.getCurrentUserProfile().subscribe(
-      (profile) => {
+    this.profileService.getCurrentUserProfile().subscribe({
+      next: (profile) => {
         this.userProfile = profile;
         this.loading = false;
         this.sharedService.setUserProfile(profile);
       },
-      (error) => {
+      error: (error) => {
         this.loading = false;
         this.toastr.error(
           'Failed to fetch user profile. Please try again later.',
           'Error'
         );
         console.error('Error fetching user profile:', error);
-      }
-    );
+      },
+    });
   }
 
   initializeForm(profile: UserProfile): void {

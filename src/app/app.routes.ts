@@ -8,6 +8,8 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { guestGuard } from './shared/guest/guest.guard';
 import { authGuard } from './shared/auth/auth.guard';
 import { SearchUsersComponent } from './components/search-users/search-users.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 export const routes: Routes = [
   {
@@ -26,5 +28,11 @@ export const routes: Routes = [
     component: SearchUsersComponent,
     canActivate: [authGuard],
   },
+  {
+    path: 'user-profile',
+    component: UserProfileComponent,
+    canActivate: [authGuard],
+  },
+  { path: 'not-found', component: NotFoundComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: 'login', pathMatch: 'full' },
 ];

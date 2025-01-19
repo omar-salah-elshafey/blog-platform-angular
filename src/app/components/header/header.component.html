@@ -13,7 +13,9 @@
       <li (click)="isMenuOpen = false"><a routerLink="/home">Home</a></li>
       <li (click)="isMenuOpen = false"><a routerLink="/search">Search</a></li>
       <li (click)="isMenuOpen = false">
-        <a routerLink="/contact"><i class="fa fa-user-tie"></i> {{ firstName || 'Profile' }}</a>
+        <a routerLink="/profile"
+          ><i class="fa fa-user-tie"></i> {{ firstName || "Profile" }}</a
+        >
       </li>
       <li (click)="isMenuOpen = false; logout()">
         <a><i class="fa fa-sign-out"></i> Logout</a>
