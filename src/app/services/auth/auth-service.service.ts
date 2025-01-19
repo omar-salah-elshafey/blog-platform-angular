@@ -94,8 +94,8 @@ export class AuthService {
       .get<any>(`${this.baseUrl}/refreshtoken?refreshToken=${refreshToken}`)
       .pipe(
         catchError((error) => {
-          console.error('Token refresh failed:', error);
-          return throwError(() => new error('Token refresh failed!' + error));
+          console.error('Token refresh failed:', error!);
+          return throwError(() => new error('Token refresh failed!' + error!));
         })
       );
   }
