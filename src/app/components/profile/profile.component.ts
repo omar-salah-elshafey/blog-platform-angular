@@ -15,6 +15,8 @@ import {
 } from '@angular/forms';
 import { SharedService } from '../../services/shared.service';
 import { CookieService } from 'ngx-cookie-service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-profile',
@@ -35,7 +37,8 @@ export class ProfileComponent implements OnInit {
     private fb: FormBuilder,
     private sharedService: SharedService,
     private cookieService: CookieService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -122,24 +125,32 @@ export class ProfileComponent implements OnInit {
   }
 
   onDeleteProfile() {
-    const userData = {
-      userName: this.userProfile!.userName,
-      refreshToken: this.cookieService.get('refreshToken'),
-    };
-    console.log(userData);
-    this.profileService.deleteUserProfile(userData).subscribe({
-      next: (response) => {
-        this.toastr.success('Profile deleted successfully.', 'Success');
-        console.log('Profile Deleted!: ', response);
-        this.sharedService.clearUserProfile();
-        this.cookieService.delete('refreshToken');
-        this.cookieService.delete('accessToken');
-        this.router.navigate(['/login']);
-      },
-      error: (error: any) => {
-        this.toastr.error(error.error!.error, 'Error');
-        console.error('Error deleting user profile:', error);
-      },
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirm') {
+        const userData = {
+          userName: this.userProfile!.userName,
+          refreshToken: this.cookieService.get('refreshToken'),
+        };
+        console.log(userData);
+        this.profileService.deleteUserProfile(userData).subscribe({
+          next: (response) => {
+            this.toastr.success('Profile deleted successfully.', 'Success');
+            console.log('Profile Deleted!: ', response);
+            this.sharedService.clearUserProfile();
+            this.cookieService.delete('refreshToken');
+            this.cookieService.delete('accessToken');
+            this.router.navigate(['/login']);
+          },
+          error: (error: any) => {
+            this.toastr.error(error.error!.error, 'Error');
+            console.error('Error deleting user profile:', error);
+          },
+        });
+      } else {
+        console.log('User canceled account deletion');
+      }
     });
   }
 }
