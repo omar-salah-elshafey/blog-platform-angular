@@ -9,10 +9,11 @@ import { debounceTime } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { ProfileService } from '../../services/profile/profile.service';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-search-users',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './search-users.component.html',
   styleUrl: './search-users.component.scss',
 })

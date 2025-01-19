@@ -10,7 +10,7 @@
       <button [disabled]="loading || searchForm.invalid">
         <i *ngIf="!loading" class="fa fa-search"></i>
         <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
-        {{ loading ? 'Searching...' : 'Search' }}
+        {{ loading ? "Searching..." : "Search" }}
       </button>
     </div>
   </form>
@@ -18,9 +18,15 @@
     <ng-container *ngIf="users.length > 0; else noResults">
       <div class="user-card" *ngFor="let user of paginatedUsers">
         <p><strong>Name:</strong> {{ user.firstName }} {{ user.lastName }}</p>
-        <p><strong>Username:</strong> {{ user.userName }}</p>
-        <p><strong>Email:</strong> {{ user.email }}</p>
-        <p><strong>Role:</strong> {{ user.role }}</p>
+        <p>
+          <strong>Username:</strong
+          ><a
+            [routerLink]="['/user-profile']"
+            [queryParams]="{ username: user.userName }"
+          >
+            {{ user.userName }}
+          </a>
+        </p>
       </div>
       <div class="pagination">
         <button (click)="previousPage()" [disabled]="currentPage === 1">

@@ -1,12 +1,14 @@
-<div *ngIf="loading" class="loader">Loading...</div>
+<div class="main-container">
+  <div *ngIf="loading" class="loader">Loading...</div>
 
-<div *ngIf="!loading && userProfile" class="user-profile">
-  <h2>{{ userProfile.firstName }} {{ userProfile.lastName }}</h2>
-  <p><strong>Username:</strong> {{ userProfile.userName }}</p>
-  <p><strong>Email:</strong> {{ userProfile.email }}</p>
-  <p><strong>Role:</strong> {{ userProfile.role }}</p>
-</div>
+  <div *ngIf="!loading && userProfile" class="user-profile">
+    <h2>{{ userProfile.firstName }} {{ userProfile.lastName }}</h2>
+    <p><strong>Username:</strong> {{ userProfile.userName }}</p>
+    <p><strong>Email:</strong> {{ userProfile.email }}</p>
+    <p><strong>Role:</strong> {{ userProfile.role }}</p>
+  </div>
 
-<div *ngIf="!loading && !userProfile" class="no-profile">
-  <p>No profile data found.</p>
+  <div *ngIf="!loading && !userProfile" class="no-profile">
+    <p>No profile data found.</p>
+  </div>
 </div>
