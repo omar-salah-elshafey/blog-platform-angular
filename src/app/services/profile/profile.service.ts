@@ -69,4 +69,13 @@ export class ProfileService {
         )
     );
   }
+
+  searchUsers(query: string): Observable<any> {
+    return this.http.get<UserProfile>(`${this.baseUrl}/search-users?query=${query}`).pipe(
+      catchError((error) => {
+        console.error('Error during searching:', error);
+        return throwError(() => new error(error))
+        })
+    );
+  }
 }

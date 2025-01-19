@@ -7,6 +7,7 @@ import { ResetPasswordRequestComponent } from './components/reset-password/reset
 import { ProfileComponent } from './components/profile/profile.component';
 import { guestGuard } from './shared/guest/guest.guard';
 import { authGuard } from './shared/auth/auth.guard';
+import { SearchUsersComponent } from './components/search-users/search-users.component';
 
 export const routes: Routes = [
   {
@@ -19,6 +20,11 @@ export const routes: Routes = [
   { path: 'confirm-email', component: ConfirmEmailComponent },
   { path: 'reset-password-request', component: ResetPasswordRequestComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
-  { path: 'profile', component: ProfileComponent, canActivate:[authGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+  {
+    path: 'search',
+    component: SearchUsersComponent,
+    canActivate: [authGuard],
+  },
   { path: '**', redirectTo: 'login', pathMatch: 'full' },
 ];

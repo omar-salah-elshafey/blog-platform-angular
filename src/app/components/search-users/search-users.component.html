@@ -1,0 +1,39 @@
+<div class="search-container">
+  <h2>Search Users</h2>
+  <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+    <div class="search-bar">
+      <input
+        type="text"
+        formControlName="query"
+        placeholder="Enter username to search..."
+      />
+      <button [disabled]="loading || searchForm.invalid">
+        <i *ngIf="!loading" class="fa fa-search"></i>
+        <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+        {{ loading ? 'Searching...' : 'Search' }}
+      </button>
+    </div>
+  </form>
+  <div class="results">
+    <ng-container *ngIf="users.length > 0; else noResults">
+      <div class="user-card" *ngFor="let user of paginatedUsers">
+        <p><strong>Name:</strong> {{ user.firstName }} {{ user.lastName }}</p>
+        <p><strong>Username:</strong> {{ user.userName }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Role:</strong> {{ user.role }}</p>
+      </div>
+      <div class="pagination">
+        <button (click)="previousPage()" [disabled]="currentPage === 1">
+          Previous
+        </button>
+        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+          Next
+        </button>
+      </div>
+    </ng-container>
+    <ng-template #noResults>
+      <p *ngIf="!loading">No users found.</p>
+    </ng-template>
+  </div>
+</div>
