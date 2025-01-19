@@ -13,7 +13,7 @@
   <p><strong>Role:</strong> {{ userProfile.role }}</p>
   <div class="profile-buttons">
     <button (click)="toggleEditForm()" class="edit-btn">Edit Profile</button>
-    <button class="delete-btn">Delete Account</button>
+    <button (click)="onDeleteProfile()" class="delete-btn">Delete Account</button>
   </div>
   <form
     *ngIf="updateMode"

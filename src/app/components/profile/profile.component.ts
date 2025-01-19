@@ -6,7 +6,7 @@ import {
   UpdateProfile,
 } from '../../services/profile/profile.service';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
@@ -14,6 +14,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { SharedService } from '../../services/shared.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-profile',
@@ -32,7 +33,9 @@ export class ProfileComponent implements OnInit {
     private profileService: ProfileService,
     private toastr: ToastrService,
     private fb: FormBuilder,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private cookieService: CookieService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -103,7 +106,7 @@ export class ProfileComponent implements OnInit {
         this.toastr.success('Profile updated successfully.', 'Success');
         this.updateMode = false;
         this.loading = false;
-        console.log('profile updated! ' , response);
+        console.log('profile updated! ', response);
         const updatedProfile: UserProfile = {
           ...this.userProfile!,
           firstName: userData.firstName,
@@ -114,6 +117,28 @@ export class ProfileComponent implements OnInit {
       error: (error) => {
         this.toastr.error(error.error!.error, 'Error');
         console.error('Error updating user profile:', error);
+      },
+    });
+  }
+
+  onDeleteProfile() {
+    const userData = {
+      userName: this.userProfile!.userName,
+      refreshToken: this.cookieService.get('refreshToken'),
+    };
+    console.log(userData);
+    this.profileService.deleteUserProfile(userData).subscribe({
+      next: (response) => {
+        this.toastr.success('Profile deleted successfully.', 'Success');
+        console.log('Profile Deleted!: ', response);
+        this.sharedService.clearUserProfile();
+        this.cookieService.delete('refreshToken');
+        this.cookieService.delete('accessToken');
+        this.router.navigate(['/login']);
+      },
+      error: (error: any) => {
+        this.toastr.error(error.error!.error, 'Error');
+        console.error('Error deleting user profile:', error);
       },
     });
   }

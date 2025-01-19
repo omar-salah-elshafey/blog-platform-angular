@@ -17,6 +17,11 @@ export interface UpdateProfile {
   lastName: string;
 }
 
+export interface DeleteProfile {
+  userName: string;
+  refreshToken: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -38,9 +43,30 @@ export class ProfileService {
       catchError((error) => {
         console.error('Error during updating:', error);
         if (error.status == 401) this.toastr.error('Unauthorized', 'error');
-        else this.toastr.error(error.error.error, 'error');
+        else this.toastr.error(error.error!.error, 'error');
         return throwError(() => new error(error));
       })
+    );
+  }
+
+  deleteUserProfile(userData: DeleteProfile): Observable<any> {
+    return (
+      this.http
+        //pass the username and the refreshToke to the delete as a query params
+        .delete(`${this.baseUrl}/delete-user`, {
+          params: {
+            userName: userData.userName,
+            refreshToken: userData.refreshToken,
+          },
+        })
+        .pipe(
+          catchError((error) => {
+            console.error('Error during deleting:', error);
+            if (error.status == 401) this.toastr.error('Unauthorized', 'error');
+            else this.toastr.error(error.error!.error, 'error');
+            return throwError(() => new error(error));
+          })
+        )
     );
   }
 }
