@@ -9,7 +9,7 @@ $hover-color: #0056b3;
 
 // Global styling
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   background-color: $background-color;
   color: $tertiary-color;
   margin: 0;
@@ -59,10 +59,10 @@ body {
     margin-bottom: 15px;
     transition: color 0.3s ease;
     text-decoration: none;
+    display: inline-block;
 
     &:hover {
       color: $hover-color;
-      text-decoration: underline;
     }
   }
 
@@ -71,6 +71,14 @@ body {
     color: $dark-gray;
     margin-bottom: 10px;
     font-weight: 500;
+    a {
+      text-decoration: none;
+      color: $primary-color;
+      &:hover {
+        color: $hover-color;
+        text-decoration: underline;
+      }
+    }
   }
 
   .post-content {
@@ -131,6 +139,14 @@ body {
     .comment-user {
       font-weight: 600;
       color: $tertiary-color;
+      a {
+        text-decoration: none;
+        color: $primary-color;
+        &:hover {
+          color: $hover-color;
+          text-decoration: underline;
+        }
+      }
     }
 
     .comment-content {
@@ -155,7 +171,8 @@ body {
 }
 
 // No Posts or No Comments Styling
-.no-posts, .no-comments {
+.no-posts,
+.no-comments {
   text-align: center;
   color: $dark-gray;
   font-size: 1.2rem;
@@ -181,7 +198,8 @@ body {
     font-size: 1.6rem;
   }
 
-  .post-author, .post-date {
+  .post-author,
+  .post-date {
     font-size: 0.9rem;
   }
 
@@ -204,7 +222,9 @@ body {
     font-size: 1.4rem;
   }
 
-  .post-author, .post-content, .post-date {
+  .post-author,
+  .post-content,
+  .post-date {
     font-size: 0.9rem;
   }
 
