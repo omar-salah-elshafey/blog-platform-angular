@@ -113,11 +113,16 @@
           | Modified: {{ post.modifiedDate | date : "medium" }}
         </span>
       </p>
-
-      <div  class="comments-section">
+      <p class="post-date">
+        <small>Comments: {{ post.comments.length }}</small>
+      </p>
+      <div class="comments-section">
         <h3>Comments</h3>
         <div *ngIf="post.comments.length > 0; else noComments">
-          <div *ngFor="let comment of post.comments" class="comment">
+          <div
+            *ngFor="let comment of post.comments | slice : 0 : 2"
+            class="comment"
+          >
             <p class="comment-user">
               <a
                 [routerLink]="['/user-profile']"
@@ -146,4 +151,3 @@
 <div *ngIf="!loading && !userProfile" class="error main-container">
   Failed to load profile. Please try again later.
 </div>
-

@@ -22,6 +22,9 @@
           | Modified: {{ post.modifiedDate | date : "medium" }}
         </span>
       </p>
+      <p class="post-date">
+        <small>Comments: {{ post.comments.length }}</small>
+      </p>
       <button (click)="toggleComments(post.id)" class="btn-toggle-comments">
         {{ post.showComments ? "Hide Comments" : "Show Comments" }}
       </button>
@@ -29,7 +32,10 @@
       <div *ngIf="post.showComments" class="comments-section">
         <h3>Comments</h3>
         <div *ngIf="post.comments.length > 0; else noComments">
-          <div *ngFor="let comment of post.comments" class="comment">
+          <div
+            *ngFor="let comment of post.comments | slice : 0 : 2"
+            class="comment"
+          >
             <p class="comment-user">
               <a
                 [routerLink]="['/user-profile']"

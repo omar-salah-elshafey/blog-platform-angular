@@ -1,5 +1,46 @@
 <div class="main-container">
   <div class="posts-grid">
-    <p>post works!</p>
+    <div class="post-card">
+      <h2 class="post-title">
+        {{ post.title }}
+      </h2>
+      <p class="post-author">
+
+        <a
+          [routerLink]="['/user-profile']"
+          [queryParams]="{ username: post.authorName }"
+          >&#64;{{ post.authorName }}</a
+        >
+      </p>
+      <p class="post-content">{{ post.content }}</p>
+      <p class="post-date">
+        Created: {{ post.createdDate | date : "medium" }}
+        <span *ngIf="post.modifiedDate">
+          | Modified: {{ post.modifiedDate | date : "medium" }}
+        </span>
+      </p>
+
+      <div class="comments-section">
+        <h3>Comments</h3>
+        <div *ngIf="post.comments.length > 0; else noComments">
+          <div *ngFor="let comment of post.comments" class="comment">
+            <p class="comment-user">
+              <a
+                [routerLink]="['/user-profile']"
+                [queryParams]="{ username: comment.userName }"
+                >{{ comment.userName }}</a
+              >
+            </p>
+            <p class="comment-content">{{ comment.content }}</p>
+            <p class="comment-date">
+              {{ comment.createdDate | date : "short" }}
+            </p>
+          </div>
+        </div>
+        <ng-template #noComments>
+          <p class="no-comments">No comments yet.</p>
+        </ng-template>
+      </div>
+    </div>
   </div>
 </div>
