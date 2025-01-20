@@ -2,7 +2,7 @@ $primary-color: #ff4d4d;
 $text-color: #333;
 $background-color: #f7f7f7;
 $button-bg: #ff4d4d;
-$button-hover-bg: darken($button-bg, 10%);
+$button-hover-bg: $button-bg;
 #notfound {
   position: relative;
   height: 90vh;
