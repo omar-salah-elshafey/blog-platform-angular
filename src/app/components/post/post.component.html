@@ -5,7 +5,6 @@
         {{ post.title }}
       </h2>
       <p class="post-author">
-
         <a
           [routerLink]="['/user-profile']"
           [queryParams]="{ username: post.authorName }"
@@ -15,15 +14,34 @@
       <p class="post-content">{{ post.content }}</p>
       <p class="post-date">
         Created: {{ post.createdDate | date : "medium" }}
+        <br />
         <span *ngIf="post.modifiedDate">
-          | Modified: {{ post.modifiedDate | date : "medium" }}
+          Modified: {{ post.modifiedDate | date : "medium" }}
         </span>
       </p>
 
       <div class="comments-section">
         <h3>Comments</h3>
-        <div *ngIf="post.comments.length > 0; else noComments">
-          <div *ngFor="let comment of post.comments" class="comment">
+        <!-- <div class="comment-form">
+          <form [formGroup]="commentForm" (ngSubmit)="onAddComment()">
+            <textarea
+              formControlName="content"
+              rows="3"
+              placeholder="Add your comment here..."
+            ></textarea>
+            <div *ngIf="commentForm.get('content')?.errors?.['maxLength']">
+              Comment cannot exceed 1000 characters.
+            </div>
+            <button
+              type="submit"
+              [disabled]="commentForm.invalid || isSubmitting"
+            >
+              Submit Comment
+            </button>
+          </form>
+        </div> -->
+        <div *ngIf="comments.length > 0; else noComments">
+          <div *ngFor="let comment of comments" class="comment">
             <p class="comment-user">
               <a
                 [routerLink]="['/user-profile']"
