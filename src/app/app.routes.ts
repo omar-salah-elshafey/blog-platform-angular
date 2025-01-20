@@ -38,5 +38,5 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [authGuard] },
   { path: 'post', component: PostComponent, canActivate: [authGuard] },
   { path: 'not-found', component: NotFoundComponent, canActivate: [authGuard] },
-  { path: '**', redirectTo: 'login', pathMatch: 'full' },
+  { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];

@@ -1,6 +1,6 @@
 $primary-color: #4caf50;
 $secondary-color: #f44336;
-$light-gray: #f1f1f1; 
+$light-gray: #f1f1f1;
 $dark-gray: #6c757d;
 $text-color: #333;
 $background-color: #f9f9f9;
@@ -27,7 +27,6 @@ $border-radius: 8px;
   max-width: 600px;
   width: 100%;
   margin: 20px auto;
-  text-align: center;
   animation: fadeIn 1s ease-in-out;
 
   h2 {
@@ -35,6 +34,12 @@ $border-radius: 8px;
     font-size: 2rem;
     color: $primary-color;
     margin-bottom: 20px;
+    text-align: center;
+  }
+  h6 {
+    font-size: 1rem;
+    color: $dark-gray;
+    margin-bottom: 15px;
   }
 
   p {
@@ -62,55 +67,7 @@ $border-radius: 8px;
     color: $secondary-color;
   }
 }
-.user-posts {
-  margin-top: 40px;
 
-  h2 {
-    font-size: 1.6em;
-    margin-bottom: 20px;
-    color: $primary-color;
-    font-weight: bold;
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-
-    li {
-      background-color: $light-gray;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
-      h3 {
-        margin: 0 0 10px;
-        font-size: 1.3em;
-        color: #333;
-      }
-
-      p {
-        margin: 0 0 10px;
-        font-size: 1em;
-        color: #555;
-      }
-
-      small {
-        font-size: 0.9rem;
-        color: $dark-gray;
-      }
-    }
-  }
-
-  .no-posts {
-    text-align: center;
-    color: $dark-gray;
-    font-style: italic;
-    font-size: 1.2rem;
-    margin-top: 20px;
-  }
-}
 @keyframes fadeIn {
   0% {
     opacity: 0;

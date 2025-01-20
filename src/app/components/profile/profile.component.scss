@@ -7,14 +7,6 @@ $dark-gray: #6c757d; // Darker gray
 $border-radius: 10px;
 $font-family: "Arial", sans-serif;
 
-body {
-  font-family: $font-family;
-  background-color: #f8f9fa;
-  color: $dark-gray;
-  margin: 0;
-  padding: 0;
-}
-
 .profile-container {
   padding: 30px;
   margin: 20px auto;
@@ -185,56 +177,6 @@ body {
     &:hover {
       background-color: $danger-color;
     }
-  }
-}
-
-.user-posts {
-  margin-top: 40px;
-
-  h2 {
-    font-size: 1.6em;
-    margin-bottom: 20px;
-    color: $primary-color;
-    font-weight: bold;
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-
-    li {
-      background-color: $light-gray;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
-      h3 {
-        margin: 0 0 10px;
-        font-size: 1.3em;
-        color: #333;
-      }
-
-      p {
-        margin: 0 0 10px;
-        font-size: 1em;
-        color: #555;
-      }
-
-      small {
-        font-size: 0.9rem;
-        color: $dark-gray;
-      }
-    }
-  }
-
-  .no-posts {
-    text-align: center;
-    color: $dark-gray;
-    font-style: italic;
-    font-size: 1.2rem;
-    margin-top: 20px;
   }
 }
 

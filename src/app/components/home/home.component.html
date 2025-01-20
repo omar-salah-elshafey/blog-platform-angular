@@ -2,7 +2,11 @@
   <h1 class="heading">Blog Posts</h1>
   <div *ngIf="posts.length > 0; else noPosts" class="posts-grid">
     <div class="post-card" *ngFor="let post of posts">
-      <h2 class="post-title">{{ post.title }}</h2>
+      <h2 class="post-title">
+        <a [routerLink]="['/post']" [queryParams]="{ postId: post.id }">
+          {{ post.title }}
+        </a>
+      </h2>
       <p class="post-author">
         By
         <a

@@ -178,7 +178,6 @@ main {
   position: relative;
 
   &:hover {
-    transform: translateY(-8px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   }
 
@@ -193,6 +192,15 @@ main {
 
     &:hover {
       color: $hover-color;
+    }
+
+    a {
+      text-decoration: none;
+      cursor: pointer;
+      color: $primary-color;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 

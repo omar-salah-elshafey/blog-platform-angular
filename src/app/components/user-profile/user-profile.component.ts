@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, Route, Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import {
   ProfileService,
@@ -14,7 +14,7 @@ import { SharedService } from '../../services/shared.service';
 
 @Component({
   selector: 'app-user-profile',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
 })
