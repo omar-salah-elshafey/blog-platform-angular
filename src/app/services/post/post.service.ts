@@ -87,7 +87,7 @@ export class PostService {
     );
   }
 
-  updatePost(id: number, postDto: PostDto): Observable<PostResponseModel>{
+  updatePost(id: number, postDto: PostDto): Observable<PostResponseModel> {
     return this.http
       .put<PostResponseModel>(`${this.baseUrl}/update-post?id=${id}`, postDto)
       .pipe(
@@ -98,6 +98,22 @@ export class PostService {
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Updating the Post', error);
+          return throwError(() => new error(error));
+        })
+      );
+  }
+
+  addPost(postDto: PostDto): Observable<PostResponseModel> {
+    return this.http
+      .post<PostResponseModel>(`${this.baseUrl}/create-post`, postDto)
+      .pipe(
+        tap((response) => {
+          console.log('Creating the Post', response);
+          this.toastr.info('Creating the Post...', 'info');
+        }),
+        catchError((error) => {
+          this.toastr.error(error.error!.error, 'Error');
+          console.error('Error Creating the Post', error);
           return throwError(() => new error(error));
         })
       );

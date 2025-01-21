@@ -115,7 +115,7 @@ export class PostComponent implements OnInit {
         [
           Validators.required,
           Validators.maxLength(200),
-          Validators.minLength(1),
+          Validators.minLength(3),
           Validators.pattern(/^(?!\s*$).+/),
         ],
       ],
@@ -124,7 +124,7 @@ export class PostComponent implements OnInit {
         [
           Validators.required,
           Validators.maxLength(2000),
-          Validators.minLength(1),
+          Validators.minLength(3),
           Validators.pattern(/^(?!\s*$).+/),
         ],
       ],
@@ -138,7 +138,10 @@ export class PostComponent implements OnInit {
       return;
     }
 
-    const updatedPost: PostDto = this.updatePostForm.value;
+    const updatedPost: PostDto = {
+      title: this.updatePostForm.value.title.trim(),
+      content: this.updatePostForm.value.content.trim(),
+    };
 
     this.postService.updatePost(this.post.id, updatedPost).subscribe({
       next: (response) => {
