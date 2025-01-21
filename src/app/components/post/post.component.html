@@ -1,12 +1,6 @@
 <div class="main-container">
   <div class="posts-grid">
     <div class="post-card" *ngIf="!isLoading; else loadingPost">
-      <button
-        (click)="onDeletePost(post.id)"
-        *ngIf="userName === post.authorName"
-      >
-        Delete the Post
-      </button>
       <h2 class="post-title">
         {{ post.title }}
       </h2>
@@ -25,7 +19,13 @@
           Modified: {{ post.modifiedDate | date : "medium" }}
         </span>
       </p>
-
+      <button
+        (click)="onDeletePost(post.id)"
+        *ngIf="userName === post.authorName"
+        class="cancel-btn"
+      >
+        Delete the Post
+      </button> 
       <div class="comments-section">
         <h3>Comments</h3>
         <div class="comment-form">
@@ -66,19 +66,68 @@
                 >{{ comment.userName }}</a
               >
             </p>
-            <p class="comment-content">{{ comment.content }}</p>
-            <p class="comment-date">
-              {{ comment.createdDate | date : "short" }}
-            </p>
-            <button
-              class="delete-button"
-              (click)="onDeleteComment(comment.commentId)"
-              *ngIf="
-                comment.userName === userName || post.authorName === userName
-              "
+
+            <div
+              *ngIf="editingCommentId === comment.commentId; else commentText"
+              class="comment-form"
             >
-              Delete
-            </button>
+              <form
+                [formGroup]="updateCommentForm"
+                (ngSubmit)="onUpdateComment(comment)"
+              >
+                <textarea formControlName="content" rows="3"></textarea>
+                <div
+                  *ngIf="updateCommentForm.get('content')?.invalid"
+                  class="error-message"
+                >
+                  <small
+                    *ngIf="updateCommentForm.get('content')?.errors?.['maxlength']"
+                  >
+                    Comment cannot exceed 1000 characters.
+                  </small>
+                </div>
+                <div class="comment-btns">
+                  <button
+                    type="submit"
+                    [disabled]="updateCommentForm.invalid || isSubmitting"
+                  >
+                    ✓
+                  </button>
+                  <button
+                    type="button"
+                    (click)="editingCommentId = null"
+                    class="cancel-btn"
+                  >
+                    ×
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <ng-template #commentText>
+              <p class="comment-content">{{ comment.content }}</p>
+              <p class="comment-date">
+                {{ comment.createdDate | date : "short" }}
+              </p>
+              <div class="comment-btns">
+                <button
+                  (click)="initUpdateCommentForm(comment)"
+                  *ngIf="comment.userName === userName"
+                >
+                  Edit
+                </button>
+                <button
+                  class="cancel-btn"
+                  (click)="onDeleteComment(comment.commentId)"
+                  *ngIf="
+                    comment.userName === userName ||
+                    post.authorName === userName
+                  "
+                >
+                  Delete
+                </button>
+              </div>
+            </ng-template>
           </div>
         </div>
         <ng-template #noComments>

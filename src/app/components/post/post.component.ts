@@ -32,6 +32,8 @@ export class PostComponent implements OnInit {
   comments: Array<PostCommentsModel> = [];
   userName: string | null = null;
   isLoading = false;
+  updateCommentForm!: FormGroup;
+  editingCommentId: number | null = null;
 
   constructor(
     private postService: PostService,
@@ -153,5 +155,45 @@ export class PostComponent implements OnInit {
         );
       },
     });
+  }
+
+  initUpdateCommentForm(comment: PostCommentsModel) {
+    this.updateCommentForm = this.fb.group({
+      content: [
+        { value: comment.content, disabled: this.isSubmitting },
+        [Validators.required, Validators.maxLength(1000)],
+      ],
+      postId: [this.post.id, Validators.required],
+    });
+    this.editingCommentId = comment.commentId;
+  }
+
+  onUpdateComment(comment: PostCommentsModel) {
+    if (this.updateCommentForm.invalid) {
+      this.toastr.error('Please enter a valid comment.', 'Error');
+      return;
+    }
+    const updatedComment: CommentDto = this.updateCommentForm.value;
+    this.commentService
+      .updateComment(comment.commentId, updatedComment)
+      .subscribe({
+        next: (response) => {
+          this.toastr.success('Comment updated successfully!', 'Success');
+          const index = this.comments.findIndex(
+            (c) => c.commentId === comment.commentId
+          );
+          if (index !== -1) {
+            this.comments[index].content = this.updateCommentForm.value.content;
+          }
+          this.editingCommentId = null;
+        },
+        error: (error) => {
+          console.error('Error updating comment:', error);
+          this.toastr.error(
+            'Failed to update comment. Please try again.',
+            'Error'
+          );
+        },
+      });
   }
 }
