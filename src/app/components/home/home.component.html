@@ -23,6 +23,12 @@
           <small *ngIf="postForm.get('title')?.errors?.['required']">
             Title is required.
           </small>
+          <small *ngIf="postForm.get('title')?.errors?.['minlength']">
+            Title cannot be less than 3 chars.
+          </small>
+          <small *ngIf="postForm.get('title')?.errors?.['pattern']">
+            Title cannot be only white spaces.
+          </small>
           <small *ngIf="postForm.get('title')?.errors?.['maxlength']">
             Title cannot exceed 100 characters.
           </small>
@@ -47,6 +53,12 @@
           </small>
           <small *ngIf="postForm.get('content')?.errors?.['maxlength']">
             Content cannot exceed 5000 characters.
+          </small>
+          <small *ngIf="postForm.get('content')?.errors?.['minlength']">
+            Content cannot be less than 3 chars.
+          </small>
+          <small *ngIf="postForm.get('content')?.errors?.['pattern']">
+            Content cannot be only white spaces.
           </small>
         </div>
       </div>
