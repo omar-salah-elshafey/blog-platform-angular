@@ -1,7 +1,9 @@
+<div *ngIf="isProfileLoading" class="spinner-overlay">
+  <div class="spinner"></div>
+  <p>Loading profile...</p>
+</div>
 <div class="main-container">
-  <div *ngIf="loading" class="loader">Loading...</div>
-
-  <div *ngIf="!loading && userProfile" class="user-profile">
+  <div *ngIf="!isProfileLoading && userProfile" class="user-profile">
     <h2>{{ userProfile.firstName }} {{ userProfile.lastName }}</h2>
     <h2>
       <small
@@ -11,7 +13,10 @@
     <p><strong>Email:</strong> {{ userProfile.email }}</p>
     <p><strong>Role:</strong> {{ userProfile.role }}</p>
 
-    <div *ngIf="posts.length > 0; else noPosts" class="posts-grid">
+    <div
+      *ngIf="posts.length > 0 || isPostsLoading; else noPosts"
+      class="posts-grid"
+    >
       <h2>User's Posts</h2>
       <div class="post-card" *ngFor="let post of posts">
         <h2 class="post-title">
@@ -54,6 +59,10 @@
           </ng-template>
         </div>
       </div>
+      <div *ngIf="isPostsLoading" class="spinner-overlay">
+        <div class="spinner"></div>
+        <p>Loading posts...</p>
+      </div>
     </div>
 
     <ng-template #noPosts>
@@ -61,7 +70,7 @@
     </ng-template>
   </div>
 
-  <div *ngIf="!loading && !userProfile" class="no-profile">
+  <div *ngIf="!isProfileLoading && !userProfile" class="no-profile">
     <p>No profile data found.</p>
   </div>
 </div>

@@ -1,8 +1,12 @@
-<div *ngIf="loading" class="loading main-container profile-container">
-  Loading profile...
+<div *ngIf="isProfileLoading" class="spinner-overlay">
+  <div class="spinner"></div>
+  <p>Loading profile...</p>
 </div>
 
-<div class="profile-container main-container" *ngIf="!loading && userProfile">
+<div
+  class="profile-container main-container"
+  *ngIf="!isProfileLoading && userProfile"
+>
   <h1>{{ userProfile.firstName }} {{ userProfile.lastName }}</h1>
   <h1>
     <small
@@ -98,7 +102,10 @@
       </button>
     </div>
   </form>
-  <div *ngIf="posts.length > 0; else noPosts" class="posts-grid">
+  <div
+    *ngIf="posts.length > 0 || isPostsLoading; else noPosts"
+    class="posts-grid"
+  >
     <h2>User's Posts</h2>
     <div class="post-card" *ngFor="let post of posts">
       <h2 class="post-title">
@@ -141,6 +148,10 @@
         </ng-template>
       </div>
     </div>
+    <div *ngIf="isPostsLoading" class="spinner-overlay">
+      <div class="spinner"></div>
+      <p>Loading posts...</p>
+    </div>
   </div>
 
   <ng-template #noPosts>
@@ -148,6 +159,6 @@
   </ng-template>
 </div>
 
-<div *ngIf="!loading && !userProfile" class="error main-container">
+<div *ngIf="!isProfileLoading && !userProfile" class="error main-container">
   Failed to load profile. Please try again later.
 </div>

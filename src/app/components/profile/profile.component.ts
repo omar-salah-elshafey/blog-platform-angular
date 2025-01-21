@@ -30,7 +30,8 @@ import {
 })
 export class ProfileComponent implements OnInit {
   userProfile: UserProfile | null = null;
-  loading = true;
+  isProfileLoading = false;
+  isPostsLoading = false;
   updateMode = false;
   updateProfileForm!: FormGroup;
   updatedProfile: UpdateProfile | null = null;
@@ -60,25 +61,28 @@ export class ProfileComponent implements OnInit {
       this.fetchUserProfile();
     } else {
       this.userProfile = cachedProfile;
-      this.loading = false;
+
       this.fetchUserPosts(cachedProfile.userName);
     }
   }
 
   fetchUserProfile(): void {
+    this.isProfileLoading = true;
     this.profileService.getCurrentUserProfile().subscribe({
       next: (profile) => {
         this.userProfile = profile;
-        this.loading = false;
+
         this.sharedService.setUserProfile(profile);
       },
       error: (error) => {
-        this.loading = false;
         this.toastr.error(
           'Failed to fetch user profile. Please try again later.',
           'Error'
         );
         console.error('Error fetching user profile:', error);
+      },
+      complete: () => {
+        this.isProfileLoading = false;
       },
     });
   }
@@ -116,7 +120,7 @@ export class ProfileComponent implements OnInit {
       next: (response) => {
         this.toastr.success('Profile updated successfully.', 'Success');
         this.updateMode = false;
-        this.loading = false;
+
         console.log('profile updated! ', response);
         const updatedProfile: UserProfile = {
           ...this.userProfile!,
@@ -163,6 +167,7 @@ export class ProfileComponent implements OnInit {
   }
 
   fetchUserPosts(userName: string): void {
+    this.isPostsLoading = true;
     this.postService.getPostsByUser(userName).subscribe({
       next: (posts) => {
         this.posts = posts;
@@ -174,6 +179,9 @@ export class ProfileComponent implements OnInit {
           'Error'
         );
         console.error('Error fetching user posts:', error);
+      },
+      complete: () => {
+        this.isPostsLoading = false;
       },
     });
   }

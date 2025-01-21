@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { PostResponseModel, PostService } from '../../services/post/post.service';
+import {
+  PostResponseModel,
+  PostService,
+} from '../../services/post/post.service';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -12,6 +15,7 @@ import { RouterModule } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   posts: PostResponseModel[] = [];
+  isLoading = false;
 
   constructor(
     private postService: PostService,
@@ -19,6 +23,7 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.postService.getAllPosts().subscribe({
       next: (data) => {
         this.posts = data;
@@ -28,6 +33,9 @@ export class HomeComponent implements OnInit {
       error: (err) => {
         console.error('Error fetching posts:', err);
         this.toastr.error('Error fetching posts.', 'error');
+      },
+      complete: () => {
+        this.isLoading = false;
       },
     });
   }

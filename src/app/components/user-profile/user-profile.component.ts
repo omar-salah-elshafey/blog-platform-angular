@@ -20,8 +20,9 @@ import { SharedService } from '../../services/shared.service';
 })
 export class UserProfileComponent {
   userProfile!: UserProfile;
-  loading: boolean = false;
   posts: PostResponseModel[] = [];
+  isProfileLoading = false;
+  isPostsLoading = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,7 +44,7 @@ export class UserProfileComponent {
   }
 
   getUserProfile(username: string) {
-    this.loading = true;
+    this.isProfileLoading = true;
     this.profileService.getUserProfile(username).subscribe({
       next: (profile) => {
         this.userProfile = profile;
@@ -55,11 +56,12 @@ export class UserProfileComponent {
         this.router.navigate(['/not-found']);
       },
       complete: () => {
-        this.loading = false;
+        this.isProfileLoading = false;
       },
     });
   }
   fetchUserPosts(userName: string): void {
+    this.isPostsLoading = true;
     this.posts = [];
     this.postService.getPostsByUser(userName).subscribe({
       next: (posts) => {
@@ -72,6 +74,9 @@ export class UserProfileComponent {
           'Error'
         );
         console.error('Error fetching user posts:', error);
+      },
+      complete: () => {
+        this.isPostsLoading = false;
       },
     });
   }

@@ -1,6 +1,6 @@
 <div class="main-container">
   <div class="posts-grid">
-    <div class="post-card">
+    <div class="post-card" *ngIf="!isLoading; else loadingPost">
       <h2 class="post-title">
         {{ post.title }}
       </h2>
@@ -29,8 +29,19 @@
               rows="3"
               placeholder="Add your comment here..."
             ></textarea>
-            <div *ngIf="commentForm.get('content')?.errors?.['maxLength']">
-              Comment cannot exceed 1000 characters.
+            <div
+              *ngIf="
+                commentForm.get('content')?.touched &&
+                commentForm.get('content')?.invalid
+              "
+              class="error-message"
+            >
+              <small
+                *ngIf="
+                commentForm.get('content')?.errors?.['maxlength']"
+              >
+                Comment cannot exceed 1000 characters.
+              </small>
             </div>
             <button
               type="submit"
@@ -60,5 +71,11 @@
         </ng-template>
       </div>
     </div>
+    <ng-template #loadingPost>
+      <div class="spinner-overlay">
+        <div class="spinner"></div>
+        <p>Loading post...</p>
+      </div>
+    </ng-template>
   </div>
 </div>

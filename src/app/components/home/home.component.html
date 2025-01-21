@@ -1,6 +1,7 @@
 <div class="main-container">
   <h1 class="heading">Blog Posts</h1>
-  <div *ngIf="posts.length > 0; else noPosts" class="posts-grid">
+
+  <div *ngIf="posts.length > 0 || isLoading; else noPosts" class="posts-grid">
     <div class="post-card" *ngFor="let post of posts">
       <h2 class="post-title">
         <a [routerLink]="['/post']" [queryParams]="{ postId: post.id }">
@@ -54,8 +55,11 @@
       </div>
     </div>
   </div>
-
   <ng-template #noPosts>
     <p class="no-posts">No posts to display.</p>
   </ng-template>
+</div>
+<div *ngIf="isLoading" class="spinner-overlay">
+  <div class="spinner"></div>
+  <p>Loading posts...</p>
 </div>

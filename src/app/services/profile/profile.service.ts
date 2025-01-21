@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, Observable, tap, throwError } from 'rxjs';
+import { jwtDecode } from 'jwt-decode';
+import { CookieService } from 'ngx-cookie-service';
 
 export interface UserProfile {
   firstName: string;
@@ -22,13 +24,37 @@ export interface DeleteProfile {
   refreshToken: string;
 }
 
+interface JwtPayload {
+  name: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class ProfileService {
   private baseUrl = 'https://localhost:7293/api/UserManagement';
 
-  constructor(private http: HttpClient, private toastr: ToastrService) {}
+  constructor(
+    private http: HttpClient,
+    private toastr: ToastrService,
+    private cookieService: CookieService
+  ) {}
+
+  getUserNameFromToken(): string | null {
+    const token = this.cookieService.get('accessToken');
+    if (!token) {
+      console.error('No token found');
+      return null;
+    }
+
+    try {
+      const decodedToken = jwtDecode<JwtPayload>(token);
+      return decodedToken.name;
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
+  }
 
   getCurrentUserProfile(): Observable<UserProfile> {
     return this.http.get<UserProfile>(
@@ -41,8 +67,8 @@ export class ProfileService {
       .get<UserProfile>(`${this.baseUrl}/get-user-profile?userName=${userName}`)
       .pipe(
         tap((response) => {
-          console.log("getting profile data: ", response)
-          this.toastr.info("Getting user Profile...", 'info')
+          console.log('getting profile data: ', response);
+          this.toastr.info('Getting user Profile...', 'info');
         }),
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
@@ -87,11 +113,13 @@ export class ProfileService {
   }
 
   searchUsers(query: string): Observable<any> {
-    return this.http.get<UserProfile>(`${this.baseUrl}/search-users?query=${query}`).pipe(
-      catchError((error) => {
-        console.error('Error during searching:', error);
-        return throwError(() => new error(error))
+    return this.http
+      .get<UserProfile>(`${this.baseUrl}/search-users?query=${query}`)
+      .pipe(
+        catchError((error) => {
+          console.error('Error during searching:', error);
+          return throwError(() => new error(error));
         })
-    );
+      );
   }
 }

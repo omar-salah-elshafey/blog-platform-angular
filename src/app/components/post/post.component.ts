@@ -17,6 +17,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ProfileService } from '../../services/profile/profile.service';
 
 @Component({
   selector: 'app-post',
@@ -29,6 +30,8 @@ export class PostComponent implements OnInit {
   commentForm!: FormGroup;
   isSubmitting = false;
   comments: Array<PostCommentsModel> = [];
+  userName: string | null = null;
+  isLoading = false;
 
   constructor(
     private postService: PostService,
@@ -37,10 +40,12 @@ export class PostComponent implements OnInit {
     private toastr: ToastrService,
     private commentService: CommentService,
     private fb: FormBuilder,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private profileService: ProfileService
   ) {}
 
   ngOnInit(): void {
+    this.userName = this.profileService.getUserNameFromToken();
     this.route.queryParamMap.subscribe((params) => {
       const postId = params.get('postId');
       this.initCommentForm(+postId!);
@@ -54,6 +59,7 @@ export class PostComponent implements OnInit {
   }
 
   fetchPostDetails(id: number) {
+    this.isLoading = true;
     this.postService.getPostById(id).subscribe({
       next: (post) => {
         this.post = post;
@@ -67,6 +73,9 @@ export class PostComponent implements OnInit {
         );
         this.router.navigate(['/not-found']);
         console.error('Error fetching user post:', error);
+      },
+      complete: () => {
+        this.isLoading = false; 
       },
     });
   }
@@ -92,7 +101,7 @@ export class PostComponent implements OnInit {
       next: (response) => {
         this.toastr.success('Comment added successfully!', 'Success');
         this.comments.push({
-          userName: response.UserName,
+          userName: this.userName!,
           content: this.commentForm.value.content,
           createdDate: new Date().toISOString(),
         });
