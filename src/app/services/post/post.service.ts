@@ -21,6 +21,11 @@ export interface PostResponseModel {
   showComments?: boolean;
 }
 
+export interface PostDto {
+  title: string;
+  content: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -80,5 +85,21 @@ export class PostService {
         return throwError(() => new error(error));
       })
     );
+  }
+
+  updatePost(id: number, postDto: PostDto): Observable<PostResponseModel>{
+    return this.http
+      .put<PostResponseModel>(`${this.baseUrl}/update-post?id=${id}`, postDto)
+      .pipe(
+        tap((response) => {
+          console.log('Updating the Post', response);
+          this.toastr.info('Updating the Post...', 'info');
+        }),
+        catchError((error) => {
+          this.toastr.error(error.error!.error, 'Error');
+          console.error('Error Updating the Post', error);
+          return throwError(() => new error(error));
+        })
+      );
   }
 }

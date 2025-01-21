@@ -1,31 +1,120 @@
 <div class="main-container">
   <div class="posts-grid">
     <div class="post-card" *ngIf="!isLoading; else loadingPost">
-      <h2 class="post-title">
-        {{ post.title }}
-      </h2>
-      <p class="post-author">
-        <a
-          [routerLink]="['/user-profile']"
-          [queryParams]="{ username: post.authorName }"
-          >&#64;{{ post.authorName }}</a
+      <div *ngIf="isEditingPost; else postDetails">
+        <form
+          class="update-post-form"
+          [formGroup]="updatePostForm"
+          (ngSubmit)="onUpdatePost()"
         >
-      </p>
-      <p class="post-content">{{ post.content }}</p>
-      <p class="post-date">
-        Created: {{ post.createdDate | date : "medium" }}
-        <br />
-        <span *ngIf="post.modifiedDate">
-          Modified: {{ post.modifiedDate | date : "medium" }}
-        </span>
-      </p>
-      <button
-        (click)="onDeletePost(post.id)"
-        *ngIf="userName === post.authorName || this.userRole === 'admin'"
-        class="cancel-btn"
-      >
-        Delete the Post
-      </button>
+          <div>
+            <label for="title">Title:</label>
+            <input
+              id="title"
+              type="text"
+              formControlName="title"
+              placeholder="Enter post title"
+            />
+            <div
+              *ngIf="
+                updatePostForm.get('title')?.invalid &&
+                updatePostForm.get('title')?.touched
+              "
+              class="error-message"
+            >
+              <small *ngIf="updatePostForm.get('title')?.errors?.['minlength']">
+                Title cannot be null or white space.
+              </small>
+              <small *ngIf="updatePostForm.get('title')?.errors?.['pattern']">
+                Title cannot be just white space.
+              </small>
+              <small *ngIf="updatePostForm.get('title')?.errors?.['maxlength']">
+                Title cannot exceed 100 characters.
+              </small>
+              <small *ngIf="updatePostForm.get('title')?.errors?.['required']">
+                Title is required.
+              </small>
+            </div>
+          </div>
+
+          <div>
+            <label for="content">Content:</label>
+            <textarea
+              id="content"
+              rows="5"
+              formControlName="content"
+              placeholder="Enter post content"
+            ></textarea>
+            <div
+              *ngIf="
+                updatePostForm.get('content')?.invalid &&
+                updatePostForm.get('content')?.touched
+              "
+              class="error-message"
+            >
+              <small
+                *ngIf="updatePostForm.get('content')?.errors?.['maxlength']"
+              >
+                Content cannot exceed 5000 characters.
+              </small>
+              <small
+                *ngIf="updatePostForm.get('content')?.errors?.['mminlength']"
+              >
+                Content cannot be null or white space.
+              </small>
+              <small *ngIf="updatePostForm.get('content')?.errors?.['pattern']">
+                Content cannot be just white space.
+              </small>
+              <small
+                *ngIf="updatePostForm.get('content')?.errors?.['required']"
+              >
+                Content is required.
+              </small>
+            </div>
+          </div>
+
+          <div class="form-btns">
+            <button type="submit" [disabled]="updatePostForm.invalid">✓</button>
+            <button class="cancel-btn" (click)="isEditingPost = false">
+              ×
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <ng-template #postDetails>
+        <h2 class="post-title">{{ post.title }}</h2>
+        <p class="post-author">
+          <a
+            [routerLink]="['/user-profile']"
+            [queryParams]="{ username: post.authorName }"
+            >&#64;{{ post.authorName }}</a
+          >
+        </p>
+        <p class="post-content">{{ post.content }}</p>
+        <p class="post-date">
+          Created: {{ post.createdDate | date : "medium" }}
+          <br />
+          <span *ngIf="post.modifiedDate">
+            Modified: {{ post.modifiedDate | date : "medium" }}
+          </span>
+        </p>
+        <div class="form-btns">
+          <button
+            *ngIf="userName === post.authorName"
+            (click)="initUpdatePostForm(post)"
+          >
+            Edit Post
+          </button>
+          <button
+            *ngIf="userName === post.authorName || userRole === 'admin'"
+            (click)="onDeletePost(post.id)"
+            class="cancel-btn"
+          >
+            Delete Post
+          </button>
+        </div>
+      </ng-template>
       <div class="comments-section">
         <h3>Comments</h3>
         <div class="comment-form">
@@ -48,12 +137,18 @@
               >
                 Comment cannot exceed 1000 characters.
               </small>
+              <small
+                *ngIf="
+                commentForm.get('content')?.errors?.['pattern']"
+              >
+                Comment cannot be just whitespace.
+              </small>
             </div>
             <button
               type="submit"
               [disabled]="commentForm.invalid || isSubmitting"
             >
-              Submit Comment
+              Comment
             </button>
           </form>
         </div>
@@ -85,8 +180,13 @@
                   >
                     Comment cannot exceed 1000 characters.
                   </small>
+                  <small
+                    *ngIf="updateCommentForm.get('content')?.errors?.['pattern']"
+                  >
+                    Comment cannot be just whitespace.
+                  </small>
                 </div>
-                <div class="comment-btns">
+                <div class="form-btns">
                   <button
                     type="submit"
                     [disabled]="updateCommentForm.invalid || isSubmitting"
@@ -109,7 +209,7 @@
               <p class="comment-date">
                 {{ comment.createdDate | date : "short" }}
               </p>
-              <div class="comment-btns">
+              <div class="form-btns">
                 <button
                   (click)="initUpdateCommentForm(comment)"
                   *ngIf="comment.userName === userName"
@@ -121,7 +221,8 @@
                   (click)="onDeleteComment(comment.commentId)"
                   *ngIf="
                     comment.userName === userName ||
-                    post.authorName === userName
+                    post.authorName === userName ||
+                    this.userRole === 'admin'
                   "
                 >
                   Delete

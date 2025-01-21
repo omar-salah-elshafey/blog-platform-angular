@@ -38,7 +38,7 @@
   }
 }
 
-.comment-btns {
+.form-btns {
   display: flex;
   justify-content: start;
   gap: 10px;
@@ -71,6 +71,53 @@ button {
 
     &:hover {
       background-color: #c82333;
+    }
+  }
+}
+
+.update-post-form {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  input[type="text"],
+  textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+    background-color: #fff;
+    transition: border-color 0.3s;
+
+    &:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 3px rgba(0, 123, 255, 0.25);
+    }
+  }
+
+  .error-message {
+    margin-top: -12px;
+    margin-bottom: 16px;
+    color: #d9534f;
+    font-size: 12px;
+
+    small {
+      display: block;
     }
   }
 }

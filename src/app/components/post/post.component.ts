@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import {
   PostCommentsModel,
+  PostDto,
   PostResponseModel,
   PostService,
 } from '../../services/post/post.service';
@@ -35,6 +36,8 @@ export class PostComponent implements OnInit {
   isLoading = false;
   updateCommentForm!: FormGroup;
   editingCommentId: number | null = null;
+  isEditingPost = false;
+  updatePostForm!: FormGroup;
 
   constructor(
     private postService: PostService,
@@ -104,11 +107,67 @@ export class PostComponent implements OnInit {
     });
   }
 
+  initUpdatePostForm(post: PostResponseModel) {
+    // validate the comment form so it can't be white sapces
+    this.updatePostForm = this.fb.group({
+      title: [
+        post.title,
+        [
+          Validators.required,
+          Validators.maxLength(200),
+          Validators.minLength(1),
+          Validators.pattern(/^(?!\s*$).+/),
+        ],
+      ],
+      content: [
+        post.content,
+        [
+          Validators.required,
+          Validators.maxLength(2000),
+          Validators.minLength(1),
+          Validators.pattern(/^(?!\s*$).+/),
+        ],
+      ],
+    });
+    this.isEditingPost = true;
+  }
+
+  onUpdatePost() {
+    if (this.updatePostForm.invalid) {
+      this.toastr.error('Please fill out the form correctly.', 'Error');
+      return;
+    }
+
+    const updatedPost: PostDto = this.updatePostForm.value;
+
+    this.postService.updatePost(this.post.id, updatedPost).subscribe({
+      next: (response) => {
+        this.toastr.success('Post updated successfully!', 'Success');
+        console.log('Post Updated: ', response);
+        this.post.title = this.updatePostForm.value.title.trim();
+        this.post.content = this.updatePostForm.value.content.trim();
+        this.isEditingPost = false;
+      },
+      error: (error) => {
+        console.error('Error updating the post:', error);
+        this.toastr.error(
+          'Failed to update the post. Please try again.',
+          'Error'
+        );
+      },
+    });
+  }
+
   initCommentForm(postId: number) {
     this.commentForm = this.fb.group({
       content: [
         { value: '', disabled: this.isSubmitting },
-        [Validators.required, Validators.maxLength(1000)],
+        [
+          Validators.required,
+          Validators.maxLength(1000),
+          Validators.minLength(1),
+          Validators.pattern(/^(?!\s*$).+/),
+        ],
       ],
       postId: [postId, Validators.required],
     });
@@ -120,13 +179,16 @@ export class PostComponent implements OnInit {
       return;
     }
     this.isSubmitting = true;
-    const commentDto: CommentDto = this.commentForm.value;
+    const commentDto: CommentDto = {
+      PostId: this.post.id,
+      Content: this.commentForm.value.content.trim(),
+    };
     this.commentService.addComment(commentDto).subscribe({
       next: (response) => {
         this.toastr.success('Comment added successfully!', 'Success');
         this.comments.push({
           userName: this.userName!,
-          content: this.commentForm.value.content,
+          content: this.commentForm.value.content.trim(),
           createdDate: new Date().toISOString(),
           commentId: response.Id,
         });
@@ -166,7 +228,12 @@ export class PostComponent implements OnInit {
     this.updateCommentForm = this.fb.group({
       content: [
         { value: comment.content, disabled: this.isSubmitting },
-        [Validators.required, Validators.maxLength(1000)],
+        [
+          Validators.required,
+          Validators.maxLength(1000),
+          Validators.minLength(1),
+          Validators.pattern(/^(?!\s*$).+/),
+        ],
       ],
       postId: [this.post.id, Validators.required],
     });
@@ -178,7 +245,10 @@ export class PostComponent implements OnInit {
       this.toastr.error('Please enter a valid comment.', 'Error');
       return;
     }
-    const updatedComment: CommentDto = this.updateCommentForm.value;
+    const updatedComment: CommentDto = {
+      PostId: this.post.id,
+      Content: this.updateCommentForm.value.content.trim(),
+    };
     this.commentService
       .updateComment(comment.commentId, updatedComment)
       .subscribe({
@@ -188,7 +258,8 @@ export class PostComponent implements OnInit {
             (c) => c.commentId === comment.commentId
           );
           if (index !== -1) {
-            this.comments[index].content = this.updateCommentForm.value.content;
+            this.comments[index].content =
+              this.updateCommentForm.value.content.trim();
           }
           this.editingCommentId = null;
         },
