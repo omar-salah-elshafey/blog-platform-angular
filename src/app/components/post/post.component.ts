@@ -31,6 +31,7 @@ export class PostComponent implements OnInit {
   isSubmitting = false;
   comments: Array<PostCommentsModel> = [];
   userName: string | null = null;
+  userRole: any;
   isLoading = false;
   updateCommentForm!: FormGroup;
   editingCommentId: number | null = null;
@@ -48,6 +49,9 @@ export class PostComponent implements OnInit {
 
   ngOnInit(): void {
     this.userName = this.profileService.getUserNameFromToken();
+    this.userRole = this.profileService
+      .getCurrentUserRoleFromToken()
+      ?.toLowerCase();
     this.route.queryParamMap.subscribe((params) => {
       const postId = params.get('postId');
       this.initCommentForm(+postId!);
@@ -87,7 +91,8 @@ export class PostComponent implements OnInit {
       next: (response) => {
         this.toastr.success('Post deleted successfully!', 'Success');
         console.log('Psot Delted: ', response);
-        this.router.navigate(['/profile']);
+        if (this.userRole === 'admin') this.router.navigate(['/home']);
+        else this.router.navigate(['/profile']);
       },
       error: (error) => {
         console.error('Error deleting the Post:', error);

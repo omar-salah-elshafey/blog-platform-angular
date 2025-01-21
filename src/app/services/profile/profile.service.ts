@@ -26,6 +26,7 @@ export interface DeleteProfile {
 
 interface JwtPayload {
   name: string;
+  roles: any;
 }
 
 @Injectable({
@@ -50,6 +51,22 @@ export class ProfileService {
     try {
       const decodedToken = jwtDecode<JwtPayload>(token);
       return decodedToken.name;
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
+  }
+
+  getCurrentUserRoleFromToken(): string | null {
+    const token = this.cookieService.get('accessToken');
+    if (!token) {
+      console.error('No token found');
+      return null;
+    }
+
+    try {
+      const decodedToken = jwtDecode<JwtPayload>(token);
+      return decodedToken.roles;
     } catch (error) {
       console.error('Error decoding token:', error);
       return null;
