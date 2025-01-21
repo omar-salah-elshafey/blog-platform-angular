@@ -45,7 +45,6 @@ export class PostService {
       .pipe(
         tap((response) => {
           console.log('Getting post data: ', response);
-          this.toastr.info('Getting post data...', 'info');
         }),
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
@@ -63,7 +62,6 @@ export class PostService {
       .pipe(
         tap((response) => {
           console.log('Getting posts data: ', response);
-          this.toastr.info('Getting post data...', 'info');
         }),
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
@@ -77,7 +75,6 @@ export class PostService {
     return this.http.delete(`${this.baseUrl}/delete-post?id=${id}`).pipe(
       tap((response) => {
         console.log('Deleting the Post', response);
-        this.toastr.info('Deleting the Post...', 'info');
       }),
       catchError((error) => {
         this.toastr.error(error.error!.error, 'Error');
@@ -93,7 +90,6 @@ export class PostService {
       .pipe(
         tap((response) => {
           console.log('Updating the Post', response);
-          this.toastr.info('Updating the Post...', 'info');
         }),
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');

@@ -108,7 +108,6 @@ export class PostComponent implements OnInit {
   }
 
   initUpdatePostForm(post: PostResponseModel) {
-    // validate the comment form so it can't be white sapces
     this.updatePostForm = this.fb.group({
       title: [
         post.title,

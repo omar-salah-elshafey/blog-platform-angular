@@ -48,7 +48,6 @@ export class UserProfileComponent {
     this.profileService.getUserProfile(username).subscribe({
       next: (profile) => {
         this.userProfile = profile;
-        this.toastr.success('User profile loaded successfully.', 'Success');
       },
       error: (error) => {
         this.toastr.error('Error loading user profile.', 'Error');

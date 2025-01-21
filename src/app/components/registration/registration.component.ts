@@ -80,7 +80,6 @@ export class RegistrationComponent implements OnInit {
       this.authService.registerReader(trimmedFormValue).subscribe({
         next: (response) => {
           console.log('Registration successful:', response);
-          this.toastr.success('Login successful!', 'Success');
           this.router.navigate(['/confirm-email']);
         },
         error: (error) => {

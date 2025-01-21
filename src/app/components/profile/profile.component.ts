@@ -71,7 +71,6 @@ export class ProfileComponent implements OnInit {
     this.profileService.getCurrentUserProfile().subscribe({
       next: (profile) => {
         this.userProfile = profile;
-
         this.sharedService.setUserProfile(profile);
       },
       error: (error) => {
@@ -110,7 +109,6 @@ export class ProfileComponent implements OnInit {
   onUpdateProfile() {
     console.log('From the edit method in component');
     const userData = {
-      // add the userName of the user
       userName: this.userProfile?.userName,
       firstName: this.updateProfileForm.get('firstName')?.value.trim(),
       lastName: this.updateProfileForm.get('lastName')?.value.trim(),

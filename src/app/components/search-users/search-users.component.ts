@@ -55,7 +55,6 @@ export class SearchUsersComponent implements OnInit {
       next: (response) => {
         this.users = response;
         this.paginateResults();
-        this.toastr.success('Search completed.', 'Success');
       },
       error: (error) => {
         this.toastr.error('Error fetching results.', 'Error');

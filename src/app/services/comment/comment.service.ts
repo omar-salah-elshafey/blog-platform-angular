@@ -27,7 +27,6 @@ export class CommentService {
       .pipe(
         tap((response) => {
           console.log('Comment Created: ', response);
-          this.toastr.info('Comment Created...', 'info');
         }),
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
@@ -41,7 +40,6 @@ export class CommentService {
     return this.http.delete(`${this.baseUrl}/delete-comment?id=${id}`).pipe(
       tap((response) => {
         console.log('Comment Deleted: ', response);
-        this.toastr.info('Comment Deleted...', 'info');
       }),
       catchError((error) => {
         this.toastr.error(error.error!.error, 'Error');
@@ -63,7 +61,6 @@ export class CommentService {
       .pipe(
         tap((response) => {
           console.log('Comment Updated: ', response);
-          this.toastr.info('Comment Updated...', 'info');
         }),
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
