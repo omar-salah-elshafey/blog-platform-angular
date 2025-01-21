@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 
 export interface PostCommentsModel {
+  commentId: number;
   userName: string;
   content: string;
   createdDate: string;
@@ -65,5 +66,19 @@ export class PostService {
           return throwError(() => new error(error));
         })
       );
+  }
+
+  deletePost(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/delete-post?id=${id}`).pipe(
+      tap((response) => {
+        console.log('Deleting the Post', response);
+        this.toastr.info('Deleting the Post...', 'info');
+      }),
+      catchError((error) => {
+        this.toastr.error(error.error!.error, 'Error');
+        console.error('Error Deleting the Post', error);
+        return throwError(() => new error(error));
+      })
+    );
   }
 }

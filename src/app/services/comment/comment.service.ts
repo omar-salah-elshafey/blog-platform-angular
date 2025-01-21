@@ -37,8 +37,8 @@ export class CommentService {
       );
   }
 
-  deleteComment(id: number): Observable<any>{
-    return this.http.delete(`${this.baseUrl}/delete-comment`).pipe(
+  deleteComment(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/delete-comment?id=${id}`).pipe(
       tap((response) => {
         console.log('Comment Deleted: ', response);
         this.toastr.info('Comment Deleted...', 'info');
@@ -49,5 +49,27 @@ export class CommentService {
         return throwError(() => new error(error));
       })
     );
+  }
+
+  updateComment(
+    id: number,
+    commentData: CommentDto
+  ): Observable<CommentResponseModel> {
+    return this.http
+      .put<CommentResponseModel>(
+        `${this.baseUrl}/update-comment?id=${id}`,
+        commentData
+      )
+      .pipe(
+        tap((response) => {
+          console.log('Comment Updated: ', response);
+          this.toastr.info('Comment Updated...', 'info');
+        }),
+        catchError((error) => {
+          this.toastr.error(error.error!.error, 'Error');
+          console.error('Error Updating the comment!', error);
+          return throwError(() => new error(error));
+        })
+      );
   }
 }

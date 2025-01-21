@@ -75,7 +75,24 @@ export class PostComponent implements OnInit {
         console.error('Error fetching user post:', error);
       },
       complete: () => {
-        this.isLoading = false; 
+        this.isLoading = false;
+      },
+    });
+  }
+
+  onDeletePost(id: number) {
+    this.postService.deletePost(id).subscribe({
+      next: (response) => {
+        this.toastr.success('Post deleted successfully!', 'Success');
+        console.log('Psot Delted: ', response);
+        this.router.navigate(['/profile']);
+      },
+      error: (error) => {
+        console.error('Error deleting the Post:', error);
+        this.toastr.error(
+          'Failed to delete the Post. Please try again later.',
+          'Error'
+        );
       },
     });
   }
@@ -104,9 +121,11 @@ export class PostComponent implements OnInit {
           userName: this.userName!,
           content: this.commentForm.value.content,
           createdDate: new Date().toISOString(),
+          commentId: response.Id,
         });
         this.changeDetectorRef.detectChanges();
         this.commentForm.reset({ content: '', postId: this.post.id });
+        console.log('comment added: ', response);
       },
       error: (error) => {
         this.toastr.error('Failed to add comment. Please try again.', 'Error');
@@ -114,6 +133,24 @@ export class PostComponent implements OnInit {
       },
       complete: () => {
         this.isSubmitting = false;
+      },
+    });
+  }
+
+  onDeleteComment(id: number): void {
+    this.commentService.deleteComment(id).subscribe({
+      next: (response) => {
+        this.toastr.success('Comment deleted successfully!', 'Success');
+        this.comments = this.comments.filter(
+          (comment) => comment.commentId !== id
+        );
+      },
+      error: (error) => {
+        console.error('Error deleting comment:', error);
+        this.toastr.error(
+          'Failed to delete comment. Please try again later.',
+          'Error'
+        );
       },
     });
   }
