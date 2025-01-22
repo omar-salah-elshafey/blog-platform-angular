@@ -27,6 +27,7 @@
         <p class="post-content">{{ post.content }}</p>
         <p class="post-date">
           Created: {{ post.createdDate | date : "medium" }}
+          <br>
           <span *ngIf="post.modifiedDate">
             | Modified: {{ post.modifiedDate | date : "medium" }}
           </span>

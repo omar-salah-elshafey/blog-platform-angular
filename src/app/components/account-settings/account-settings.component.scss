@@ -1,0 +1,237 @@
+$primary-color: #007bff;
+$danger-color: #dc3545;
+$dark-gray: #6c757d;
+$border-radius: 10px;
+$font-family: "Arial", sans-serif;
+
+.profile-container {
+  padding: 30px;
+  margin: 20px auto;
+  background-color: #ffffff;
+  border-radius: $border-radius;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  font-family: $font-family;
+  transition: 0.3s ease;
+
+  h1 {
+    text-align: center;
+    font-size: 2rem;
+    color: $primary-color;
+    margin-bottom: 15px;
+  }
+
+  h6 {
+    font-size: 1rem;
+    color: $dark-gray;
+    margin-bottom: 15px;
+  }
+
+  p {
+    margin: 10px 0;
+    font-size: 16px;
+    color: $dark-gray;
+    line-height: 1.5;
+
+    strong {
+      font-weight: 600;
+      color: #000000;
+    }
+  }
+
+  &:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.loading,
+.error {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: 500;
+
+  &.loading {
+    color: $primary-color;
+  }
+
+  &.error {
+    color: $danger-color;
+  }
+}
+
+.profile-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+  gap: 20px;
+
+  .edit-btn,
+  .delete-btn {
+    padding: 12px 20px;
+    width: 48%;
+    max-width: 200px;
+    font-size: 16px;
+    color: white;
+    border: none;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: 0.3s ease;
+
+    &:hover {
+      transform: translateY(-3px);
+    }
+  }
+
+  .edit-btn {
+    background-color: $primary-color;
+
+    &:hover {
+      background-color: $primary-color;
+    }
+  }
+
+  .delete-btn {
+    background-color: $danger-color;
+
+    &:hover {
+      background-color: $danger-color;
+    }
+  }
+}
+
+.change-password-form {
+  margin-top: 30px;
+  .form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    label {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .password-container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      position: relative;
+
+      input {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+        transition: border-color 0.3s ease;
+
+        &:focus {
+          border-color: #007bff; /* Focus color */
+        }
+
+        &.is-invalid {
+          border-color: #dc3545; /* Invalid color */
+        }
+      }
+    }
+
+    .error-message {
+      color: $danger-color;
+      font-size: 12px;
+    }
+  }
+}
+.save-btn,
+.cancel-btn {
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+  width: 48%;
+  font-size: 16px;
+  transition: 0.3s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+  }
+}
+
+.save-btn {
+  background-color: $primary-color;
+
+  &:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+  }
+
+  &:hover {
+    background-color: $primary-color;
+  }
+}
+
+.cancel-btn {
+  background-color: $danger-color;
+
+  &:hover {
+    background-color: $danger-color;
+  }
+}
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 20px;
+    margin: 10px auto;
+
+    h1 {
+      font-size: 1.8rem;
+    }
+
+    h6 {
+      font-size: 0.9rem;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
+
+  .profile-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    .edit-btn,
+    .delete-btn {
+      width: 80%;
+      margin-bottom: 15px;
+    }
+  }
+
+  .update-form {
+    .form-group {
+      flex-direction: column;
+      align-items: center;
+      .data {
+        flex-direction: column;
+        label {
+          width: 100%;
+          margin-bottom: 8px;
+        }
+
+        input {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .save-btn,
+  .cancel-btn {
+    width: 80%;
+  }
+}

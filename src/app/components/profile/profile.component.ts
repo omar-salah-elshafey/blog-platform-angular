@@ -3,20 +3,11 @@ import { ToastrService } from 'ngx-toastr';
 import {
   UserProfile,
   ProfileService,
-  UpdateProfile,
 } from '../../services/profile/profile.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SharedService } from '../../services/shared.service';
-import { CookieService } from 'ngx-cookie-service';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import {
   PostResponseModel,
   PostService,
@@ -35,19 +26,13 @@ export class ProfileComponent implements OnInit {
   currentPage = 1;
   pageSize = 5;
   totalPages = 1;
-  updateMode = false;
-  updateProfileForm!: FormGroup;
-  updatedProfile: UpdateProfile | null = null;
   posts: PostResponseModel[] = [];
 
   constructor(
     private profileService: ProfileService,
     private toastr: ToastrService,
-    private fb: FormBuilder,
     private sharedService: SharedService,
-    private cookieService: CookieService,
     private router: Router,
-    private dialog: MatDialog,
     private postService: PostService
   ) {}
 
@@ -89,84 +74,6 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  initializeForm(profile: UserProfile): void {
-    this.updateProfileForm = this.fb.group({
-      firstName: [
-        profile.firstName,
-        [Validators.required, Validators.minLength(3)],
-      ],
-      lastName: [
-        profile.lastName,
-        [Validators.required, Validators.minLength(3)],
-      ],
-    });
-  }
-
-  toggleEditForm() {
-    this.updateMode = true;
-    this.initializeForm(this.userProfile!);
-  }
-  cancelEditForm() {
-    this.updateMode = false;
-  }
-  onUpdateProfile() {
-    console.log('From the edit method in component');
-    const userData = {
-      userName: this.userProfile?.userName,
-      firstName: this.updateProfileForm.get('firstName')?.value.trim(),
-      lastName: this.updateProfileForm.get('lastName')?.value.trim(),
-    };
-    console.log(userData);
-    this.profileService.updateUserProfile(userData).subscribe({
-      next: (response) => {
-        this.toastr.success('Profile updated successfully.', 'Success');
-        this.updateMode = false;
-
-        console.log('profile updated! ', response);
-        const updatedProfile: UserProfile = {
-          ...this.userProfile!,
-          firstName: userData.firstName,
-          lastName: userData.lastName,
-        };
-        this.sharedService.setUserProfile(updatedProfile);
-      },
-      error: (error) => {
-        this.toastr.error(error.error!.error, 'Error');
-        console.error('Error updating user profile:', error);
-      },
-    });
-  }
-
-  onDeleteProfile() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'confirm') {
-        const userData = {
-          userName: this.userProfile!.userName,
-          refreshToken: this.cookieService.get('refreshToken'),
-        };
-        console.log(userData);
-        this.profileService.deleteUserProfile(userData).subscribe({
-          next: (response) => {
-            this.toastr.success('Profile deleted successfully.', 'Success');
-            console.log('Profile Deleted!: ', response);
-            this.sharedService.clearUserProfile();
-            this.cookieService.delete('refreshToken');
-            this.cookieService.delete('accessToken');
-            this.router.navigate(['/login']);
-          },
-          error: (error: any) => {
-            this.toastr.error(error.error!.error, 'Error');
-            console.error('Error deleting user profile:', error);
-          },
-        });
-      } else {
-        console.log('User canceled account deletion');
-      }
-    });
-  }
-
   fetchUserPosts(userName: string): void {
     this.isPostsLoading = true;
     this.postService
@@ -194,5 +101,9 @@ export class ProfileComponent implements OnInit {
       this.currentPage++;
       this.fetchUserPosts(userName);
     }
+  }
+
+  profileSettings() {
+    this.router.navigate(['/account-settings']);
   }
 }

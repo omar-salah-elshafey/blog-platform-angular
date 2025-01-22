@@ -1,9 +1,8 @@
-// Global Variables
-$primary-color: #007bff; // Blue
-$secondary-color: #f8f9fa; // Light background color
-$danger-color: #dc3545; // Red
-$light-gray: #f1f1f1; // Light gray
-$dark-gray: #6c757d; // Darker gray
+$primary-color: #007bff;
+$secondary-color: #f8f9fa;
+$danger-color: #dc3545;
+$light-gray: #f1f1f1;
+$dark-gray: #6c757d;
 $border-radius: 10px;
 $font-family: "Arial", sans-serif;
 
@@ -47,135 +46,32 @@ $font-family: "Arial", sans-serif;
   }
 }
 
-.loading,
-.error {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 18px;
-  font-weight: 500;
-
-  &.loading {
-    color: $primary-color;
-  }
-
-  &.error {
-    color: $danger-color;
-  }
-}
-
 .profile-buttons {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin-top: 25px;
 
-  .edit-btn,
-  .delete-btn {
-    padding: 12px 20px;
-    width: 48%;
-    font-size: 16px;
-    color: white;
-    border: none;
-    border-radius: $border-radius;
-    cursor: pointer;
-    transition: 0.3s ease;
-
-    &:hover {
-      transform: translateY(-3px);
-    }
-  }
-
   .edit-btn {
-    background-color: $primary-color;
-
-    &:hover {
-      background-color: $primary-color;
-    }
-  }
-
-  .delete-btn {
-    background-color: $danger-color;
-
-    &:hover {
-      background-color: $danger-color;
-    }
-  }
-}
-
-.update-form {
-  margin-top: 30px;
-  .form-group {
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-
-    .data {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      margin-bottom: 15px;
-
-      label {
-        font-size: 16px;
-        font-weight: bold;
-        color: $dark-gray;
-        width: 30%;
-      }
-
-      input {
-        width: 65%;
-        padding: 12px;
-        margin-top: 5px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        flex-grow: 1;
-
-        &.is-invalid {
-          border-color: $danger-color;
-        }
-      }
-    }
-
-    .error-message {
-      color: $danger-color;
-      font-size: 12px;
-    }
-  }
-
-  .save-btn,
-  .cancel-btn {
-    color: white;
     padding: 12px 20px;
+    width: 48%;
+    font-size: 16px;
+    color: white;
     border: none;
     border-radius: $border-radius;
     cursor: pointer;
-    width: 48%;
-    font-size: 16px;
+    background-color: $primary-color;
     transition: 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 
     &:hover {
       transform: translateY(-3px);
-    }
-  }
-
-  .save-btn {
-    background-color: $primary-color;
-
-    &:disabled {
-      background-color: #6c757d;
-      cursor: not-allowed;
-    }
-
-    &:hover {
       background-color: $primary-color;
     }
-  }
-
-  .cancel-btn {
-    background-color: $danger-color;
-
-    &:hover {
-      background-color: $danger-color;
+    i {
+      font-size: 2rem;
     }
   }
 }
@@ -200,37 +96,36 @@ $font-family: "Arial", sans-serif;
   }
 
   .profile-buttons {
-    flex-direction: column;
     align-items: center;
     gap: 10px;
 
-    .edit-btn,
-    .delete-btn {
-      width: 80%;
+    .edit-btn {
+      width: 200px;
       margin-bottom: 15px;
     }
   }
+}
 
-  .update-form {
-    .form-group {
-      flex-direction: column;
-      align-items: center;
-      .data {
-        flex-direction: column;
-        label {
-          width: 100%;
-          margin-bottom: 8px;
-        }
-
-        input {
-          width: 100%;
-        }
-      }
+@media (max-width: 400px) {
+  .profile-container{
+    .post-title{
+      font-size: 1.2rem;
+    }
+    .post-date{
+      font-size: 0.8rem;
     }
   }
+  .profile-buttons {
+    align-items: center;
+    gap: 10px;
 
-  .save-btn,
-  .cancel-btn {
-    width: 80%;
+    .edit-btn {
+      width: 200px;
+      margin-bottom: 15px;
+      font-size: 15px;
+      i{
+        font-size: 1.5rem;
+      }
+    }
   }
 }

@@ -1,6 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import { catchError, Observable, tap, throwError } from 'rxjs';
+export interface ChangePasswordDto {
+  email: string;
+  currentPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -8,7 +15,7 @@ import { Observable } from 'rxjs';
 export class PasswordService {
   private baseUrl = 'https://localhost:7293/api/PasswordManager/';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private toastr: ToastrService) {}
 
   resetPasswordRequest(email: string): Observable<any> {
     return this.http.post(
@@ -27,5 +34,18 @@ export class PasswordService {
   resetPassword(userData: any): Observable<any> {
     console.log('test');
     return this.http.put(`${this.baseUrl}reset-password`, userData);
+  }
+
+  changePassword(userData: ChangePasswordDto): Observable<any> {
+    return this.http.put(`${this.baseUrl}change-password`, userData).pipe(
+      tap((response) => {
+        console.log('Changing the Password: ', response);
+      }),
+      catchError((error) => {
+        this.toastr.error(error.error!.error, 'Error');
+        console.error('Error Changing the Password:', error);
+        return throwError(() => new error(error));
+      })
+    );
   }
 }

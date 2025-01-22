@@ -229,7 +229,7 @@ export class PostComponent implements OnInit {
     this.commentService.addComment(commentDto).subscribe({
       next: (response) => {
         this.toastr.success('Comment added successfully!', 'Success');
-        this.comments.push({
+        this.comments.unshift({
           userName: this.userName!,
           content: this.commentForm.value.content.trim(),
           createdDate: new Date().toISOString(),

@@ -12,6 +12,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { HomeComponent } from './components/home/home.component';
 import { PostComponent } from './components/post/post.component';
+import { AccountSettingsComponent } from './components/account-settings/account-settings.component';
 
 export const routes: Routes = [
   {
@@ -25,6 +26,11 @@ export const routes: Routes = [
   { path: 'reset-password-request', component: ResetPasswordRequestComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+  {
+    path: 'account-settings',
+    component: AccountSettingsComponent,
+    canActivate: [authGuard],
+  },
   {
     path: 'search',
     component: SearchUsersComponent,
