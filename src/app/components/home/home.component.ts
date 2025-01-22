@@ -23,6 +23,9 @@ import {
 export class HomeComponent implements OnInit {
   posts: PostResponseModel[] = [];
   isLoading = false;
+  currentPage = 1;
+  pageSize = 5;
+  totalPages = 1;
   userRole: any;
   postForm!: FormGroup;
 
@@ -37,11 +40,27 @@ export class HomeComponent implements OnInit {
     this.userRole = this.profileService
       .getCurrentUserRoleFromToken()
       ?.toLowerCase();
+    this.initializeForm();
+    this.loadPosts();
+  }
+
+  loadMorePosts(): void {
+    if (this.isLoading || this.currentPage >= this.totalPages) {
+      return;
+    }
+    this.currentPage++;
+    this.loadPosts();
+  }
+
+  loadPosts() {
     this.isLoading = true;
-    this.postService.getAllPosts().subscribe({
+    this.postService.getAllPosts(this.currentPage, this.pageSize).subscribe({
       next: (data) => {
-        this.posts = data;
-        console.log(this.posts);
+        if (data.items.length === 0 && this.currentPage === 1) {
+          this.toastr.info('No posts available.', 'Info');
+        }
+        this.posts = [...this.posts, ...data.items];
+        this.totalPages = data.totalPages;
         this.toastr.success('Getting all the posts.', 'success');
       },
       error: (err) => {
@@ -52,7 +71,6 @@ export class HomeComponent implements OnInit {
         this.isLoading = false;
       },
     });
-    this.initializeForm();
   }
 
   initializeForm(): void {

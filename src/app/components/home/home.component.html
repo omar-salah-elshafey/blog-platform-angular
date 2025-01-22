@@ -119,6 +119,15 @@
         </ng-template>
       </div>
     </div>
+    <div class="pagination">
+      <button
+        *ngIf="currentPage < totalPages && !isLoading"
+        (click)="loadMorePosts()"
+        class="btn-load-more"
+      >
+        Load More Posts
+      </button>
+    </div>
   </div>
   <ng-template #noPosts>
     <p class="no-posts">No posts to display.</p>

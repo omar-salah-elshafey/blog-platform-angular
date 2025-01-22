@@ -23,6 +23,9 @@ export class UserProfileComponent {
   posts: PostResponseModel[] = [];
   isProfileLoading = false;
   isPostsLoading = false;
+  currentPage = 1;
+  pageSize = 5;
+  totalPages = 1;
 
   constructor(
     private route: ActivatedRoute,
@@ -59,24 +62,34 @@ export class UserProfileComponent {
       },
     });
   }
+
+  loadMorePosts(): void {
+    var userName = this.userProfile.userName;
+    if (this.currentPage < this.totalPages && !this.isPostsLoading) {
+      this.currentPage++;
+      this.fetchUserPosts(userName);
+    }
+  }
+
   fetchUserPosts(userName: string): void {
     this.isPostsLoading = true;
-    this.posts = [];
-    this.postService.getPostsByUser(userName).subscribe({
-      next: (posts) => {
-        this.posts = posts;
-        console.log('Fetched user posts:', posts);
-      },
-      error: (error) => {
-        this.toastr.error(
-          'Failed to fetch posts. Please try again later.',
-          'Error'
-        );
-        console.error('Error fetching user posts:', error);
-      },
-      complete: () => {
-        this.isPostsLoading = false;
-      },
-    });
+    this.postService
+      .getPostsByUser(userName, this.currentPage, this.pageSize)
+      .subscribe({
+        next: (data) => {
+          this.posts = [...this.posts, ...data.items];
+          this.totalPages = data.totalPages;
+        },
+        error: (error) => {
+          this.toastr.error(
+            'Failed to fetch posts. Please try again later.',
+            'Error'
+          );
+          console.error('Error fetching user posts:', error);
+        },
+        complete: () => {
+          this.isPostsLoading = false;
+        },
+      });
   }
 }

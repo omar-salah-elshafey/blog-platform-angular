@@ -2,16 +2,17 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, Observable, tap, throwError } from 'rxjs';
+import { PaginatedResponse } from '../shared.service';
 
 export interface CommentDto {
   PostId: number;
   Content: string;
 }
 export interface CommentResponseModel {
-  Id: number;
-  PostId: number;
-  UserName: string;
-  Content: string;
+  id: number;
+  postId: number;
+  userName: string;
+  content: string;
   createdDate: string;
 }
 @Injectable({
@@ -65,6 +66,88 @@ export class CommentService {
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Updating the comment!', error);
+          return throwError(() => new error(error));
+        })
+      );
+  }
+
+  getAllComments(
+    pageNumber: number,
+    pageSize: number
+  ): Observable<PaginatedResponse<CommentResponseModel>> {
+    return this.http
+      .get<PaginatedResponse<CommentResponseModel>>(
+        `${this.baseUrl}/get-all-comments`,
+        {
+          params: {
+            pageNumber: pageNumber.toString(),
+            pageSize: pageSize.toString(),
+          },
+        }
+      )
+      .pipe(
+        tap((response) => {
+          console.log('Getting comments data: ', response);
+        }),
+        catchError((error) => {
+          this.toastr.error(error.error!.error, 'Error');
+          console.error('Error Getting comments data', error);
+          return throwError(() => new error(error));
+        })
+      );
+  }
+
+  getCommentsByPostId(
+    postId: number,
+    pageNumber: number,
+    pageSize: number
+  ): Observable<PaginatedResponse<CommentResponseModel>> {
+    return this.http
+      .get<PaginatedResponse<CommentResponseModel>>(
+        `${this.baseUrl}/get-comments-by-post`,
+        {
+          params: {
+            postId: postId.toString(),
+            pageNumber: pageNumber.toString(),
+            pageSize: pageSize.toString(),
+          },
+        }
+      )
+      .pipe(
+        tap((response) => {
+          console.log('Getting comments data: ', response);
+        }),
+        catchError((error) => {
+          this.toastr.error(error.error!.error, 'Error');
+          console.error('Error Getting comments data', error);
+          return throwError(() => new error(error));
+        })
+      );
+  }
+
+  getCommentsByUser(
+    userName: string,
+    pageNumber: number,
+    pageSize: number
+  ): Observable<PaginatedResponse<CommentResponseModel>> {
+    return this.http
+      .get<PaginatedResponse<CommentResponseModel>>(
+        `${this.baseUrl}/get-comments-by-user`,
+        {
+          params: {
+            userName,
+            pageNumber: pageNumber.toString(),
+            pageSize: pageSize.toString(),
+          },
+        }
+      )
+      .pipe(
+        tap((response) => {
+          console.log('Getting comments data: ', response);
+        }),
+        catchError((error) => {
+          this.toastr.error(error.error!.error, 'Error');
+          console.error('Error Getting comments data', error);
           return throwError(() => new error(error));
         })
       );

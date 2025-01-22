@@ -32,6 +32,9 @@ export class ProfileComponent implements OnInit {
   userProfile: UserProfile | null = null;
   isProfileLoading = false;
   isPostsLoading = false;
+  currentPage = 1;
+  pageSize = 5;
+  totalPages = 1;
   updateMode = false;
   updateProfileForm!: FormGroup;
   updatedProfile: UpdateProfile | null = null;
@@ -166,21 +169,30 @@ export class ProfileComponent implements OnInit {
 
   fetchUserPosts(userName: string): void {
     this.isPostsLoading = true;
-    this.postService.getPostsByUser(userName).subscribe({
-      next: (posts) => {
-        this.posts = posts;
-        console.log('Fetched user posts:', posts);
-      },
-      error: (error) => {
-        this.toastr.error(
-          'Failed to fetch posts. Please try again later.',
-          'Error'
-        );
-        console.error('Error fetching user posts:', error);
-      },
-      complete: () => {
-        this.isPostsLoading = false;
-      },
-    });
+    this.postService
+      .getPostsByUser(userName, this.currentPage, this.pageSize)
+      .subscribe({
+        next: (data) => {
+          this.posts = [...this.posts, ...data.items];
+          this.totalPages = data.totalPages;
+        },
+        error: (error) => {
+          this.toastr.error(
+            'Failed to fetch posts. Please try again later.',
+            'Error'
+          );
+          console.error('Error fetching user posts:', error);
+        },
+        complete: () => {
+          this.isPostsLoading = false;
+        },
+      });
+  }
+  loadMorePosts(): void {
+    var userName = this.userProfile!.userName;
+    if (this.currentPage < this.totalPages && !this.isPostsLoading) {
+      this.currentPage++;
+      this.fetchUserPosts(userName);
+    }
   }
 }

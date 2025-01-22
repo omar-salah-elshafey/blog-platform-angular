@@ -30,14 +30,18 @@ export class PostComponent implements OnInit {
   post!: PostResponseModel;
   commentForm!: FormGroup;
   isSubmitting = false;
-  comments: Array<PostCommentsModel> = [];
+  comments: PostCommentsModel[] = [];
   userName: string | null = null;
   userRole: any;
   isLoading = false;
+  isCommentsLoading = false;
   updateCommentForm!: FormGroup;
   editingCommentId: number | null = null;
   isEditingPost = false;
   updatePostForm!: FormGroup;
+  currentPage = 1;
+  pageSize = 5;
+  totalPages = 1;
 
   constructor(
     private postService: PostService,
@@ -62,7 +66,7 @@ export class PostComponent implements OnInit {
         this.fetchPostDetails(+postId);
       } else {
         this.toastr.error('Invalid Post ID', 'Error');
-        this.router.navigate(['/']);
+        this.router.navigate(['/not-found']);
       }
     });
   }
@@ -72,7 +76,7 @@ export class PostComponent implements OnInit {
     this.postService.getPostById(id).subscribe({
       next: (post) => {
         this.post = post;
-        this.comments = post.comments;
+        this.fetchPostComments(id);
         console.log('Fetched user post:', post);
       },
       error: (error) => {
@@ -87,6 +91,43 @@ export class PostComponent implements OnInit {
         this.isLoading = false;
       },
     });
+  }
+
+  fetchPostComments(postId: number) {
+    this.isCommentsLoading = true;
+    this.commentService
+      .getCommentsByPostId(postId, this.currentPage, this.pageSize)
+      .subscribe({
+        next: (response) => {
+          const mappedComments = response.items.map((item) => ({
+            commentId: item.id,
+            userName: item.userName,
+            content: item.content,
+            createdDate: item.createdDate,
+          }));
+          console.log('Mapped Comments:', mappedComments);
+          this.comments = [...this.comments, ...mappedComments];
+          this.totalPages = response.totalPages;
+          console.log('Fetched comments:', response);
+        },
+        error: (error) => {
+          this.toastr.error(
+            'Failed to load comments. Please try again later.',
+            'Error'
+          );
+          console.error('Error fetching comments:', error);
+        },
+        complete: () => {
+          this.isCommentsLoading = false;
+        },
+      });
+  }
+
+  loadMoreComments() {
+    if (this.currentPage < this.totalPages && !this.isCommentsLoading) {
+      this.currentPage++;
+      this.fetchPostComments(this.post.id);
+    }
   }
 
   onDeletePost(id: number) {
@@ -192,7 +233,7 @@ export class PostComponent implements OnInit {
           userName: this.userName!,
           content: this.commentForm.value.content.trim(),
           createdDate: new Date().toISOString(),
-          commentId: response.Id,
+          commentId: response.id,
         });
         this.changeDetectorRef.detectChanges();
         this.commentForm.reset({ content: '', postId: this.post.id });

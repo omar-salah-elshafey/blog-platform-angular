@@ -59,6 +59,15 @@
           </ng-template>
         </div>
       </div>
+      <div class="pagination">
+        <button
+          *ngIf="currentPage < totalPages && !isPostsLoading"
+          (click)="loadMorePosts()"
+          class="btn-load-more"
+        >
+          Load More Posts
+        </button>
+      </div>
       <div *ngIf="isPostsLoading" class="spinner-overlay">
         <div class="spinner"></div>
         <p>Loading posts...</p>

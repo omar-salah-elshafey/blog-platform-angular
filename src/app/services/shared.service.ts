@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { UserProfile } from './profile/profile.service';
-
+export interface PaginatedResponse<T> {
+  items: T[];
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
+  totalItems: number;
+}
 @Injectable({
   providedIn: 'root',
 })

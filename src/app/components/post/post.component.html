@@ -230,6 +230,15 @@
               </div>
             </ng-template>
           </div>
+          <div class="pagination">
+            <button
+              *ngIf="currentPage < totalPages && !isCommentsLoading"
+              (click)="loadMoreComments()"
+              class="btn-load-more"
+            >
+              Load More Comments
+            </button>
+          </div>
         </div>
         <ng-template #noComments>
           <p class="no-comments">No comments yet.</p>

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, Observable, tap, throwError } from 'rxjs';
+import { PaginatedResponse } from '../shared.service';
 
 export interface PostCommentsModel {
   commentId: number;
@@ -33,8 +34,19 @@ export class PostService {
   private baseUrl = 'https://localhost:7293/api/Post';
   constructor(private http: HttpClient, private toastr: ToastrService) {}
 
-  getAllPosts(): Observable<PostResponseModel[]> {
-    return this.http.get<PostResponseModel[]>(`${this.baseUrl}/get-all-posts`);
+  getAllPosts(
+    pageNumber: number,
+    pageSize: number
+  ): Observable<PaginatedResponse<PostResponseModel>> {
+    return this.http.get<PaginatedResponse<PostResponseModel>>(
+      `${this.baseUrl}/get-all-posts`,
+      {
+        params: {
+          pageNumber: pageNumber.toString(),
+          pageSize: pageSize.toString(),
+        },
+      }
+    );
   }
 
   getPostById(id: number): Observable<PostResponseModel> {
@@ -54,11 +66,22 @@ export class PostService {
       );
   }
 
-  getPostsByUser(userName: string): Observable<PostResponseModel[]> {
+  getPostsByUser(
+    userName: string,
+    pageNumber: number,
+    pageSize: number
+  ): Observable<PaginatedResponse<PostResponseModel>> {
     return this.http
-      .get<PostResponseModel[]>(`${this.baseUrl}/get-posts-by-user`, {
-        params: { userName },
-      })
+      .get<PaginatedResponse<PostResponseModel>>(
+        `${this.baseUrl}/get-posts-by-user`,
+        {
+          params: {
+            userName,
+            pageNumber: pageNumber.toString(),
+            pageSize: pageSize.toString(),
+          },
+        }
+      )
       .pipe(
         tap((response) => {
           console.log('Getting posts data: ', response);
