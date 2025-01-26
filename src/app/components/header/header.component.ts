@@ -24,12 +24,10 @@ export class HeaderComponent {
 
   isMenuOpen = false;
   firstName: string | null = null;
-  userRole: any;
+  isAdmin = false;
 
   ngOnInit(): void {
-    this.userRole = this.profileServie
-      .getCurrentUserRoleFromToken()
-      ?.toLowerCase();
+    this.isAdmin = this.profileServie.isAdmin();
     if (this.isLoggedIn()) {
       this.sharedService.userProfile$.subscribe((profile) => {
         if (profile) {

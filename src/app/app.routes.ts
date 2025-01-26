@@ -14,6 +14,7 @@ import { HomeComponent } from './components/home/home.component';
 import { PostComponent } from './components/post/post.component';
 import { AccountSettingsComponent } from './components/account-settings/account-settings.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { adminGuard } from './shared/admin/admin.guard';
 
 export const routes: Routes = [
   {
@@ -47,7 +48,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [authGuard],
+    canActivate: [authGuard, adminGuard],
   },
   { path: 'not-found', component: NotFoundComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: 'home', pathMatch: 'full' },

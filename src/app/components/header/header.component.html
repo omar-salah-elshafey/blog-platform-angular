@@ -17,7 +17,7 @@
           ><i class="fa fa-user-tie"></i> {{ firstName || "Profile" }}</a
         >
       </li>
-      <li (click)="isMenuOpen = false" *ngIf="userRole == 'admin'">
+      <li (click)="isMenuOpen = false" *ngIf="this.isAdmin">
         <a routerLink="/dashboard"><i class="fa fa-user-shield"></i> Admin</a>
       </li>
       <li (click)="isMenuOpen = false; logout()">

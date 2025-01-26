@@ -68,11 +68,15 @@ export class ProfileService {
 
     try {
       const decodedToken = jwtDecode<JwtPayload>(token);
-      return decodedToken.roles;
+      return decodedToken.roles.toLowerCase();
     } catch (error) {
       console.error('Error decoding token:', error);
       return null;
     }
+  }
+
+  isAdmin() {
+    return this.getCurrentUserRoleFromToken() === 'admin';
   }
 
   getEmailFromToken(): string {
