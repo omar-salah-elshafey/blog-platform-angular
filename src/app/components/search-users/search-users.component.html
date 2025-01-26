@@ -16,7 +16,7 @@
   </form>
   <div class="results">
     <ng-container *ngIf="users.length > 0; else noResults">
-      <div class="user-card" *ngFor="let user of paginatedUsers">
+      <div class="user-card" *ngFor="let user of users">
         <p><strong>Name:</strong> {{ user.firstName }} {{ user.lastName }}</p>
         <p>
           <strong>Username:</strong
@@ -29,12 +29,12 @@
         </p>
       </div>
       <div class="pagination">
-        <button (click)="previousPage()" [disabled]="currentPage === 1">
-          Previous
-        </button>
-        <span>Page {{ currentPage }} of {{ totalPages }}</span>
-        <button (click)="nextPage()" [disabled]="currentPage === totalPages">
-          Next
+        <button
+          *ngIf="currentPage < totalPages && !loading"
+          (click)="loadMoreUsers()"
+          class="btn-load-more"
+        >
+          Load More Users
         </button>
       </div>
     </ng-container>

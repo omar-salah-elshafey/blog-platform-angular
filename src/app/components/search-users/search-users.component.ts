@@ -23,7 +23,7 @@ export class SearchUsersComponent implements OnInit {
   paginatedUsers: any[] = [];
   loading = false;
   currentPage = 1;
-  itemsPerPage = 5;
+  pageSize = 5;
   totalPages = 1;
 
   constructor(
@@ -49,43 +49,28 @@ export class SearchUsersComponent implements OnInit {
   onSearch() {
     const query = this.searchForm.get('query')!.value;
     if (!query) return;
-
+    if (this.currentPage === 1) this.users = [];
     this.loading = true;
-    this.profileService.searchUsers(query).subscribe({
-      next: (response) => {
-        this.users = response;
-        this.paginateResults();
-      },
-      error: (error) => {
-        this.toastr.error('Error fetching results.', 'Error');
-        console.error('Error:', error);
-      },
-      complete: () => (this.loading = false),
-    });
+    this.profileService
+      .searchUsers(query, this.currentPage, this.pageSize)
+      .subscribe({
+        next: (response) => {
+          this.users = [...this.users, ...response.items];
+          this.totalPages = response.totalPages;
+          console.log(response);
+        },
+        error: (error) => {
+          this.toastr.error('Error fetching results.', 'Error');
+          console.error('Error:', error);
+        },
+        complete: () => (this.loading = false),
+      });
   }
 
-  paginateResults() {
-    this.totalPages = Math.ceil(this.users.length / this.itemsPerPage);
-    this.updatePaginatedUsers();
-  }
-
-  updatePaginatedUsers() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedUsers = this.users.slice(startIndex, endIndex);
-  }
-
-  previousPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.updatePaginatedUsers();
-    }
-  }
-
-  nextPage() {
-    if (this.currentPage < this.totalPages) {
+  loadMoreUsers() {
+    if (this.currentPage < this.totalPages && !this.loading) {
       this.currentPage++;
-      this.updatePaginatedUsers();
+      this.onSearch();
     }
   }
 

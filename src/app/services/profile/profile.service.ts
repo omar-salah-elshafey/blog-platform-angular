@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { CookieService } from 'ngx-cookie-service';
+import { PaginatedResponse } from '../shared.service';
 
 export interface UserProfile {
   firstName: string;
@@ -142,9 +143,19 @@ export class ProfileService {
       );
   }
 
-  searchUsers(query: string): Observable<any> {
+  searchUsers(
+    query: string,
+    pageNumber: number,
+    pageSize: number
+  ): Observable<PaginatedResponse<UserProfile>> {
     return this.http
-      .get<UserProfile>(`${this.baseUrl}/search-users?query=${query}`)
+      .get<PaginatedResponse<UserProfile>>(`${this.baseUrl}/search-users`, {
+        params: {
+          query,
+          pageNumber: pageNumber.toString(),
+          pageSize: pageSize.toString(),
+        },
+      })
       .pipe(
         catchError((error) => {
           console.error('Error during searching:', error);

@@ -13,6 +13,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { HomeComponent } from './components/home/home.component';
 import { PostComponent } from './components/post/post.component';
 import { AccountSettingsComponent } from './components/account-settings/account-settings.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 export const routes: Routes = [
   {
@@ -43,6 +44,11 @@ export const routes: Routes = [
   },
   { path: 'home', component: HomeComponent, canActivate: [authGuard] },
   { path: 'post', component: PostComponent, canActivate: [authGuard] },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [authGuard],
+  },
   { path: 'not-found', component: NotFoundComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];

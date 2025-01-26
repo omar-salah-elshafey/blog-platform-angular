@@ -18,7 +18,7 @@
         >
       </li>
       <li (click)="isMenuOpen = false" *ngIf="userRole == 'admin'">
-        <a routerLink="/"><i class="fa fa-user-shield"></i> Admin</a>
+        <a routerLink="/dashboard"><i class="fa fa-user-shield"></i> Admin</a>
       </li>
       <li (click)="isMenuOpen = false; logout()">
         <a><i class="fa fa-sign-out"></i> Logout</a>
