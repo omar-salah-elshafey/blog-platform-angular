@@ -1,7 +1,7 @@
 <header *ngIf="this.isLoggedIn()">
   <div class="logo">
     <!-- <h1><a routerLink="/">Smart Devices Store</a></h1> -->
-    <a routerLink="/"><img src="/assets/image/logo.jpg" alt="logo" /></a>
+    <a routerLink="/home"><img src="/assets/image/logo.jpg" alt="logo" /></a>
   </div>
   <nav>
     <span class="icon" id="menu-icon" (click)="toggleMenu()">
@@ -16,6 +16,9 @@
         <a routerLink="/profile"
           ><i class="fa fa-user-tie"></i> {{ firstName || "Profile" }}</a
         >
+      </li>
+      <li (click)="isMenuOpen = false" *ngIf="userRole == 'admin'">
+        <a routerLink="/"><i class="fa fa-user-shield"></i> Admin</a>
       </li>
       <li (click)="isMenuOpen = false; logout()">
         <a><i class="fa fa-sign-out"></i> Logout</a>

@@ -24,12 +24,16 @@ export class HeaderComponent {
 
   isMenuOpen = false;
   firstName: string | null = null;
+  userRole: any;
 
   ngOnInit(): void {
+    this.userRole = this.profileServie
+      .getCurrentUserRoleFromToken()
+      ?.toLowerCase();
     if (this.isLoggedIn()) {
       this.sharedService.userProfile$.subscribe((profile) => {
         if (profile) {
-          this.firstName = profile.firstName; // Update the `firstName` dynamically
+          this.firstName = profile.firstName;
         }
       });
     }

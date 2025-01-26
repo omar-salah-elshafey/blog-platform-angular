@@ -25,9 +25,11 @@
     </button>
 
     <p *ngIf="showResendForm" class="resend">
-      <a (click)="onResendRequest()">
-        Resend Confirmation Email
-      </a>
+      <a (click)="onResendRequest()"> Resend Confirmation Email </a>
     </p>
   </form>
+</div>
+<div *ngIf="isLoading" class="spinner-overlay">
+  <div class="spinner"></div>
+  <p>Loading...</p>
 </div>

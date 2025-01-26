@@ -61,4 +61,8 @@
       >
     </p>
   </form>
+  <div *ngIf="isLoading" class="spinner-overlay">
+    <div class="spinner"></div>
+    <p>Loading...</p>
+  </div>
 </div>

@@ -19,6 +19,7 @@ import { CommonModule } from '@angular/common';
 export class ConfirmEmailComponent {
   confirmEmailForm!: FormGroup;
   showResendForm: boolean = false;
+  isLoading = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,6 +37,7 @@ export class ConfirmEmailComponent {
 
   onSubmit(): void {
     if (this.confirmEmailForm.valid) {
+      this.isLoading = true;
       this.emailService.confirmEmail(this.confirmEmailForm.value).subscribe({
         next: (response) => {
           console.log(response);
@@ -60,6 +62,10 @@ export class ConfirmEmailComponent {
           } else {
             this.toastr.error(error.error!.error, 'Error');
           }
+          this.isLoading = false;
+        },
+        complete: () => {
+          this.isLoading = false;
         },
       });
     } else {
@@ -71,6 +77,7 @@ export class ConfirmEmailComponent {
     const emailControl = this.confirmEmailForm.get('Email');
     console.log(emailControl!.value);
     if (emailControl?.valid) {
+      this.isLoading = true;
       this.emailService.resendConfirmationEmail(emailControl!.value).subscribe({
         next: (response) => {
           console.log(response);
@@ -78,10 +85,12 @@ export class ConfirmEmailComponent {
             'A new confirmation email has been sent to your email.',
             'Success'
           );
+          this.isLoading = false;
         },
         error: (error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Resend email failed:', error.error!.error);
+          this.isLoading = false;
         },
       });
     } else {

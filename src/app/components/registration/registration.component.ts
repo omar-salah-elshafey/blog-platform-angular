@@ -20,6 +20,7 @@ import { ToastrService } from 'ngx-toastr';
 export class RegistrationComponent implements OnInit {
   registrationForm!: FormGroup;
   showPassword: boolean = false;
+  isLoading = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,6 +36,7 @@ export class RegistrationComponent implements OnInit {
         lastName: ['', [Validators.required, Validators.minLength(3)]],
         username: ['', [Validators.required, Validators.minLength(3)]],
         email: ['', [Validators.required, Validators.email]],
+        role: ['', [Validators.required]],
         password: [
           '',
           [
@@ -73,18 +75,24 @@ export class RegistrationComponent implements OnInit {
       lastName: this.registrationForm.value.lastName.trim(),
       username: this.registrationForm.value.username.trim(),
       email: this.registrationForm.value.email.trim(),
+      role: this.registrationForm.value.role,
       password: this.registrationForm.value.password.trim(),
       confirmPassword: this.registrationForm.value.confirmPassword.trim(),
     };
     if (this.registrationForm.valid) {
-      this.authService.registerReader(trimmedFormValue).subscribe({
+      this.isLoading = true;
+      this.authService.registerUser(trimmedFormValue).subscribe({
         next: (response) => {
           console.log('Registration successful:', response);
           this.router.navigate(['/confirm-email']);
         },
         error: (error) => {
-          this.toastr.error(error.error, 'Error');
+          this.toastr.error(error.error!.error, 'Error');
           console.error('Registration failed:', error.error);
+          this.isLoading = false;
+        },
+        complete: () => {
+          this.isLoading = false;
         },
       });
       console.log('Form Submitted', trimmedFormValue);

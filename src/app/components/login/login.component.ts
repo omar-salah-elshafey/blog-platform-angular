@@ -21,6 +21,7 @@ import { CookieService } from 'ngx-cookie-service';
 export class LoginComponent {
   loginForm!: FormGroup;
   showPassword: boolean = false;
+  isLoading = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -56,12 +57,14 @@ export class LoginComponent {
       Password: this.loginForm.value.Password.trim(),
     };
     if (this.loginForm.valid) {
+      this.isLoading = true;
       this.authService.login(trimmedFormValue).subscribe({
         next: (response) => {
           console.log('login successful:', response);
           this.toastr.success('Login successful!', 'Success');
           this.loginForm.reset();
           this.router.navigate(['/profile']);
+          this.isLoading = false;
         },
         error: (error) => {
           this.toastr.error(
@@ -69,6 +72,7 @@ export class LoginComponent {
             'Error'
           );
           console.error('Login failed:', error.error);
+          this.isLoading = false;
         },
       });
       console.log('Form Submitted', trimmedFormValue);

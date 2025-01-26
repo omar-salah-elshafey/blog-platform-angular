@@ -46,36 +46,23 @@ export class AuthService {
   }
 
   //register
-  registerReader(userData: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/register-reader`, userData);
-  }
-
-  registerAuthor(userData: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/register-author`, userData);
+  registerUser(userData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/register-user`, userData).pipe(
+      tap((response) => {
+        console.log('User registered successfully: ', response);
+      }),
+      catchError((error) => {
+        console.error('Error while registering: ' + error);
+        return throwError(() => error);
+      })
+    );
   }
 
   //login
   login(userData: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/login`, userData).pipe(
       tap((response: any) => {
-        this.cookieService.set(
-          'accessToken',
-          response.accessToken,
-          1,
-          '/',
-          '',
-          true,
-          'Strict'
-        );
-        this.cookieService.set(
-          'refreshToken',
-          encodeURIComponent(response.refreshToken),
-          1,
-          '/',
-          '',
-          true,
-          'Strict'
-        );
+        this.setTokens(response.accessToken, response.refreshToken);
       }),
       catchError((error) => {
         console.error('Error while logging in: ' + error);
@@ -94,7 +81,7 @@ export class AuthService {
       .get<any>(`${this.baseUrl}/refreshtoken?refreshToken=${refreshToken}`)
       .pipe(
         catchError((error) => {
-          console.error('Token refresh failed:', error!);
+          console.error('Token refresh failed:', error.error!.error);
           return throwError(() => new error('Token refresh failed!' + error!));
         })
       );
@@ -115,7 +102,7 @@ export class AuthService {
         catchError((error) => {
           console.error('Error during logout:', error);
           if (error.status == 401) this.toastr.error('Unauthorized', 'error');
-          else this.toastr.error(error.error.error, 'error');
+          else this.toastr.error(error.error!.error, 'error');
           return throwError(() => new error(error));
         })
       );

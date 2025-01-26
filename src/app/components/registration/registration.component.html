@@ -82,6 +82,26 @@
     </div>
 
     <div class="form-group">
+      <label for="role">Role</label>
+      <select id="role" formControlName="role">
+        <option value="" disabled selected>Select a role</option>
+        <option value="Reader">Reader</option>
+        <option value="Author">Writer</option>
+      </select>
+      <div
+        class="error-message"
+        *ngIf="
+          registrationForm.get('role')?.touched &&
+          registrationForm.get('role')?.invalid
+        "
+      >
+        <small *ngIf="registrationForm.get('role')?.errors?.['required']">
+          Role is required.
+        </small>
+      </div>
+    </div>
+
+    <div class="form-group">
       <label for="password">Password</label>
       <div class="password-container">
         <input
@@ -165,4 +185,8 @@
     <hr />
     <p>Already have an account? <a routerLink="/login">Login!</a></p>
   </form>
+  <div *ngIf="isLoading" class="spinner-overlay">
+    <div class="spinner"></div>
+    <p>Loading...</p>
+  </div>
 </div>
