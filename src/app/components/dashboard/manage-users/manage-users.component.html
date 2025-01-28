@@ -22,13 +22,29 @@
     <tbody>
       <tr *ngFor="let user of users">
         <td>
-          <div>
+          <div *ngIf="!profileUpdateState[user.userName]">
             {{ user.firstName }}
+          </div>
+          <div *ngIf="profileUpdateState[user.userName]">
+            <input
+              type="text"
+              [(ngModel)]="userForms[user.userName].firstName"
+              class="form-control"
+              placeholder="First Name"
+            />
           </div>
         </td>
         <td>
-          <div>
+          <div *ngIf="!profileUpdateState[user.userName]">
             {{ user.lastName }}
+          </div>
+          <div *ngIf="profileUpdateState[user.userName]">
+            <input
+              type="text"
+              [(ngModel)]="userForms[user.userName].lastName"
+              class="form-control"
+              placeholder="Last Name"
+            />
           </div>
         </td>
         <td>
@@ -41,10 +57,10 @@
         </td>
         <td>{{ user.email }}</td>
         <td>
-          <div *ngIf="!updateState[user.userName]">
+          <div *ngIf="!roleChangeState[user.userName]">
             {{ user.role }}
           </div>
-          <div *ngIf="updateState[user.userName]">
+          <div *ngIf="roleChangeState[user.userName]">
             <select
               [(ngModel)]="userForms[user.userName].role"
               class="form-select"
@@ -56,8 +72,16 @@
           </div>
         </td>
         <td>
-          <div class="btns" *ngIf="!updateState[user.userName]">
-            <button class="btn btn-primary">Update Profile</button>
+          <div
+            class="btns"
+            *ngIf="
+              !roleChangeState[user.userName] &&
+              !profileUpdateState[user.userName]
+            "
+          >
+            <button class="btn btn-primary" (click)="toggleEditMode(user)">
+              Update Profile
+            </button>
 
             <button class="btn btn-primary" (click)="onChangeRole(user)">
               Change Role
@@ -70,11 +94,19 @@
               Delete
             </button>
           </div>
-          <div class="btns" *ngIf="updateState[user.userName]">
+          <div class="btns" *ngIf="roleChangeState[user.userName]">
             <button class="btn btn-success" (click)="saveRole(user)">
               Save
             </button>
             <button class="btn btn-danger" (click)="cancelRoleChange(user)">
+              Cancel
+            </button>
+          </div>
+          <div class="btns" *ngIf="profileUpdateState[user.userName]">
+            <button class="btn btn-success" (click)="saveProfileUpdate(user)">
+              Save
+            </button>
+            <button class="btn btn-danger" (click)="cancelProfileUpdate(user)">
               Cancel
             </button>
           </div>

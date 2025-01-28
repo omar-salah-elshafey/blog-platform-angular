@@ -33,12 +33,13 @@ export class ManageUsersComponent implements OnInit {
   currentPage = 1;
   pageSize = 10;
   totalPages = 1;
-  userForms: { [userName: string]: { role: string } } = {};
-  updateState: { [userId: string]: boolean } = {};
+  userForms: {
+    [userName: string]: { firstName: string; lastName: string; role: string };
+  } = {};
+  profileUpdateState: { [userId: string]: boolean } = {};
+  roleChangeState: { [userId: string]: boolean } = {};
+
   roles = ['Admin', 'Author', 'Reader'];
-  updateMode = false;
-  updateProfileForm!: FormGroup;
-  userProfile: UserProfile | null = null;
   constructor(
     private adminService: AdminService,
     private toastr: ToastrService,
@@ -58,8 +59,13 @@ export class ManageUsersComponent implements OnInit {
       next: (response) => {
         this.users = [...this.users, ...response.items];
         this.users.forEach((user) => {
-          this.userForms[user.userName] = { role: user.role };
-          this.updateState[user.userName] = false;
+          this.userForms[user.userName] = {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            role: user.role,
+          };
+          this.profileUpdateState[user.userName] = false;
+          this.roleChangeState[user.userName] = false;
         });
         this.loading = false;
         this.totalPages = response.totalPages;
@@ -84,11 +90,11 @@ export class ManageUsersComponent implements OnInit {
   }
 
   onChangeRole(user: UserProfile) {
-    this.updateState[user.userName] = true;
+    this.roleChangeState[user.userName] = true;
   }
 
   cancelRoleChange(user: UserProfile) {
-    this.updateState[user.userName] = false;
+    this.roleChangeState[user.userName] = false;
     this.userForms[user.userName].role = user.role;
   }
 
@@ -116,6 +122,49 @@ export class ManageUsersComponent implements OnInit {
       error: (error) => {
         this.toastr.error(error.error!.error, 'Error');
         console.error('Error:', error);
+      },
+    });
+  }
+
+  toggleEditMode(user: UserProfile) {
+    this.profileUpdateState[user.userName] = true;
+  }
+
+  cancelProfileUpdate(user: UserProfile) {
+    this.profileUpdateState[user.userName] = false;
+    this.userForms[user.userName].firstName = user.firstName;
+    this.userForms[user.userName].lastName = user.lastName;
+  }
+
+  saveProfileUpdate(user: UserProfile) {
+    const updatedFirstName = this.userForms[user.userName].firstName;
+    const updatedLastName = this.userForms[user.userName].lastName;
+
+    if (
+      updatedFirstName === user.firstName &&
+      updatedLastName === user.lastName
+    ) {
+      this.toastr.info('No changes detected in the profile.', 'Info');
+      this.cancelProfileUpdate(user);
+      return;
+    }
+
+    const updatedProfile = {
+      userName: user.userName,
+      firstName: updatedFirstName,
+      lastName: updatedLastName,
+    };
+
+    this.profileService.updateUserProfile(updatedProfile).subscribe({
+      next: (response) => {
+        this.toastr.success('Profile updated successfully.', 'Success');
+        console.log(response);
+        user.firstName = updatedFirstName;
+        user.lastName = updatedLastName;
+        this.profileUpdateState[user.userName] = false;
+      },
+      error: (error) => {
+        this.toastr.error('Error updating profile.', 'Error');
       },
     });
   }
