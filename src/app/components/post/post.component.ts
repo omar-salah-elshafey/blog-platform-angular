@@ -19,6 +19,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { ProfileService } from '../../services/profile/profile.service';
+import { PostDeletingConfermationComponent } from '../post-deleting-confermation/post-deleting-confermation.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-post',
@@ -51,7 +53,8 @@ export class PostComponent implements OnInit {
     private commentService: CommentService,
     private fb: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -131,20 +134,27 @@ export class PostComponent implements OnInit {
   }
 
   onDeletePost(id: number) {
-    this.postService.deletePost(id).subscribe({
-      next: (response) => {
-        this.toastr.success('Post deleted successfully!', 'Success');
-        console.log('Psot Delted: ', response);
-        if (this.userRole === 'admin') this.router.navigate(['/home']);
-        else this.router.navigate(['/profile']);
-      },
-      error: (error) => {
-        console.error('Error deleting the Post:', error);
-        this.toastr.error(
-          'Failed to delete the Post. Please try again later.',
-          'Error'
-        );
-      },
+    const dialogRef = this.dialog.open(PostDeletingConfermationComponent);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirm') {
+        this.postService.deletePost(id).subscribe({
+          next: (response) => {
+            this.toastr.success('Post deleted successfully!', 'Success');
+            console.log('Psot Delted: ', response);
+            if (this.userRole === 'admin') this.router.navigate(['/home']);
+            else this.router.navigate(['/profile']);
+          },
+          error: (error) => {
+            console.error('Error deleting the Post:', error);
+            this.toastr.error(
+              'Failed to delete the Post. Please try again later.',
+              'Error'
+            );
+          },
+        });
+      } else {
+        console.log('User canceled post deletion');
+      }
     });
   }
 

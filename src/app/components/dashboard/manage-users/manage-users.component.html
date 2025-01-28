@@ -2,13 +2,10 @@
   <div class="spinner"></div>
   <p>Loading profile...</p>
 </div>
-<section class="manage-users">
+<section class="dashboard-pages-container">
   <h2 class="section-title">Manage Users</h2>
-  <div *ngIf="loading" class="loading-spinner">
-    <p>Loading...</p>
-  </div>
 
-  <table *ngIf="users.length > 0" class="users-table">
+  <table *ngIf="users.length > 0" class="dashboard-pages-table">
     <thead>
       <tr>
         <th>First Name</th>

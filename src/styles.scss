@@ -355,6 +355,55 @@ main {
   }
 }
 
+.dashboard-pages-container {
+  padding: 1rem;
+
+  .section-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .dashboard-pages-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    th,
+    td {
+      padding: 0.8rem 1rem;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f8f9fa;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    a {
+      color: #007bff;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .no-results {
+    text-align: center;
+    font-size: 2rem;
+    color: #999;
+  }
+}
 // Responsive Styling - Keeping the single post layout regardless of screen size
 @media screen and (max-width: 768px) {
   .heading {

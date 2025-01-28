@@ -1,1 +1,61 @@
-<p>manage-comments works!</p>
+<div class="dashboard-pages-container">
+  <h2 class="section-title">Manage Comments</h2>
+
+  <div *ngIf="loading" class="spinner-overlay">
+    <div class="spinner"></div>
+    <p>Loading profile...</p>
+  </div>
+
+  <table class="dashboard-pages-table" *ngIf="comments.length > 0">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Content</th>
+        <th>Author</th>
+        <th>Created At</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let comment of comments; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>
+          <a
+            [routerLink]="['/post']"
+            [queryParams]="{ postId: comment.postId }"
+          >
+            {{ comment.content | slice : 0 : 30 }}
+          </a>
+        </td>
+        <td>
+          <a
+            [routerLink]="['/user-profile']"
+            [queryParams]="{ username: comment.userName }"
+          >
+            &#64;{{ comment.userName }}
+          </a>
+        </td>
+        <td>{{ comment.createdDate | date : "short" }}</td>
+        <td>
+          <button
+            class="delete-button"
+            (click)="onDeleteComment(comment.id)"
+            title="Delete Comment"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- No Comments Message -->
+  <div *ngIf="comments.length === 0 && !loading" class="no-results">
+    <p>No comments available.</p>
+  </div>
+
+  <!-- Load More Button -->
+  <div class="centered-link" *ngIf="currentPage < totalPages && !loading">
+    <a (click)="loadMoreComments()">Load More Comments &gt;</a>
+  </div>
+</div>
