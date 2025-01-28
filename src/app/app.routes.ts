@@ -15,6 +15,11 @@ import { PostComponent } from './components/post/post.component';
 import { AccountSettingsComponent } from './components/account-settings/account-settings.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { adminGuard } from './shared/admin/admin.guard';
+import { ManageCommentsComponent } from './components/dashboard/manage-comments/manage-comments.component';
+import { ManagePostsComponent } from './components/dashboard/manage-posts/manage-posts.component';
+import { ManageUsersComponent } from './components/dashboard/manage-users/manage-users.component';
+import { RegisterUserComponent } from './components/dashboard/register-user/register-user.component';
+import { MainViewComponent } from './components/dashboard/main-view/main-view.component';
 
 export const routes: Routes = [
   {
@@ -49,6 +54,15 @@ export const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [authGuard, adminGuard],
+    children: [
+      { path: '', component: MainViewComponent },
+      { path: 'manage-users', component: ManageUsersComponent },
+      { path: 'manage-posts', component: ManagePostsComponent },
+      { path: 'manage-comments', component: ManageCommentsComponent },
+      { path: 'register-user', component: RegisterUserComponent },
+      { path: '', redirectTo: '', pathMatch: 'full' },
+      { path: '**', redirectTo: '', pathMatch: 'full' },
+    ],
   },
   { path: 'not-found', component: NotFoundComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: 'home', pathMatch: 'full' },

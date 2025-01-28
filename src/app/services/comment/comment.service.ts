@@ -71,32 +71,6 @@ export class CommentService {
       );
   }
 
-  getAllComments(
-    pageNumber: number,
-    pageSize: number
-  ): Observable<PaginatedResponse<CommentResponseModel>> {
-    return this.http
-      .get<PaginatedResponse<CommentResponseModel>>(
-        `${this.baseUrl}/get-all-comments`,
-        {
-          params: {
-            pageNumber: pageNumber.toString(),
-            pageSize: pageSize.toString(),
-          },
-        }
-      )
-      .pipe(
-        tap((response) => {
-          console.log('Getting comments data: ', response);
-        }),
-        catchError((error) => {
-          this.toastr.error(error.error!.error, 'Error');
-          console.error('Error Getting comments data', error);
-          return throwError(() => new error(error));
-        })
-      );
-  }
-
   getCommentsByPostId(
     postId: number,
     pageNumber: number,

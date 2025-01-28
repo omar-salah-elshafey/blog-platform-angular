@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 export class AuthService {
   private baseUrl = 'https://localhost:7293/api/Auth';
   private accessTokenSubject = new BehaviorSubject<string | null>(null);
+  // private refreshTimer: any;
   constructor(
     private http: HttpClient,
     private cookieService: CookieService,
@@ -63,6 +64,7 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/login`, userData).pipe(
       tap((response: any) => {
         this.setTokens(response.accessToken, response.refreshToken);
+        // this.startTokenRefreshScheduler();
       }),
       catchError((error) => {
         console.error('Error while logging in: ' + error);
@@ -81,15 +83,45 @@ export class AuthService {
       .get<any>(`${this.baseUrl}/refreshtoken?refreshToken=${refreshToken}`)
       .pipe(
         catchError((error) => {
-          console.error('Token refresh failed:', error.error!.error);
-          return throwError(() => new error('Token refresh failed!' + error!));
+          console.error('Token refresh failed:', error);
+          return throwError(() => new error(error));
         })
       );
   }
 
+  // private startTokenRefreshScheduler() {
+  //   const refreshTime = 8 * 60 * 1000;
+
+  //   if (this.refreshTimer) {
+  //     clearTimeout(this.refreshTimer);
+  //   }
+
+  //   this.refreshTimer = setTimeout(() => {
+  //     const refreshToken = this.cookieService.get('refreshToken');
+  //     if (refreshToken) {
+  //       this.refreshAccessToken(refreshToken).subscribe({
+  //         next: () => {
+  //           this.startTokenRefreshScheduler();
+  //         },
+  //         error: () => {
+  //           this.toastr.error('Session expired, please log in again.');
+  //           this.logout().subscribe(() => {});
+  //         },
+  //       });
+  //     } else {
+  //       this.logout().subscribe(() => {
+  //         this.toastr.error('Session expired, please log in again.');
+  //       });
+  //     }
+  //   }, refreshTime);
+  // }
+
+  // initializeSession() {
+  //   this.startTokenRefreshScheduler();
+  // }
+
   //logout
   logout(): Observable<any> {
-    const accessToken = this.cookieService.get('accessToken');
     const refreshToken = this.cookieService.get('refreshToken');
     return this.http
       .post(`${this.baseUrl}/logout?refreshToken=${refreshToken}`, {})

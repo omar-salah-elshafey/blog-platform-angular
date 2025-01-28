@@ -38,15 +38,26 @@ export class PostService {
     pageNumber: number,
     pageSize: number
   ): Observable<PaginatedResponse<PostResponseModel>> {
-    return this.http.get<PaginatedResponse<PostResponseModel>>(
-      `${this.baseUrl}/get-all-posts`,
-      {
-        params: {
-          pageNumber: pageNumber.toString(),
-          pageSize: pageSize.toString(),
-        },
-      }
-    );
+    return this.http
+      .get<PaginatedResponse<PostResponseModel>>(
+        `${this.baseUrl}/get-all-posts`,
+        {
+          params: {
+            pageNumber: pageNumber.toString(),
+            pageSize: pageSize.toString(),
+          },
+        }
+      )
+      .pipe(
+        tap((response) => {
+          console.log('Getting Posts data: ', response);
+        }),
+        catchError((error) => {
+          this.toastr.error(error.error!.error, 'Error');
+          console.error('Error Getting Posts data', error);
+          return throwError(() => new error(error));
+        })
+      );
   }
 
   getPostById(id: number): Observable<PostResponseModel> {
