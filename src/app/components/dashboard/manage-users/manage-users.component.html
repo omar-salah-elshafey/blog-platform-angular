@@ -1,1 +1,93 @@
-<p>manage-users works!</p>
+<div *ngIf="loading" class="spinner-overlay">
+  <div class="spinner"></div>
+  <p>Loading profile...</p>
+</div>
+<section class="manage-users">
+  <h2 class="section-title">Manage Users</h2>
+  <div *ngIf="loading" class="loading-spinner">
+    <p>Loading...</p>
+  </div>
+
+  <table *ngIf="users.length > 0" class="users-table">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>
+          <div>
+            {{ user.firstName }}
+          </div>
+        </td>
+        <td>
+          <div>
+            {{ user.lastName }}
+          </div>
+        </td>
+        <td>
+          <a
+            [routerLink]="['/user-profile']"
+            [queryParams]="{ username: user.userName }"
+          >
+            &#64;{{ user.userName }}
+          </a>
+        </td>
+        <td>{{ user.email }}</td>
+        <td>
+          <div *ngIf="!updateState[user.userName]">
+            {{ user.role }}
+          </div>
+          <div *ngIf="updateState[user.userName]">
+            <select
+              [(ngModel)]="userForms[user.userName].role"
+              class="form-select"
+            >
+              <option *ngFor="let role of roles" [value]="role">
+                {{ role }}
+              </option>
+            </select>
+          </div>
+        </td>
+        <td>
+          <div class="btns" *ngIf="!updateState[user.userName]">
+            <button class="btn btn-primary">Update Profile</button>
+
+            <button class="btn btn-primary" (click)="onChangeRole(user)">
+              Change Role
+            </button>
+
+            <button
+              class="btn btn-danger"
+              (click)="onDeleteAccount(user.userName)"
+            >
+              Delete
+            </button>
+          </div>
+          <div class="btns" *ngIf="updateState[user.userName]">
+            <button class="btn btn-success" (click)="saveRole(user)">
+              Save
+            </button>
+            <button class="btn btn-danger" (click)="cancelRoleChange(user)">
+              Cancel
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="centered-link" *ngIf="currentPage < totalPages && !loading">
+    <a (click)="loadMoreUsers()">Load More Users &gt;</a>
+  </div>
+
+  <div *ngIf="!loading && users.length === 0" class="no-results">
+    <p>No users found.</p>
+  </div>
+</section>

@@ -7,6 +7,11 @@ import { UserProfile } from '../profile/profile.service';
 import { PaginatedResponse } from '../shared.service';
 import { CommentResponseModel } from '../comment/comment.service';
 
+export interface ChangeUserRoleDto {
+  userName: string;
+  role: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -115,5 +120,18 @@ export class AdminService {
           return throwError(() => new error(error));
         })
       );
+  }
+
+  changeRole(userData: ChangeUserRoleDto): Observable<any>{
+    return this.http.put(`${this.userUrl}/change-role`, userData).pipe(
+      tap((response) => {
+        console.log('Changing the role: ', response);
+      }),
+      catchError((error) => {
+        this.toastr.error(error.error!.error, 'Error');
+        console.error('Error Changing the role', error);
+        return throwError(() => new error(error));
+      })
+    );
   }
 }

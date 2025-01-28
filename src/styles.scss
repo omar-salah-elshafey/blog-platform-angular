@@ -340,6 +340,21 @@ main {
   }
 }
 
+.centered-link {
+  text-align: center;
+  margin: 10px 0;
+  a {
+    font-size: 16px;
+    font-weight: bold;
+    color: #007bff;
+    text-decoration: none;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
 // Responsive Styling - Keeping the single post layout regardless of screen size
 @media screen and (max-width: 768px) {
   .heading {
