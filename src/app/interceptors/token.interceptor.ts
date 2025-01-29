@@ -14,7 +14,8 @@ import {
 } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-
+let isRefreshing = false;
+const refreshTokenSubject = new BehaviorSubject<string | null>(null);
 export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
   const cookieService = inject(CookieService);
   const authService = inject(AuthService);
@@ -23,9 +24,6 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
 
   const accessToken = cookieService.get('accessToken');
   const refreshToken = cookieService.get('refreshToken');
-
-  let isRefreshing = false;
-  const refreshTokenSubject = new BehaviorSubject<string | null>(null);
 
   if (accessToken) {
     req = req.clone({
