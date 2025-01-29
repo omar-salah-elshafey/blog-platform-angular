@@ -40,6 +40,7 @@ export class UserProfileComponent {
     this.route.queryParamMap.subscribe((params) => {
       const username = params.get('username');
       if (username) {
+        this.posts = [];
         this.getUserProfile(username);
         this.fetchUserPosts(username);
       }
