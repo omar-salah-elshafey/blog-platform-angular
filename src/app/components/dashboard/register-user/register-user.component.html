@@ -1,1 +1,183 @@
-<p>register-user works!</p>
+<div class="auth-form-container">
+  <form class="auth-form" [formGroup]="addUserForm" (ngSubmit)="onSubmit()">
+    <h2>Add A User</h2>
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <input type="text" id="firstName" formControlName="firstName" />
+      <div
+        class="error-message"
+        *ngIf="
+          addUserForm.get('firstName')?.touched &&
+          addUserForm.get('firstName')?.invalid
+        "
+      >
+        <small *ngIf="addUserForm.get('firstName')?.errors?.['required']">
+          First Name is required.
+        </small>
+        <small *ngIf="addUserForm.get('firstName')?.errors?.['minlength']">
+          First Name must be at least 3 characters long.
+        </small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+      <input type="text" id="lastName" formControlName="lastName" />
+      <div
+        class="error-message"
+        *ngIf="
+          addUserForm.get('lastName')?.touched &&
+          addUserForm.get('lastName')?.invalid
+        "
+      >
+        <small *ngIf="addUserForm.get('lastName')?.errors?.['required']">
+          Last Name is required.
+        </small>
+        <small *ngIf="addUserForm.get('lastName')?.errors?.['minlength']">
+          Last Name must be at least 3 characters long.
+        </small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" formControlName="username" />
+      <div
+        class="error-message"
+        *ngIf="
+          addUserForm.get('username')?.touched &&
+          addUserForm.get('username')?.invalid
+        "
+      >
+        <small *ngIf="addUserForm.get('username')?.errors?.['required']">
+          Username is required.
+        </small>
+        <small *ngIf="addUserForm.get('username')?.errors?.['minlength']">
+          Username must be at least 3 characters long.
+        </small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" formControlName="email" />
+      <div
+        class="error-message"
+        *ngIf="
+          addUserForm.get('email')?.touched && addUserForm.get('email')?.invalid
+        "
+      >
+        <small *ngIf="addUserForm.get('email')?.errors?.['required']">
+          Email is required.
+        </small>
+        <small *ngIf="addUserForm.get('email')?.errors?.['email']">
+          Invalid email address. Example: example&#64;domain.com
+        </small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="role">Role</label>
+      <select id="role" formControlName="role">
+        <option value="" disabled selected>Select a role</option>
+        <option value="Reader">Reader</option>
+        <option value="Author">Writer</option>
+        <option value="Admin">Admin</option>
+      </select>
+      <div
+        class="error-message"
+        *ngIf="
+          addUserForm.get('role')?.touched && addUserForm.get('role')?.invalid
+        "
+      >
+        <small *ngIf="addUserForm.get('role')?.errors?.['required']">
+          Role is required.
+        </small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <div class="password-container">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          id="password"
+          formControlName="password"
+        />
+        <button
+          type="button"
+          class="toggle-password"
+          (click)="togglePasswordVisibility('password')"
+          aria-label="Toggle password visibility"
+        >
+          <i [ngClass]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+        </button>
+      </div>
+      <div
+        class="error-message"
+        *ngIf="
+          addUserForm.get('password')?.touched &&
+          addUserForm.get('password')?.invalid
+        "
+      >
+        <small *ngIf="addUserForm.get('password')?.errors?.['required']">
+          Password is required.
+        </small>
+        <small *ngIf="addUserForm.get('password')?.errors?.['minlength']">
+          Password must be at least 8 characters long.
+        </small>
+        <small *ngIf="addUserForm.get('password')?.errors?.['pattern']">
+          Password must contain at least 1 uppercase letter, 1 lowercase letter,
+          1 number, and 1 special character.
+        </small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="confirmPassword">Confirm Password</label>
+      <div class="password-container">
+        <input
+          [type]="showConfirmNewPassword ? 'text' : 'password'"
+          id="confirmPassword"
+          formControlName="confirmPassword"
+        />
+        <button
+          type="button"
+          class="toggle-password"
+          (click)="togglePasswordVisibility('confirmPassword')"
+          aria-label="Toggle password visibility"
+        >
+          <i
+            [ngClass]="
+              showConfirmNewPassword ? 'fas fa-eye-slash' : 'fas fa-eye'
+            "
+          ></i>
+        </button>
+      </div>
+      <div
+        class="error-message"
+        *ngIf="
+          addUserForm.get('confirmPassword')?.touched &&
+          addUserForm.get('confirmPassword')?.invalid
+        "
+      >
+        <small *ngIf="addUserForm.get('confirmPassword')?.errors?.['required']">
+          Confirm Password is required.
+        </small>
+        <small
+          *ngIf="addUserForm.get('confirmPassword')?.errors?.['passwordMismatch']"
+        >
+          Passwords do not match.
+        </small>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-submit" [disabled]="addUserForm.invalid">
+      Register
+    </button>
+  </form>
+  <div *ngIf="isLoading" class="spinner-overlay">
+    <div class="spinner"></div>
+    <p>Loading...</p>
+  </div>
+</div>

@@ -61,7 +61,6 @@ export class HomeComponent implements OnInit {
         }
         this.posts = [...this.posts, ...data.items];
         this.totalPages = data.totalPages;
-        this.toastr.success('Getting all the posts.', 'success');
       },
       error: (err) => {
         console.error('Error fetching posts:', err);

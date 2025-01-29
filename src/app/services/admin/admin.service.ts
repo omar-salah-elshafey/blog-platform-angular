@@ -20,19 +20,15 @@ export class AdminService {
   private userUrl = 'https://localhost:7293/api/UserManagement';
   private postUrl = 'https://localhost:7293/api/Post';
   private commentUrl = 'https://localhost:7293/api/Comment';
-  constructor(
-    private http: HttpClient,
-    private cookieService: CookieService,
-    private toastr: ToastrService
-  ) {}
+  constructor(private http: HttpClient, private toastr: ToastrService) {}
 
-  registerAdmin(userData: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/register-admin`, userData).pipe(
+  addUser(userData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/add-user`, userData).pipe(
       tap((response) => {
-        console.log('User registered successfully: ', response);
+        console.log('User Added successfully: ', response);
       }),
       catchError((error) => {
-        console.error('Error while registering: ' + error);
+        console.error('Error while Adding: ' + error);
         return throwError(() => error);
       })
     );
@@ -122,7 +118,7 @@ export class AdminService {
       );
   }
 
-  changeRole(userData: ChangeUserRoleDto): Observable<any>{
+  changeRole(userData: ChangeUserRoleDto): Observable<any> {
     return this.http.put(`${this.userUrl}/change-role`, userData).pipe(
       tap((response) => {
         console.log('Changing the role: ', response);
