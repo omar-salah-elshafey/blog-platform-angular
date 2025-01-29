@@ -27,13 +27,38 @@ export class HeaderComponent {
   isAdmin = false;
 
   ngOnInit(): void {
-    this.isAdmin = this.profileServie.isAdmin();
-    if (this.isLoggedIn()) {
-      this.sharedService.userProfile$.subscribe((profile) => {
-        if (profile) {
-          this.firstName = profile.firstName;
-        }
-      });
+    this.loadUserInfo();
+
+    this.sharedService.userProfile$.subscribe((profile) => {
+      if (profile) {
+        this.firstName = profile.firstName;
+        this.isAdmin = profile.role === 'Admin';
+      }
+    });
+  }
+
+  loadUserInfo() {
+    if (this.authService.isLoggedIn()) {
+      const userProfile = this.sharedService.getUserProfile();
+      if (userProfile) {
+        this.firstName = userProfile.firstName;
+        this.isAdmin = userProfile.role === 'Admin';
+      } else {
+        this.profileServie.getCurrentUserProfile().subscribe({
+          next: (profile) => {
+            this.firstName = profile.firstName;
+            this.isAdmin = profile.role === 'Admin';
+            this.sharedService.setUserProfile(profile);
+          },
+          error: () => {
+            this.firstName = null;
+            this.isAdmin = false;
+          },
+        });
+      }
+    } else {
+      this.firstName = null;
+      this.isAdmin = false;
     }
   }
 
@@ -48,6 +73,9 @@ export class HeaderComponent {
       next: (response) => {
         this.toastr.success('Logout successful!', 'Success');
         console.log('Logout successful', response!);
+        this.sharedService.clearUserProfile();
+        this.firstName = null;
+        this.isAdmin = false;
         this.router.navigate(['/login']);
       },
       error: (error) => {
