@@ -33,6 +33,22 @@
         </a>
       </h2>
       <p class="post-content">{{ post.content }}</p>
+      <div class="media">
+        <img
+          *ngIf="post.imageUrl"
+          [src]="post.imageUrl"
+          alt="Post Image"
+          class="post-image"
+        />
+        <video
+          *ngIf="post.videoUrl"
+          [src]="post.videoUrl"
+          controls
+          class="post-video"
+        >
+          Your browser does not support the video tag.
+        </video>
+      </div>
       <p class="post-date">
         Created: {{ post.createdDate | date : "medium" }}
         <br />

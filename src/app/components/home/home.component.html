@@ -62,6 +62,23 @@
           </small>
         </div>
       </div>
+      <!-- Image Upload -->
+      <label for="imageUpload">Upload Image:</label>
+      <input
+        type="file"
+        id="imageUpload"
+        (change)="onFileSelected($event, 'image')"
+        accept="image/*"
+      />
+
+      <!-- Video Upload -->
+      <label for="videoUpload">Upload Video:</label>
+      <input
+        type="file"
+        id="videoUpload"
+        (change)="onFileSelected($event, 'video')"
+        accept="video/*"
+      />
       <button type="submit" [disabled]="postForm.invalid">Create Post</button>
     </form>
   </div>
@@ -81,6 +98,22 @@
         >
       </p>
       <p class="post-content">{{ post.content }}</p>
+      <div class="media">
+        <img
+          *ngIf="post.imageUrl"
+          [src]="post.imageUrl"
+          alt="Post Image"
+          class="post-image"
+        />
+        <video
+          *ngIf="post.videoUrl"
+          [src]="post.videoUrl"
+          controls
+          class="post-video"
+        >
+          Your browser does not support the video tag.
+        </video>
+      </div>
       <p class="post-date">
         Created: {{ post.createdDate | date : "medium" }}
         <span *ngIf="post.modifiedDate">

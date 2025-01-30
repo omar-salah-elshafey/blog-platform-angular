@@ -16,6 +16,8 @@ export interface PostResponseModel {
   authorName: string;
   title: string;
   content: string;
+  imageUrl?: string;
+  videoUrl?: string;
   createdDate: string;
   modifiedDate?: string;
   comments: PostCommentsModel[];
@@ -25,6 +27,17 @@ export interface PostResponseModel {
 export interface PostDto {
   title: string;
   content: string;
+  imageFile?: File;
+  videoFile?: File;
+}
+
+export interface UpdatePostDto {
+  title: string;
+  content: string;
+  imageFile?: File;
+  videoFile?: File;
+  deleteImage?: boolean;
+  deleteVideo?: boolean;
 }
 
 @Injectable({
@@ -118,9 +131,19 @@ export class PostService {
     );
   }
 
-  updatePost(id: number, postDto: PostDto): Observable<PostResponseModel> {
+  updatePost(
+    id: number,
+    postDto: UpdatePostDto
+  ): Observable<PostResponseModel> {
+    const formData = new FormData();
+    formData.append('title', postDto.title);
+    formData.append('content', postDto.content);
+    if (postDto.imageFile) formData.append('imageFile', postDto.imageFile);
+    if (postDto.videoFile) formData.append('videoFile', postDto.videoFile);
+    if (postDto.deleteImage) formData.append('deleteImage', 'true');
+    if (postDto.deleteVideo) formData.append('deleteVideo', 'true');
     return this.http
-      .put<PostResponseModel>(`${this.baseUrl}/update-post?id=${id}`, postDto)
+      .put<PostResponseModel>(`${this.baseUrl}/update-post?id=${id}`, formData)
       .pipe(
         tap((response) => {
           console.log('Updating the Post', response);
@@ -134,8 +157,13 @@ export class PostService {
   }
 
   addPost(postDto: PostDto): Observable<PostResponseModel> {
+    const formData = new FormData();
+    formData.append('title', postDto.title);
+    formData.append('content', postDto.content);
+    if (postDto.imageFile) formData.append('imageFile', postDto.imageFile);
+    if (postDto.videoFile) formData.append('videoFile', postDto.videoFile);
     return this.http
-      .post<PostResponseModel>(`${this.baseUrl}/create-post`, postDto)
+      .post<PostResponseModel>(`${this.baseUrl}/create-post`, formData)
       .pipe(
         tap((response) => {
           console.log('Creating the Post', response);

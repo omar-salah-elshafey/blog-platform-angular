@@ -4,6 +4,7 @@ import {
   PostDto,
   PostResponseModel,
   PostService,
+  UpdatePostDto,
 } from '../../services/post/post.service';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -44,6 +45,11 @@ export class PostComponent implements OnInit {
   currentPage = 1;
   pageSize = 5;
   totalPages = 1;
+
+  deleteImage = false;
+  deleteVideo = false;
+  imageFile?: File;
+  videoFile?: File;
 
   constructor(
     private postService: PostService,
@@ -178,8 +184,26 @@ export class PostComponent implements OnInit {
           Validators.pattern(/^(?!\s*$).+/),
         ],
       ],
+      deleteImage: [false],
+      deleteVideo: [false],
     });
+    this.imageFile = undefined;
+    this.videoFile = undefined;
     this.isEditingPost = true;
+  }
+
+  onImageFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input?.files?.length) {
+      this.imageFile = input.files[0];
+    }
+  }
+
+  onVideoFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input?.files?.length) {
+      this.videoFile = input.files[0];
+    }
   }
 
   onUpdatePost() {
@@ -188,18 +212,23 @@ export class PostComponent implements OnInit {
       return;
     }
 
-    const updatedPost: PostDto = {
+    const updatedPost: UpdatePostDto = {
       title: this.updatePostForm.value.title.trim(),
       content: this.updatePostForm.value.content.trim(),
+      imageFile: this.imageFile,
+      videoFile: this.videoFile,
+      deleteImage: this.updatePostForm.value.deleteImage,
+      deleteVideo: this.updatePostForm.value.deleteVideo,
     };
 
     this.postService.updatePost(this.post.id, updatedPost).subscribe({
       next: (response) => {
         this.toastr.success('Post updated successfully!', 'Success');
         console.log('Post Updated: ', response);
-        this.post.title = this.updatePostForm.value.title.trim();
-        this.post.content = this.updatePostForm.value.content.trim();
+        this.post = response;
         this.isEditingPost = false;
+        this.deleteImage = false;
+        this.deleteVideo = false;
       },
       error: (error) => {
         console.error('Error updating the post:', error);
@@ -240,9 +269,9 @@ export class PostComponent implements OnInit {
       next: (response) => {
         this.toastr.success('Comment added successfully!', 'Success');
         this.comments.unshift({
-          userName: this.userName!,
-          content: this.commentForm.value.content.trim(),
-          createdDate: new Date().toISOString(),
+          userName: response.userName,
+          content: response.content,
+          createdDate: response.createdDate,
           commentId: response.id,
         });
         this.changeDetectorRef.detectChanges();
@@ -311,8 +340,7 @@ export class PostComponent implements OnInit {
             (c) => c.commentId === comment.commentId
           );
           if (index !== -1) {
-            this.comments[index].content =
-              this.updateCommentForm.value.content.trim();
+            this.comments[index].content = response.content;
           }
           this.editingCommentId = null;
         },

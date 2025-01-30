@@ -29,6 +29,9 @@ export class HomeComponent implements OnInit {
   userRole: any;
   postForm!: FormGroup;
 
+  imageFile?: File;
+  videoFile?: File;
+
   constructor(
     private postService: PostService,
     private toastr: ToastrService,
@@ -71,7 +74,16 @@ export class HomeComponent implements OnInit {
       },
     });
   }
-
+  onFileSelected(event: Event, fileType: 'image' | 'video') {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      if (fileType === 'image') {
+        this.imageFile = input.files[0];
+      } else if (fileType === 'video') {
+        this.videoFile = input.files[0];
+      }
+    }
+  }
   initializeForm(): void {
     this.postForm = this.fb.group({
       title: [
@@ -103,11 +115,19 @@ export class HomeComponent implements OnInit {
     const postDto = {
       title: this.postForm.value.title.trim(),
       content: this.postForm.value.content.trim(),
+      imageFile: this.imageFile,
+      videoFile: this.videoFile,
     };
     this.postService.addPost(postDto).subscribe({
       next: (response) => {
         this.posts.unshift(response);
+        console.log(response.imageUrl);
+        console.log(response.videoUrl);
         this.toastr.success('Post created successfully!', 'Success');
+        console.log(this.imageFile);
+        this.imageFile = undefined;
+        this.videoFile = undefined;
+        console.log(this.imageFile);
         this.postForm.reset();
       },
       error: (err) => {

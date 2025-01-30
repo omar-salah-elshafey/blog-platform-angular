@@ -255,6 +255,20 @@ main {
   }
 }
 
+.media {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  .post-image,
+  .post-video {
+    max-width: 500px;
+    height: auto;
+    border-radius: 10px;
+    margin: 10px 0;
+  }
+}
+
 // Comments Section Styling
 .comments-section {
   margin-top: 20px;
@@ -421,6 +435,11 @@ main {
   .post-author,
   .post-date {
     font-size: 0.9rem;
+  }
+
+  .post-image,
+  .post-video {
+    width: 100%;
   }
 
   .btn-toggle-comments {
