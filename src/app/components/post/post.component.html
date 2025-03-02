@@ -8,42 +8,11 @@
           (ngSubmit)="onUpdatePost()"
         >
           <div>
-            <label for="title">Title:</label>
-            <input
-              id="title"
-              type="text"
-              formControlName="title"
-              placeholder="Enter post title"
-            />
-            <div
-              *ngIf="
-                updatePostForm.get('title')?.invalid &&
-                updatePostForm.get('title')?.touched
-              "
-              class="error-message"
-            >
-              <small *ngIf="updatePostForm.get('title')?.errors?.['minlength']">
-                Title cannot be null or white space.
-              </small>
-              <small *ngIf="updatePostForm.get('title')?.errors?.['pattern']">
-                Title cannot be just white space.
-              </small>
-              <small *ngIf="updatePostForm.get('title')?.errors?.['maxlength']">
-                Title cannot exceed 100 characters.
-              </small>
-              <small *ngIf="updatePostForm.get('title')?.errors?.['required']">
-                Title is required.
-              </small>
-            </div>
-          </div>
-
-          <div>
-            <label for="content">Content:</label>
             <textarea
               id="content"
               rows="5"
               formControlName="content"
-              placeholder="Enter post content"
+              placeholder="Share your thoughts..."
             ></textarea>
             <div
               *ngIf="
@@ -58,7 +27,7 @@
                 Content cannot exceed 5000 characters.
               </small>
               <small
-                *ngIf="updatePostForm.get('content')?.errors?.['mminlength']"
+                *ngIf="updatePostForm.get('content')?.errors?.['minlength']"
               >
                 Content cannot be null or white space.
               </small>
@@ -73,22 +42,24 @@
             </div>
           </div>
 
-          <div>
-            <label for="imageFile">Change Image (Optional):</label>
-            <input
-              type="file"
-              id="imageFile"
-              (change)="onImageFileChange($event)"
-            />
-          </div>
+          <div class="upload-container">
+            <label class="upload-btn">
+              <i class="fa fa-image"></i>
+              <input
+                type="file"
+                (change)="onFileSelected($event, 'image')"
+                accept="image/*"
+              />
+            </label>
 
-          <div>
-            <label for="videoFile">Change Video (Optional):</label>
-            <input
-              type="file"
-              id="videoFile"
-              (change)="onVideoFileChange($event)"
-            />
+            <label class="upload-btn">
+              <i class="fa fa-video"></i>
+              <input
+                type="file"
+                (change)="onFileSelected($event, 'video')"
+                accept="video/*"
+              />
+            </label>
           </div>
 
           <div class="delete-media">
@@ -119,10 +90,8 @@
       </div>
 
       <ng-template #postDetails>
-        <h2 class="post-title">{{ post.title }}</h2>
         <p class="post-author">
-          <a
-            [routerLink]="['/user-profile', post.authorName]"
+          <a [routerLink]="['/user-profile', post.authorName]"
             >&#64;{{ post.authorName }}</a
           >
         </p>
@@ -151,20 +120,30 @@
             Modified: {{ post.modifiedDate | date : "medium" }}
           </span>
         </p>
-        <div class="form-btns">
+        <div
+          class="post-options"
+          *ngIf="userName === post.authorName || userRole === 'admin'"
+        >
           <button
-            *ngIf="userName === post.authorName"
-            (click)="initUpdatePostForm(post)"
+            class="ellipsis-btn"
+            (click)="showPostOptions = !showPostOptions"
           >
-            Edit Post
+            ⋯
           </button>
-          <button
-            *ngIf="userName === post.authorName || userRole === 'admin'"
-            (click)="onDeletePost(post.id)"
-            class="cancel-btn"
-          >
-            Delete Post
-          </button>
+          <div class="dropdown-menu" *ngIf="showPostOptions">
+            <button
+              (click)="initUpdatePostForm(post); showPostOptions = false"
+              *ngIf="userName === post.authorName"
+            >
+              Edit Post
+            </button>
+            <button
+              class="cancel-btn"
+              (click)="onDeletePost(post.id); showPostOptions = false"
+            >
+              Delete Post
+            </button>
+          </div>
         </div>
       </ng-template>
       <div class="comments-section">
@@ -174,7 +153,7 @@
             <textarea
               formControlName="content"
               rows="3"
-              placeholder="Add your comment here..."
+              placeholder="Share your thoughts..."
             ></textarea>
             <div
               *ngIf="
@@ -207,10 +186,9 @@
         <div *ngIf="comments.length > 0; else noComments">
           <div *ngFor="let comment of comments" class="comment">
             <p class="comment-user">
-              <a
-                [routerLink]="['/user-profile', comment.userName]"
-                >{{ comment.userName }}</a
-              >
+              <a [routerLink]="['/user-profile', comment.userName]">{{
+                comment.userName
+              }}</a>
             </p>
 
             <div
@@ -260,7 +238,44 @@
               <p class="comment-date">
                 {{ comment.createdDate | date : "short" }}
               </p>
-              <div class="form-btns">
+              <div
+                class="comment-options"
+                *ngIf="
+                  comment.userName === userName ||
+                  post.authorName === userName ||
+                  userRole === 'admin'
+                "
+              >
+                <button
+                  class="ellipsis-btn"
+                  (click)="toggleCommentMenu(comment.commentId)"
+                >
+                  ⋯
+                </button>
+                <div
+                  class="dropdown-menu"
+                  *ngIf="activeCommentMenu === comment.commentId"
+                >
+                  <button
+                    (click)="
+                      initUpdateCommentForm(comment); activeCommentMenu = null
+                    "
+                    *ngIf="comment.userName === userName"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    class="cancel-btn"
+                    (click)="
+                      onDeleteComment(comment.commentId);
+                      activeCommentMenu = null
+                    "
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+              <!-- <div class="form-btns">
                 <button
                   (click)="initUpdateCommentForm(comment)"
                   *ngIf="comment.userName === userName"
@@ -278,7 +293,7 @@
                 >
                   Delete
                 </button>
-              </div>
+              </div> -->
             </ng-template>
           </div>
           <div class="pagination">

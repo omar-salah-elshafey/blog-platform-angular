@@ -7,12 +7,11 @@ $border-radius: 10px;
 $font-family: "Arial", sans-serif;
 
 .profile-container {
-  padding: 30px;
+  padding: 20px;
   margin: 20px auto;
   background-color: #ffffff;
   border-radius: $border-radius;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
   font-family: $font-family;
   transition: 0.3s ease;
 
@@ -23,6 +22,13 @@ $font-family: "Arial", sans-serif;
     margin-bottom: 15px;
   }
 
+  h2 {
+    font-size: 2rem;
+    color: $primary-color;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+
   h6 {
     font-size: 1rem;
     color: $dark-gray;
@@ -30,10 +36,9 @@ $font-family: "Arial", sans-serif;
   }
 
   p {
-    margin: 10px 0;
-    font-size: 16px;
+    font-size: 1.1rem;
     color: $dark-gray;
-    line-height: 1.5;
+    margin: 10px 0;
 
     strong {
       font-weight: 600;
@@ -67,7 +72,7 @@ $font-family: "Arial", sans-serif;
     gap: 10px;
 
     &:hover {
-      transform: translateY(-3px);
+      transform: scale(1.02);
       background-color: $primary-color;
     }
     i {
@@ -107,11 +112,11 @@ $font-family: "Arial", sans-serif;
 }
 
 @media (max-width: 400px) {
-  .profile-container{
-    .post-title{
+  .profile-container {
+    .post-title {
       font-size: 1.2rem;
     }
-    .post-date{
+    .post-date {
       font-size: 0.8rem;
     }
   }
@@ -123,7 +128,7 @@ $font-family: "Arial", sans-serif;
       width: 200px;
       margin-bottom: 15px;
       font-size: 15px;
-      i{
+      i {
         font-size: 1.5rem;
       }
     }

@@ -14,7 +14,6 @@ export interface PostCommentsModel {
 export interface PostResponseModel {
   id: number;
   authorName: string;
-  title: string;
   content: string;
   imageUrl?: string;
   videoUrl?: string;

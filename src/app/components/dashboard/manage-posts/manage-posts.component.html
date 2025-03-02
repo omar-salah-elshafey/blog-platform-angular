@@ -10,7 +10,7 @@
     <thead>
       <tr>
         <th>#</th>
-        <th>Title</th>
+        <th>Content</th>
         <th>Author</th>
         <th>Created At</th>
         <th>Actions</th>
@@ -21,7 +21,7 @@
         <td>{{ i + 1 }}</td>
         <td>
           <a [routerLink]="['/post', post.id]">
-            {{ post.title | slice : 0 : 30 }}
+            {{ post.content | slice : 0 : 30 }}
           </a>
         </td>
         <td>

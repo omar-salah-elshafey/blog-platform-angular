@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  OnInit,
+} from '@angular/core';
 import {
   PostCommentsModel,
   PostDto,
@@ -50,6 +55,20 @@ export class PostComponent implements OnInit {
   deleteVideo = false;
   imageFile?: File;
   videoFile?: File;
+
+  postMenuOpen: number | null = null;
+
+  togglePostMenu(postId: number) {
+    this.postMenuOpen = this.postMenuOpen === postId ? null : postId;
+  }
+
+  toggleCommentMenu(commentId: number) {
+    this.activeCommentMenu =
+      this.activeCommentMenu === commentId ? null : commentId;
+  }
+
+  showPostOptions = false;
+  activeCommentMenu: number | null = null;
 
   constructor(
     private postService: PostService,
@@ -161,15 +180,6 @@ export class PostComponent implements OnInit {
 
   initUpdatePostForm(post: PostResponseModel) {
     this.updatePostForm = this.fb.group({
-      title: [
-        post.title,
-        [
-          Validators.required,
-          Validators.maxLength(200),
-          Validators.minLength(3),
-          Validators.pattern(/^(?!\s*$).+/),
-        ],
-      ],
       content: [
         post.content,
         [
@@ -187,17 +197,14 @@ export class PostComponent implements OnInit {
     this.isEditingPost = true;
   }
 
-  onImageFileChange(event: Event): void {
+  onFileSelected(event: Event, fileType: 'image' | 'video') {
     const input = event.target as HTMLInputElement;
-    if (input?.files?.length) {
-      this.imageFile = input.files[0];
-    }
-  }
-
-  onVideoFileChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input?.files?.length) {
-      this.videoFile = input.files[0];
+    if (input.files && input.files.length > 0) {
+      if (fileType === 'image') {
+        this.imageFile = input.files[0];
+      } else if (fileType === 'video') {
+        this.videoFile = input.files[0];
+      }
     }
   }
 
@@ -242,7 +249,6 @@ export class PostComponent implements OnInit {
         [
           Validators.required,
           Validators.maxLength(1000),
-          Validators.minLength(1),
           Validators.pattern(/^(?!\s*$).+/),
         ],
       ],
@@ -347,5 +353,17 @@ export class PostComponent implements OnInit {
           );
         },
       });
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as Element;
+    if (
+      !target.closest('.post-options') &&
+      !target.closest('.comment-options')
+    ) {
+      this.showPostOptions = false;
+      this.activeCommentMenu = null;
+    }
   }
 }

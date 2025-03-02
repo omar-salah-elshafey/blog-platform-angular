@@ -86,15 +86,6 @@ export class HomeComponent implements OnInit {
   }
   initializeForm(): void {
     this.postForm = this.fb.group({
-      title: [
-        '',
-        [
-          Validators.required,
-          Validators.maxLength(200),
-          Validators.minLength(3),
-          Validators.pattern(/^(?!\s*$).+/),
-        ],
-      ],
       content: [
         '',
         [

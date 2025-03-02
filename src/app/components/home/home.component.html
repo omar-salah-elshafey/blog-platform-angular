@@ -1,46 +1,15 @@
 <div class="main-container">
-  <h1 class="heading">Blog Posts</h1>
-
   <div
     *ngIf="userRole === 'admin' || userRole === 'author'"
     class="new-post-form"
   >
     <form [formGroup]="postForm" (ngSubmit)="onCreatePost()">
-      <div>
-        <label for="title">Title</label>
-        <input
-          id="title"
-          type="text"
-          formControlName="title"
-          placeholder="Enter post title"
-        />
-        <div
-          *ngIf="
-            postForm.get('title')?.invalid && postForm.get('title')?.touched
-          "
-          class="error-message"
-        >
-          <small *ngIf="postForm.get('title')?.errors?.['required']">
-            Title is required.
-          </small>
-          <small *ngIf="postForm.get('title')?.errors?.['minlength']">
-            Title cannot be less than 3 chars.
-          </small>
-          <small *ngIf="postForm.get('title')?.errors?.['pattern']">
-            Title cannot be only white spaces.
-          </small>
-          <small *ngIf="postForm.get('title')?.errors?.['maxlength']">
-            Title cannot exceed 100 characters.
-          </small>
-        </div>
-      </div>
-      <div>
-        <label for="content">Content</label>
+      <div class="form-group">
         <textarea
           id="content"
           rows="5"
           formControlName="content"
-          placeholder="Enter post content"
+          placeholder="Share your thoughts..."
         ></textarea>
         <div
           *ngIf="
@@ -62,40 +31,51 @@
           </small>
         </div>
       </div>
-      <!-- Image Upload -->
-      <label for="imageUpload">Upload Image:</label>
-      <input
-        type="file"
-        id="imageUpload"
-        (change)="onFileSelected($event, 'image')"
-        accept="image/*"
-      />
 
-      <!-- Video Upload -->
-      <label for="videoUpload">Upload Video:</label>
-      <input
-        type="file"
-        id="videoUpload"
-        (change)="onFileSelected($event, 'video')"
-        accept="video/*"
-      />
-      <button type="submit" [disabled]="postForm.invalid">Create Post</button>
+      <div class="upload-container">
+        <label class="upload-btn">
+          <i class="fa fa-image"></i>
+          <input
+            type="file"
+            (change)="onFileSelected($event, 'image')"
+            accept="image/*"
+          />
+        </label>
+
+        <label class="upload-btn">
+          <i class="fa fa-video"></i>
+          <input
+            type="file"
+            (change)="onFileSelected($event, 'video')"
+            accept="video/*"
+          />
+        </label>
+      </div>
+
+      <button type="submit" [disabled]="postForm.invalid">
+        <i class="fa fa-paper-plane"></i> Post
+      </button>
     </form>
   </div>
 
   <div *ngIf="posts.length > 0 || isLoading; else noPosts" class="posts-grid">
     <div class="post-card" *ngFor="let post of posts">
-      <h2 class="post-title">
-        <a [routerLink]="['/post', post.id]">
-          {{ post.title }}
-        </a>
-      </h2>
+      <!-- <h2 class="post-title"></h2> -->
       <p class="post-author">
         <a [routerLink]="['/user-profile', post.authorName]"
           >&#64;{{ post.authorName }}</a
         >
       </p>
-      <p class="post-content">{{ post.content }}</p>
+      <p class="post-content">
+        <a [routerLink]="['/post', post.id]">
+          <div>
+            <span *ngIf="post.content.length > 200"
+              >{{ post.content | slice : 0 : 200 }}...</span
+            >
+            <span *ngIf="post.content.length <= 200">{{ post.content }}</span>
+          </div>
+        </a>
+      </p>
       <div class="media">
         <img
           *ngIf="post.imageUrl"
@@ -118,12 +98,12 @@
           | Modified: {{ post.modifiedDate | date : "medium" }}
         </span>
       </p>
-      <p class="post-date">
-        <small>Comments: {{ post.comments.length }}</small>
-      </p>
-      <button (click)="toggleComments(post.id)" class="btn-toggle-comments">
-        {{ post.showComments ? "Hide Comments" : "Show Comments" }}
-      </button>
+      <div class="comments">
+        <small class="count">Comments: {{ post.comments.length }}</small>
+        <a (click)="toggleComments(post.id)" class="btn-toggle-comments">
+          {{ post.showComments ? "Hide Comments" : "Show Comments" }}
+        </a>
+      </div>
 
       <div *ngIf="post.showComments" class="comments-section">
         <h3>Comments</h3>
