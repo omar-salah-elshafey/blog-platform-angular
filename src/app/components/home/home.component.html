@@ -86,14 +86,12 @@
   <div *ngIf="posts.length > 0 || isLoading; else noPosts" class="posts-grid">
     <div class="post-card" *ngFor="let post of posts">
       <h2 class="post-title">
-        <a [routerLink]="['/post']" [queryParams]="{ postId: post.id }">
+        <a [routerLink]="['/post', post.id]">
           {{ post.title }}
         </a>
       </h2>
       <p class="post-author">
-        <a
-          [routerLink]="['/user-profile']"
-          [queryParams]="{ username: post.authorName }"
+        <a [routerLink]="['/user-profile', post.authorName]"
           >&#64;{{ post.authorName }}</a
         >
       </p>
@@ -135,11 +133,9 @@
             class="comment"
           >
             <p class="comment-user">
-              <a
-                [routerLink]="['/user-profile']"
-                [queryParams]="{ username: comment.userName }"
-                >{{ comment.userName }}</a
-              >
+              <a [routerLink]="['/user-profile', comment.userName]">{{
+                comment.userName
+              }}</a>
             </p>
             <p class="comment-content">{{ comment.content }}</p>
             <p class="comment-date">

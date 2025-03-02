@@ -20,18 +20,12 @@
       <tr *ngFor="let comment of comments; let i = index">
         <td>{{ i + 1 }}</td>
         <td>
-          <a
-            [routerLink]="['/post']"
-            [queryParams]="{ postId: comment.postId }"
-          >
+          <a [routerLink]="['/post', comment.postId]">
             {{ comment.content | slice : 0 : 30 }}
           </a>
         </td>
         <td>
-          <a
-            [routerLink]="['/user-profile']"
-            [queryParams]="{ username: comment.userName }"
-          >
+          <a [routerLink]="['/user-profile', comment.userName]">
             &#64;{{ comment.userName }}
           </a>
         </td>

@@ -103,11 +103,8 @@ export class ProfileService {
 
   getUserProfile(userName: string) {
     return this.http
-      .get<UserProfile>(`${this.baseUrl}/get-user-profile?userName=${userName}`)
+      .get<UserProfile>(`${this.baseUrl}/get-user-profile/${userName}`)
       .pipe(
-        tap((response) => {
-          console.log('getting profile data: ', response);
-        }),
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Getting User Profile');
@@ -117,8 +114,6 @@ export class ProfileService {
   }
 
   updateUserProfile(userData: any): Observable<any> {
-    console.log('From the edit method in service');
-    console.log(userData);
     return this.http.put(`${this.baseUrl}/update-user`, userData).pipe(
       catchError((error) => {
         console.error('Error during updating:', error);

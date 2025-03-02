@@ -106,19 +106,15 @@ export class AccountSettingsComponent implements OnInit {
   }
 
   onUpdateProfile() {
-    console.log('From the edit method in component');
     const userData = {
       userName: this.profileService.getUserNameFromToken(),
       firstName: this.updateProfileForm.get('firstName')?.value.trim(),
       lastName: this.updateProfileForm.get('lastName')?.value.trim(),
     };
-    console.log(userData);
     this.profileService.updateUserProfile(userData).subscribe({
       next: (response) => {
         this.toastr.success('Profile updated successfully.', 'Success');
         this.updateMode = false;
-
-        console.log('profile updated! ', response);
         const updatedProfile: UserProfile = {
           ...this.userProfile!,
           firstName: userData.firstName,
@@ -142,11 +138,9 @@ export class AccountSettingsComponent implements OnInit {
           userName: this.userProfile!.userName,
           refreshToken: this.cookieService.get('refreshToken'),
         };
-        console.log(userData);
         this.profileService.deleteUserProfile(userData).subscribe({
           next: (response) => {
             this.toastr.success('Profile deleted successfully.', 'Success');
-            console.log('Profile Deleted!: ', response);
             this.sharedService.clearUserProfile();
             this.cookieService.delete('refreshToken');
             this.cookieService.delete('accessToken');
@@ -157,8 +151,6 @@ export class AccountSettingsComponent implements OnInit {
             console.error('Error deleting user profile:', error);
           },
         });
-      } else {
-        console.log('User canceled account deletion');
       }
     });
   }
@@ -227,7 +219,6 @@ export class AccountSettingsComponent implements OnInit {
     };
     this.passwordService.changePassword(trimmedFormValue).subscribe({
       next: (response) => {
-        console.log('Password changed successfully:', response);
         this.toastr.success('Password changed successfully!', 'Success');
         this.changePasswordMode = false;
       },

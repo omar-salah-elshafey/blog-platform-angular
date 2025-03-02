@@ -44,12 +44,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'user-profile',
+    path: 'user-profile/:username',
     component: UserProfileComponent,
     canActivate: [authGuard],
   },
   { path: 'home', component: HomeComponent, canActivate: [authGuard] },
-  { path: 'post', component: PostComponent, canActivate: [authGuard] },
+  { path: 'post/:postId', component: PostComponent, canActivate: [authGuard] },
   {
     path: 'dashboard',
     component: DashboardComponent,

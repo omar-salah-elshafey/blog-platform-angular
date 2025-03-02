@@ -35,10 +35,7 @@
         <tr *ngFor="let user of users">
           <td>{{ user.firstName }} {{ user.lastName }}</td>
           <td>
-            <a
-              [routerLink]="['/user-profile']"
-              [queryParams]="{ username: user.userName }"
-            >
+            <a [routerLink]="['/user-profile', user.userName]">
               &#64;{{ user.userName }}
             </a>
           </td>
@@ -67,15 +64,12 @@
       <tbody>
         <tr *ngFor="let post of posts">
           <td>
-            <a [routerLink]="['/post']" [queryParams]="{ postId: post.id }">
+            <a [routerLink]="['/post', post.id]">
               {{ post.title }}
             </a>
           </td>
           <td>
-            <a
-              [routerLink]="['/user-profile']"
-              [queryParams]="{ username: post.authorName }"
-            >
+            <a [routerLink]="['/user-profile', post.authorName]">
               &#64;{{ post.authorName }}
             </a>
           </td>
@@ -103,17 +97,13 @@
       <tbody>
         <tr *ngFor="let comment of comments">
           <td>
-            <a
-              [routerLink]="['/user-profile']"
-              [queryParams]="{ username: comment.userName }"
-            >
+            <a [routerLink]="['/user-profile', comment.userName]">
               &#64;{{ comment.userName }}
             </a>
           </td>
           <td>
             <a
-              [routerLink]="['/post']"
-              [queryParams]="{ postId: comment.postId }"
+              [routerLink]="['/post', comment.postId]"
             >
               {{ comment.content }}
             </a>

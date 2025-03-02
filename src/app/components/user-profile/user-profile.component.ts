@@ -37,14 +37,12 @@ export class UserProfileComponent {
   ) {}
 
   ngOnInit() {
-    this.route.queryParamMap.subscribe((params) => {
-      const username = params.get('username');
-      if (username) {
-        this.posts = [];
-        this.getUserProfile(username);
-        this.fetchUserPosts(username);
-      }
-    });
+    const username = this.route.snapshot.paramMap.get('username');
+    if (username) {
+      this.posts = [];
+      this.getUserProfile(username);
+      this.fetchUserPosts(username);
+    }
   }
 
   getUserProfile(username: string) {

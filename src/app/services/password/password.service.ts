@@ -32,15 +32,11 @@ export class PasswordService {
   }
 
   resetPassword(userData: any): Observable<any> {
-    console.log('test');
     return this.http.put(`${this.baseUrl}reset-password`, userData);
   }
 
   changePassword(userData: ChangePasswordDto): Observable<any> {
     return this.http.put(`${this.baseUrl}change-password`, userData).pipe(
-      tap((response) => {
-        console.log('Changing the Password: ', response);
-      }),
       catchError((error) => {
         this.toastr.error(error.error!.error, 'Error');
         console.error('Error Changing the Password:', error);

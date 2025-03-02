@@ -122,8 +122,7 @@
         <h2 class="post-title">{{ post.title }}</h2>
         <p class="post-author">
           <a
-            [routerLink]="['/user-profile']"
-            [queryParams]="{ username: post.authorName }"
+            [routerLink]="['/user-profile', post.authorName]"
             >&#64;{{ post.authorName }}</a
           >
         </p>
@@ -209,8 +208,7 @@
           <div *ngFor="let comment of comments" class="comment">
             <p class="comment-user">
               <a
-                [routerLink]="['/user-profile']"
-                [queryParams]="{ username: comment.userName }"
+                [routerLink]="['/user-profile', comment.userName]"
                 >{{ comment.userName }}</a
               >
             </p>

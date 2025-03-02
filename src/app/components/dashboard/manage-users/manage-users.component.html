@@ -46,8 +46,7 @@
         </td>
         <td>
           <a
-            [routerLink]="['/user-profile']"
-            [queryParams]="{ username: user.userName }"
+            [routerLink]="['/user-profile', user.userName]"
           >
             &#64;{{ user.userName }}
           </a>

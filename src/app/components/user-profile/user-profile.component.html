@@ -20,7 +20,7 @@
       <h2>User's Posts</h2>
       <div class="post-card" *ngFor="let post of posts">
         <h2 class="post-title">
-          <a [routerLink]="['/post']" [queryParams]="{ postId: post.id }">
+          <a [routerLink]="['/post', post.id]">
             {{ post.title }}
           </a>
         </h2>
@@ -59,11 +59,9 @@
               class="comment"
             >
               <p class="comment-user">
-                <a
-                  [routerLink]="['/user-profile']"
-                  [queryParams]="{ username: comment.userName }"
-                  >{{ comment.userName }}</a
-                >
+                <a [routerLink]="['/user-profile', comment.userName]">{{
+                  comment.userName
+                }}</a>
               </p>
               <p class="comment-content">{{ comment.content }}</p>
               <p class="comment-date">

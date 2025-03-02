@@ -38,7 +38,7 @@ export class CommentService {
   }
 
   deleteComment(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/delete-comment?id=${id}`).pipe(
+    return this.http.delete(`${this.baseUrl}/delete-comment/${id}`).pipe(
       tap((response) => {
         console.log('Comment Deleted: ', response);
       }),
@@ -56,7 +56,7 @@ export class CommentService {
   ): Observable<CommentResponseModel> {
     return this.http
       .put<CommentResponseModel>(
-        `${this.baseUrl}/update-comment?id=${id}`,
+        `${this.baseUrl}/update-comment/${id}`,
         commentData
       )
       .pipe(
@@ -78,19 +78,15 @@ export class CommentService {
   ): Observable<PaginatedResponse<CommentResponseModel>> {
     return this.http
       .get<PaginatedResponse<CommentResponseModel>>(
-        `${this.baseUrl}/get-comments-by-post`,
+        `${this.baseUrl}/get-comments-by-post/${postId}`,
         {
           params: {
-            postId: postId.toString(),
             pageNumber: pageNumber.toString(),
             pageSize: pageSize.toString(),
           },
         }
       )
       .pipe(
-        tap((response) => {
-          console.log('Getting comments data: ', response);
-        }),
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Getting comments data', error);
@@ -106,19 +102,15 @@ export class CommentService {
   ): Observable<PaginatedResponse<CommentResponseModel>> {
     return this.http
       .get<PaginatedResponse<CommentResponseModel>>(
-        `${this.baseUrl}/get-comments-by-user`,
+        `${this.baseUrl}/get-comments-by-user/${userName}`,
         {
           params: {
-            userName,
             pageNumber: pageNumber.toString(),
             pageSize: pageSize.toString(),
           },
         }
       )
       .pipe(
-        tap((response) => {
-          console.log('Getting comments data: ', response);
-        }),
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Getting comments data', error);

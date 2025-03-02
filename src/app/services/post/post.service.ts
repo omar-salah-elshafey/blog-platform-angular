@@ -62,9 +62,6 @@ export class PostService {
         }
       )
       .pipe(
-        tap((response) => {
-          console.log('Getting Posts data: ', response);
-        }),
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Getting Posts data', error);
@@ -75,13 +72,8 @@ export class PostService {
 
   getPostById(id: number): Observable<PostResponseModel> {
     return this.http
-      .get<PostResponseModel>(`${this.baseUrl}/get-post-by-id`, {
-        params: { id: id.toString() },
-      })
+      .get<PostResponseModel>(`${this.baseUrl}/get-post-by-id/${id}`)
       .pipe(
-        tap((response) => {
-          console.log('Getting post data: ', response);
-        }),
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Getting post data', error);
@@ -97,19 +89,15 @@ export class PostService {
   ): Observable<PaginatedResponse<PostResponseModel>> {
     return this.http
       .get<PaginatedResponse<PostResponseModel>>(
-        `${this.baseUrl}/get-posts-by-user`,
+        `${this.baseUrl}/get-posts-by-user/${userName}`,
         {
           params: {
-            userName,
             pageNumber: pageNumber.toString(),
             pageSize: pageSize.toString(),
           },
         }
       )
       .pipe(
-        tap((response) => {
-          console.log('Getting posts data: ', response);
-        }),
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Getting post data', error);
@@ -119,10 +107,7 @@ export class PostService {
   }
 
   deletePost(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/delete-post?id=${id}`).pipe(
-      tap((response) => {
-        console.log('Deleting the Post', response);
-      }),
+    return this.http.delete(`${this.baseUrl}/delete-post/${id}`).pipe(
       catchError((error) => {
         this.toastr.error(error.error!.error, 'Error');
         console.error('Error Deleting the Post', error);
@@ -143,11 +128,8 @@ export class PostService {
     if (postDto.deleteImage) formData.append('deleteImage', 'true');
     if (postDto.deleteVideo) formData.append('deleteVideo', 'true');
     return this.http
-      .put<PostResponseModel>(`${this.baseUrl}/update-post?id=${id}`, formData)
+      .put<PostResponseModel>(`${this.baseUrl}/update-post/${id}`, formData)
       .pipe(
-        tap((response) => {
-          console.log('Updating the Post', response);
-        }),
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Updating the Post', error);
@@ -165,10 +147,6 @@ export class PostService {
     return this.http
       .post<PostResponseModel>(`${this.baseUrl}/create-post`, formData)
       .pipe(
-        tap((response) => {
-          console.log('Creating the Post', response);
-          this.toastr.info('Creating the Post...', 'info');
-        }),
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Creating the Post', error);

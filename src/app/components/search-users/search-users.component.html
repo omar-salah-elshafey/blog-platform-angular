@@ -21,8 +21,7 @@
         <p>
           <strong>Username:</strong
           ><a
-            [routerLink]="['/user-profile']"
-            [queryParams]="{ username: user.userName }"
+            [routerLink]="['/user-profile', user.userName]"
           >
             {{ user.userName }}
           </a>

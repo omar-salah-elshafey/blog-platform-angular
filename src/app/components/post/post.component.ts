@@ -68,16 +68,14 @@ export class PostComponent implements OnInit {
     this.userRole = this.profileService
       .getCurrentUserRoleFromToken()
       ?.toLowerCase();
-    this.route.queryParamMap.subscribe((params) => {
-      const postId = params.get('postId');
-      this.initCommentForm(+postId!);
-      if (postId) {
-        this.fetchPostDetails(+postId);
-      } else {
-        this.toastr.error('Invalid Post ID', 'Error');
-        this.router.navigate(['/not-found']);
-      }
-    });
+    const postId = this.route.snapshot.paramMap.get('postId');
+    this.initCommentForm(+postId!);
+    if (postId) {
+      this.fetchPostDetails(+postId);
+    } else {
+      this.toastr.error('Invalid Post ID', 'Error');
+      this.router.navigate(['/not-found']);
+    }
   }
 
   fetchPostDetails(id: number) {
@@ -86,7 +84,6 @@ export class PostComponent implements OnInit {
       next: (post) => {
         this.post = post;
         this.fetchPostComments(id);
-        console.log('Fetched user post:', post);
       },
       error: (error) => {
         this.toastr.error(
@@ -114,10 +111,8 @@ export class PostComponent implements OnInit {
             content: item.content,
             createdDate: item.createdDate,
           }));
-          console.log('Mapped Comments:', mappedComments);
           this.comments = [...this.comments, ...mappedComments];
           this.totalPages = response.totalPages;
-          console.log('Fetched comments:', response);
         },
         error: (error) => {
           this.toastr.error(

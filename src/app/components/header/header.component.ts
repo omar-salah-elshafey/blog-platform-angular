@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth/auth-service.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -25,6 +25,10 @@ export class HeaderComponent {
   isMenuOpen = false;
   firstName: string | null = null;
   isAdmin = false;
+
+  @ViewChild('mobileNav') mobileNav!: ElementRef;
+  @ViewChild('mobileMenuButton')
+  mobileMenuButton!: ElementRef;
 
   ngOnInit(): void {
     this.loadUserInfo();
@@ -84,5 +88,18 @@ export class HeaderComponent {
       },
     });
     this.sharedService.clearUserProfile();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (
+      this.isMenuOpen &&
+      this.mobileNav &&
+      this.mobileMenuButton &&
+      !this.mobileNav.nativeElement.contains(event.target) &&
+      !this.mobileMenuButton.nativeElement.contains(event.target)
+    ) {
+      this.isMenuOpen = false;
+    }
   }
 }
