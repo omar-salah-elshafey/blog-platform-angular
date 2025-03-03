@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { PaginatedResponse } from '../shared.service';
+import { environment } from '../../environments/environment';
 
 export interface PostCommentsModel {
   commentId: number;
@@ -43,7 +44,7 @@ export interface UpdatePostDto {
   providedIn: 'root',
 })
 export class PostService {
-  private baseUrl = 'https://localhost:7293/api/Post';
+  private baseUrl = `${environment.apiUrl}/api/Post`;
   constructor(private http: HttpClient, private toastr: ToastrService) {}
 
   getAllPosts(

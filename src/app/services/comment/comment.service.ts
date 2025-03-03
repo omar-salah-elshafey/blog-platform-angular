@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { PaginatedResponse } from '../shared.service';
+import { environment } from '../../environments/environment';
 
 export interface CommentDto {
   PostId: number;
@@ -19,7 +20,7 @@ export interface CommentResponseModel {
   providedIn: 'root',
 })
 export class CommentService {
-  private baseUrl = 'https://localhost:7293/api/Comment';
+  private baseUrl = `${environment.apiUrl}/api/Comment`;
   constructor(private http: HttpClient, private toastr: ToastrService) {}
 
   addComment(commentDto: CommentDto): Observable<CommentResponseModel> {

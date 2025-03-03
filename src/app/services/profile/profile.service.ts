@@ -5,6 +5,7 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { CookieService } from 'ngx-cookie-service';
 import { PaginatedResponse } from '../shared.service';
+import { environment } from '../../environments/environment';
 
 export interface UserProfile {
   firstName: string;
@@ -35,7 +36,7 @@ interface JwtPayload {
   providedIn: 'root',
 })
 export class ProfileService {
-  private baseUrl = 'https://localhost:7293/api/UserManagement';
+  private baseUrl = `${environment.apiUrl}/api/UserManagement`;
 
   constructor(
     private http: HttpClient,

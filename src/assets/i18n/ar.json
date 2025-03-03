@@ -1,0 +1,92 @@
+{
+  "HOME": "الرئيسية",
+  "SEARCH": "بحث",
+  "PROFILE": "الملف الشخصي",
+  "ADMIN": "لوحة التحكم",
+  "LOGOUT": "تسجيل خروج",
+  "ACTIONS": {
+    "CANCEL": "إلغاء",
+    "EDIT": "تعديل",
+    "DELETE": "حذف",
+    "SAVE": "حفظ"
+  },
+  "POST": {
+    "PLACEHOLDER": "شارك أفكارك...",
+    "DELETE_IMAGE": "حذف الصورة الحالية",
+    "DELETE_VIDEO": "حذف الفيديو الحالي",
+    "COMMENTS": "التعليقات",
+    "NO_POSTS": "لا توجد منشورات بعد.",
+    "NO_COMMENTS": "لا توجد تعليقات بعد.",
+    "LOAD_MORE_POSTS": "تحميل المزيد من المنشورات",
+    "LOAD_MORE": "تحميل المزيد من التعليقات",
+    "LOADING": "جاري تحميل المنشور...",
+    "SHOW_COMMENTS": "عرض التعليقات",
+    "HIDE_COMMENTS": "إخفاء التعليقات",
+    "VIDEO_NOT_SUPPORTED": "متصفحك لا يدعم تشغيل الفيديو.",
+    "CREATED": "نشر في",
+    "MODIFIED": "تم التعديل",
+    "SUBMIT": "نشر",
+    "CONTENT_ERRORS": {
+      "MAXLENGTH": "المحتوى لا يمكن أن يتجاوز 5000 حرف.",
+      "MINLENGTH": "المحتوى لا يمكن أن يكون أقل من 3 أحرف.",
+      "PATTERN": "المحتوى لا يمكن أن يكون مجرد مسافة بيضاء.",
+      "REQUIRED": "المحتوى مطلوب."
+    },
+    "COMMENT": {
+      "PLACEHOLDER": "شارك أفكارك...",
+      "SUBMIT": "تعليق",
+      "ERRORS": {
+        "MAXLENGTH": "التعليق لا يمكن أن يتجاوز 1000 حرف.",
+        "PATTERN": "التعليق لا يمكن أن يكون مجرد مسافة بيضاء."
+      }
+    }
+  },
+  "NOTFOUND": {
+    "HEADER": "عذرًا! الصفحة غير موجودة",
+    "DESCRIPTION": "نأسف لذلك، الصفحة التي تبحث عنها غير موجودة",
+    "NAVIGATOR": "العودة إلى الصفحة الرئيسية"
+  },
+  "USER_PROFILE": {
+    "LOADING": "جاري تحميل الملف الشخصي...",
+    "EMAIL": "البريد الإلكتروني",
+    "ROLE": "الصلاحية",
+    "SETTINGS": "الإعدادات",
+    "POSTS_HEADER": "منشورات المستخدم",
+    "NO_POSTS": "لم يقم هذا المستخدم بمشاركة أي منشورات بعد.",
+    "ERROR_LOADING": "فشل في تحميل الملف الشخصي. يرجى إعادة المحاولة لاحقًا."
+  },
+  "DIALOG": {
+    "CONFIRM_DELETE_POST_TITLE": "تأكيد حذف المنشور",
+    "CONFIRM_DELETE_POST_MESSAGE": "أنت على وشك حذف هذا المنشور. لا يمكن التراجع عن هذا الإجراء. هل أنت متأكد؟",
+    "CONFIRM_DELETE_ACCOUNT_TITLE": "تأكيد حذف الحساب",
+    "CONFIRM_DELETE_ACCOUNT_MESSAGE": "أنت على وشك حذف هذا الحساب. لا يمكن التراجع عن هذا الإجراء. هل أنت متأكد؟"
+  },
+  "SEARCH_USERS": {
+    "HEADER": "البحث عن المستخدمين",
+    "PLACEHOLDER": "ابحث عن المستخدمين بواسطة اسم المستخدم",
+    "SEARCH": "بحث",
+    "SEARCHING": "جارٍ البحث...",
+    "NO_RESULT": "لم يتم العثور على أي مستخدمين.",
+    "LOAD_MORE": "عرض المزيد",
+    "NAME": "الاسم",
+    "USERNAME": "اسم المستخدم"
+  },
+  "ACCOUNT_SETTINGS": {
+    "BUTTONS": {
+      "CHANGE_PASSWORD_BUTTON": "تغيير كلمة المرور",
+      "EDIT_PROFILE_BUTTON": "تعديل الملف الشخصي",
+      "DELETE_ACCOUNT_BUTTON": "حذف الحساب"
+    },
+    "PROFILE": {
+      "FIRST_NAME": "الاسم الأول",
+      "LAST_NAME": "الاسم الأخير"
+    },
+    "PASSWORD": {
+      "OLD_PASSWORD": "كلمة المرور القديمة",
+      "NEW_PASSWORD": "كلمة المرور الجديدة",
+      "CONFIRM_NEW_PASSWORD": "تأكيد كلمة المرور الجديدة",
+      "PASSWORD_MISMATCH": "كلمات المرور غير متطابقة.",
+      "SUBMIT": "تغيير كلمة المرور"
+    }
+  }
+}

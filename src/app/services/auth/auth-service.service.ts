@@ -3,12 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = 'https://localhost:7293/api/Auth';
+  private baseUrl = `${environment.apiUrl}/api/Auth`;
   private accessTokenSubject = new BehaviorSubject<string | null>(null);
   // private refreshTimer: any;
   constructor(

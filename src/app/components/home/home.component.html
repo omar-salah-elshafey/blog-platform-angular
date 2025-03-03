@@ -9,7 +9,7 @@
           id="content"
           rows="5"
           formControlName="content"
-          placeholder="Share your thoughts..."
+          [placeholder]="'POST.PLACEHOLDER' | translate"
         ></textarea>
         <div
           *ngIf="
@@ -18,16 +18,16 @@
           class="error-message"
         >
           <small *ngIf="postForm.get('content')?.errors?.['required']">
-            Content is required.
+            {{ "POST.CONTENT_ERRORS.REQUIRED" | translate }}
           </small>
           <small *ngIf="postForm.get('content')?.errors?.['maxlength']">
-            Content cannot exceed 5000 characters.
+            {{ "POST.CONTENT_ERRORS.MAXLENGTH" | translate }}
           </small>
           <small *ngIf="postForm.get('content')?.errors?.['minlength']">
-            Content cannot be less than 3 chars.
+            {{ "POST.CONTENT_ERRORS.MINLENGTH" | translate }}
           </small>
           <small *ngIf="postForm.get('content')?.errors?.['pattern']">
-            Content cannot be only white spaces.
+            {{ "POST.CONTENT_ERRORS.PATTERN" | translate }}
           </small>
         </div>
       </div>
@@ -53,7 +53,7 @@
       </div>
 
       <button type="submit" [disabled]="postForm.invalid">
-        <i class="fa fa-paper-plane"></i> Post
+        <i class="fa fa-paper-plane"></i> {{ "POST.SUBMIT" | translate }}
       </button>
     </form>
   </div>
@@ -62,9 +62,9 @@
     <div class="post-card" *ngFor="let post of posts">
       <!-- <h2 class="post-title"></h2> -->
       <p class="post-author">
-        <a [routerLink]="['/user-profile', post.authorName]"
-          >&#64;{{ post.authorName }}</a
-        >
+        <a [routerLink]="['/user-profile', post.authorName]">{{
+          post.authorName
+        }}</a>
       </p>
       <p class="post-content">
         <a [routerLink]="['/post', post.id]">
@@ -89,33 +89,41 @@
           controls
           class="post-video"
         >
-          Your browser does not support the video tag.
+          {{ "POST.VIDEO_NOT_SUPPORTED" | translate }}
         </video>
       </div>
       <p class="post-date">
-        Created: {{ post.createdDate | date : "medium" }}
+        {{ "POST.CREATED" | translate }}:
+        {{ post.createdDate | date : "medium" }}
         <span *ngIf="post.modifiedDate">
-          | Modified: {{ post.modifiedDate | date : "medium" }}
+          | {{ "POST.MODIFIED" | translate }}:
+          {{ post.modifiedDate | date : "medium" }}
         </span>
       </p>
       <div class="comments">
-        <small class="count">Comments: {{ post.comments.length }}</small>
+        <small class="count"
+          >{{ "POST.COMMENTS" | translate }}: {{ post.comments.length }}</small
+        >
         <a (click)="toggleComments(post.id)" class="btn-toggle-comments">
-          {{ post.showComments ? "Hide Comments" : "Show Comments" }}
+          {{
+            post.showComments
+              ? ("POST.HIDE_COMMENTS" | translate)
+              : ("POST.SHOW_COMMENTS" | translate)
+          }}
         </a>
       </div>
 
       <div *ngIf="post.showComments" class="comments-section">
-        <h3>Comments</h3>
+        <h3>{{ "POST.COMMENTS" | translate }}</h3>
         <div *ngIf="post.comments.length > 0; else noComments">
           <div
             *ngFor="let comment of post.comments | slice : 0 : 2"
             class="comment"
           >
             <p class="comment-user">
-              <a [routerLink]="['/user-profile', comment.userName]">{{
-                comment.userName
-              }}</a>
+              <a [routerLink]="['/user-profile', comment.userName]">
+                {{ comment.userName }}
+              </a>
             </p>
             <p class="comment-content">{{ comment.content }}</p>
             <p class="comment-date">
@@ -124,7 +132,7 @@
           </div>
         </div>
         <ng-template #noComments>
-          <p class="no-comments">No comments yet.</p>
+          <p class="no-comments">{{ "POST.NO_COMMENTS" | translate }}</p>
         </ng-template>
       </div>
     </div>
@@ -134,15 +142,15 @@
         (click)="loadMorePosts()"
         class="btn-load-more"
       >
-        Load More Posts
+        {{ "POST.LOAD_MORE_POSTS" | translate }}
       </button>
     </div>
   </div>
   <ng-template #noPosts>
-    <p class="no-posts">No posts to display.</p>
+    <p class="no-posts">{{ "POST.NO_POSTS" | translate }}</p>
   </ng-template>
 </div>
 <div *ngIf="isLoading" class="spinner-overlay">
   <div class="spinner"></div>
-  <p>Loading posts...</p>
+  <p>{{ "POST.LOADING_POSTS" | translate }}</p>
 </div>

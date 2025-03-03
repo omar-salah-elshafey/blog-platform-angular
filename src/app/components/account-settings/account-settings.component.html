@@ -1,6 +1,6 @@
 <div *ngIf="isProfileLoading" class="spinner-overlay">
   <div class="spinner"></div>
-  <p>Loading profile...</p>
+  <p>{{ "USER_PROFILE.LOADING" | translate }}</p>
 </div>
 <div
   class="profile-container main-container"
@@ -8,21 +8,29 @@
 >
   <h1>{{ userProfile.firstName }} {{ userProfile.lastName }}</h1>
   <h1>
-    <small
-      ><h6>&#64;{{ userProfile.userName }}</h6></small
-    >
+    <small>
+      <h6 dir="ltr">&#64;{{ userProfile.userName }}</h6>
+    </small>
   </h1>
-  <p><strong>Email:</strong> {{ userProfile.email }}</p>
-  <p><strong>Role:</strong> {{ userProfile.role }}</p>
+  <p>
+    <strong>{{ "USER_PROFILE.EMAIL" | translate }}:</strong>
+    {{ userProfile.email }}
+  </p>
+  <p>
+    <strong>{{ "USER_PROFILE.ROLE" | translate }}:</strong>
+    {{ userProfile.role }}
+  </p>
   <div class="profile-buttons" *ngIf="!updateMode && !changePasswordMode">
-    <button (click)="toggleEditForm()" class="edit-btn">Edit Profile</button>
+    <button (click)="toggleEditForm()" class="edit-btn">
+      {{ "ACCOUNT_SETTINGS.BUTTONS.EDIT_PROFILE_BUTTON" | translate }}
+    </button>
     <button (click)="onChangePassword()" class="edit-btn">
-      Reset Password
+      {{ "ACCOUNT_SETTINGS.BUTTONS.CHANGE_PASSWORD_BUTTON" | translate }}
     </button>
   </div>
   <div class="profile-buttons" *ngIf="!updateMode && !changePasswordMode">
     <button (click)="onDeleteProfile()" class="delete-btn">
-      Delete Account
+      {{ "ACCOUNT_SETTINGS.BUTTONS.DELETE_ACCOUNT_BUTTON" | translate }}
     </button>
   </div>
   <form
@@ -33,7 +41,9 @@
   >
     <div class="form-group">
       <div class="data">
-        <label for="firstName">First Name:</label>
+        <label for="firstName">
+          {{ "ACCOUNT_SETTINGS.PROFILE.FIRST_NAME" | translate }}:
+        </label>
         <input
           type="text"
           id="firstName"
@@ -65,7 +75,9 @@
     </div>
     <div class="form-group">
       <div class="data">
-        <label for="lastName">Last Name:</label>
+        <label for="lastName"
+          >{{ "ACCOUNT_SETTINGS.PROFILE.LAST_NAME" | translate }}:</label
+        >
         <input
           type="text"
           id="lastName"
@@ -94,15 +106,15 @@
       </div>
     </div>
     <div class="profile-buttons">
+      <button type="button" (click)="cancelEditForm()" class="cancel-btn">
+        {{ "ACTIONS.CANCEL" | translate }}
+      </button>
       <button
         type="submit"
         class="save-btn"
         [disabled]="updateProfileForm.invalid"
       >
-        Save
-      </button>
-      <button type="button" (click)="cancelEditForm()" class="cancel-btn">
-        Cancel
+        {{ "ACTIONS.SAVE" | translate }}
       </button>
     </div>
   </form>
@@ -114,7 +126,9 @@
     class="change-password-form"
   >
     <div class="form-group">
-      <label for="password">Old Password</label>
+      <label for="password">{{
+        "ACCOUNT_SETTINGS.PASSWORD.OLD_PASSWORD" | translate
+      }}</label>
       <div class="password-container">
         <input
           [type]="showOldPassword ? 'text' : 'password'"
@@ -159,7 +173,9 @@
     </div>
 
     <div class="form-group">
-      <label for="password">New Password</label>
+      <label for="password">{{
+        "ACCOUNT_SETTINGS.PASSWORD.NEW_PASSWORD" | translate
+      }}</label>
       <div class="password-container">
         <input
           [type]="showNewPassword ? 'text' : 'password'"
@@ -204,7 +220,9 @@
     </div>
 
     <div class="form-group">
-      <label for="confirmPassword">Confirm New Password</label>
+      <label for="confirmPassword">{{
+        "ACCOUNT_SETTINGS.PASSWORD.CONFIRM_NEW_PASSWORD" | translate
+      }}</label>
       <div class="password-container">
         <input
           [type]="showConfirmNewPassword ? 'text' : 'password'"
@@ -245,18 +263,18 @@
     </div>
     <div class="profile-buttons">
       <button
-        type="submit"
-        class="save-btn"
-        [disabled]="changePasswordForm.invalid"
-      >
-        Change Your Password
-      </button>
-      <button
         type="button"
         (click)="cancelchangePasswordForm()"
         class="cancel-btn"
       >
-        Cancel
+        {{ "ACTIONS.CANCEL" | translate }}
+      </button>
+      <button
+        type="submit"
+        class="save-btn"
+        [disabled]="changePasswordForm.invalid"
+      >
+        {{ "ACCOUNT_SETTINGS.PASSWORD.SUBMIT" | translate }}
       </button>
     </div>
   </form>

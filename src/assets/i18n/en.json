@@ -1,0 +1,93 @@
+{
+  "HOME": "Home",
+  "SEARCH": "Search",
+  "PROFILE": "Profile",
+  "ADMIN": "Dashboard",
+  "LOGOUT": "Logout",
+  "ACTIONS": {
+    "CANCEL": "Cancel",
+    "EDIT": "Edit",
+    "DELETE": "Delete",
+    "SAVE": "Save"
+  },
+  "POST": {
+    "PLACEHOLDER": "Share your thoughts...",
+    "DELETE_IMAGE": "Delete existing image",
+    "DELETE_VIDEO": "Delete existing video",
+    "COMMENTS": "Comments",
+    "NO_POSTS": "No posts yet.",
+    "NO_COMMENTS": "No comments yet.",
+    "LOAD_MORE_POSTS": "Load More Posts",
+    "LOAD_MORE": "Load More Comments",
+    "LOADING": "Loading post...",
+    "LOADING_POSTS": "Loading posts...",
+    "SHOW_COMMENTS": "Show Comments",
+    "HIDE_COMMENTS": "Hide Comments",
+    "VIDEO_NOT_SUPPORTED": "Your browser does not support the video tag.",
+    "CREATED": "Posted",
+    "MODIFIED": "Modified",
+    "SUBMIT": "Post",
+    "CONTENT_ERRORS": {
+      "MAXLENGTH": "Content cannot exceed 5000 characters.",
+      "MINLENGTH": "Content cannot be Less Than 3 characters.",
+      "PATTERN": "Content cannot be just white space.",
+      "REQUIRED": "Content is required."
+    },
+    "COMMENT": {
+      "PLACEHOLDER": "Share your thoughts...",
+      "SUBMIT": "Comment",
+      "ERRORS": {
+        "MAXLENGTH": "Comment cannot exceed 1000 characters.",
+        "PATTERN": "Comment cannot be just whitespace."
+      }
+    }
+  },
+  "NOTFOUND": {
+    "HEADER": "Oops! Page not found",
+    "DESCRIPTION": "we are sorry, but the page you requested was not found",
+    "NAVIGATOR": "Go Back to Homepage"
+  },
+  "USER_PROFILE": {
+    "LOADING": "Loading profile...",
+    "EMAIL": "Email",
+    "ROLE": "Role",
+    "SETTINGS": "Settings",
+    "POSTS_HEADER": "User's Posts",
+    "NO_POSTS": "This user has not shared any posts yet.",
+    "NO_DATA": "No profile data found."
+  },
+  "DIALOG": {
+    "CONFIRM_DELETE_POST_TITLE": "Confirm Post Deletion",
+    "CONFIRM_DELETE_POST_MESSAGE": "You are about to delete this post. This action cannot be undone. Are you sure?",
+    "CONFIRM_DELETE_ACCOUNT_TITLE": "Confirm Account Deletion",
+    "CONFIRM_DELETE_ACCOUNT_MESSAGE": "You are about to delete this account. This action cannot be undone. Are you sure?"
+  },
+  "SEARCH_USERS": {
+    "HEADER": "Search Users",
+    "PLACEHOLDER": "Search for users by userName",
+    "SEARCH": "Search",
+    "SEARCHING": "Searching...",
+    "NO_RESULT": "No users found.",
+    "LOAD_MORE": "Load More Users",
+    "NAME": "Name",
+    "USERNAME": "UserName"
+  },
+  "ACCOUNT_SETTINGS": {
+    "BUTTONS": {
+      "CHANGE_PASSWORD_BUTTON": "Change Password",
+      "EDIT_PROFILE_BUTTON": "Edit Profile",
+      "DELETE_ACCOUNT_BUTTON": "Delete Account"
+    },
+    "PROFILE": {
+      "FIRST_NAME": "First Name",
+      "LAST_NAME": "Last Name"
+    },
+    "PASSWORD": {
+      "OLD_PASSWORD": "Old Password",
+      "NEW_PASSWORD": "Confirm Password",
+      "CONFIRM_NEW_PASSWORD": "Confirm New Password",
+      "PASSWORD_MISMATCH": "Passwords do not match.",
+      "SUBMIT": "Change Your Password"
+    }
+  }
+}

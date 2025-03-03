@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, Observable, tap, throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
 export interface ChangePasswordDto {
   email: string;
   currentPassword: string;
@@ -13,7 +14,7 @@ export interface ChangePasswordDto {
   providedIn: 'root',
 })
 export class PasswordService {
-  private baseUrl = 'https://localhost:7293/api/PasswordManager/';
+  private baseUrl = `${environment.apiUrl}/api/PasswordManager/`;
 
   constructor(private http: HttpClient, private toastr: ToastrService) {}
 

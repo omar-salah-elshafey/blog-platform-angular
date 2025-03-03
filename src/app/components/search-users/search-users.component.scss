@@ -21,6 +21,7 @@
 
     button {
       margin-left: 0.5rem;
+      margin-right: 0.5rem;
       padding: 0.5rem 1rem;
       background-color: #007bff;
       color: #fff;
@@ -47,13 +48,11 @@
       border-radius: 8px;
       padding: 1rem;
       margin: 0.5rem 0;
-      text-align: left;
+      text-align: start;
       background-color: #f9f9f9;
       transition: 0.3s;
-      // add hover effect and shadow
       &:hover {
-        background-color: #e9e9e9;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       }
 
       h3 {
@@ -62,6 +61,14 @@
 
       p {
         margin: 0.2rem 0;
+        a {
+          text-decoration: none;
+          color: #007bff;
+          transition: 0.3s;
+          &:hover {
+            color: #0056b3;
+          }
+        }
       }
     }
   }
@@ -83,7 +90,7 @@
     transition: 0.3s;
     &:hover {
       background-color: #0069d9;
-      }
+    }
 
     &:disabled {
       background-color: #ccc;

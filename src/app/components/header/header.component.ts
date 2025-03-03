@@ -6,10 +6,11 @@ import { CookieService } from 'ngx-cookie-service';
 import { ToastrService } from 'ngx-toastr';
 import { ProfileService } from '../../services/profile/profile.service';
 import { SharedService } from '../../services/shared.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, TranslateModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
@@ -19,18 +20,38 @@ export class HeaderComponent {
     private router: Router,
     private toastr: ToastrService,
     private profileServie: ProfileService,
-    private sharedService: SharedService
-  ) {}
+    private sharedService: SharedService,
+    private translate: TranslateService
+  ) {
+    translate.setDefaultLang('en');
+    translate.use('en');
+  }
 
   isMenuOpen = false;
   firstName: string | null = null;
   isAdmin = false;
+  currentLang = 'en';
+  isDropdownOpen = false;
+
+  switchLanguage(lang: string) {
+    this.currentLang = lang;
+    this.translate.use(lang);
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    localStorage.setItem('language', lang);
+  }
 
   @ViewChild('mobileNav') mobileNav!: ElementRef;
   @ViewChild('mobileMenuButton')
   mobileMenuButton!: ElementRef;
+  @ViewChild('dropdown') dropdown!: ElementRef;
 
   ngOnInit(): void {
+    const savedLang = localStorage.getItem('language');
+    if (savedLang) {
+      this.switchLanguage(savedLang);
+    }
+
     this.loadUserInfo();
 
     this.sharedService.userProfile$.subscribe((profile) => {
@@ -90,6 +111,14 @@ export class HeaderComponent {
     this.sharedService.clearUserProfile();
   }
 
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  closeDropdown() {
+    this.isDropdownOpen = false;
+  }
+
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     if (
@@ -100,6 +129,14 @@ export class HeaderComponent {
       !this.mobileMenuButton.nativeElement.contains(event.target)
     ) {
       this.isMenuOpen = false;
+    }
+
+    if (
+      this.isDropdownOpen &&
+      this.dropdown &&
+      !this.dropdown.nativeElement.contains(event.target)
+    ) {
+      this.isDropdownOpen = false;
     }
   }
 }

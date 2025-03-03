@@ -1,28 +1,33 @@
 <div class="search-container">
-  <h2>Search Users</h2>
+  <h2>{{ "SEARCH_USERS.HEADER" | translate }}</h2>
   <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
     <div class="search-bar">
       <input
         type="text"
         formControlName="query"
-        placeholder="Enter username to search..."
+        [placeholder]="'SEARCH_USERS.PLACEHOLDER' | translate"
       />
       <button [disabled]="loading || searchForm.invalid">
         <i *ngIf="!loading" class="fa fa-search"></i>
         <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
-        {{ loading ? "Searching..." : "Search" }}
+        {{
+          loading
+            ? ("SEARCH_USERS.SEARCHING" | translate)
+            : ("SEARCH_USERS.SEARCH" | translate)
+        }}
       </button>
     </div>
   </form>
   <div class="results">
     <ng-container *ngIf="users.length > 0; else noResults">
       <div class="user-card" *ngFor="let user of users">
-        <p><strong>Name:</strong> {{ user.firstName }} {{ user.lastName }}</p>
         <p>
-          <strong>Username:</strong
-          ><a
-            [routerLink]="['/user-profile', user.userName]"
-          >
+          <strong>{{ "SEARCH_USERS.NAME" | translate }}:</strong>
+          {{ user.firstName }} {{ user.lastName }}
+        </p>
+        <p>
+          <strong>{{ "SEARCH_USERS.USERNAME" | translate }}: </strong>
+          <a [routerLink]="['/user-profile', user.userName]"  dir="ltr">
             {{ user.userName }}
           </a>
         </p>
@@ -33,12 +38,14 @@
           (click)="loadMoreUsers()"
           class="btn-load-more"
         >
-          Load More Users
+          {{ "SEARCH_USERS.LOAD_MORE" | translate }}
         </button>
       </div>
     </ng-container>
     <ng-template #noResults>
-      <p *ngIf="!loading">No users found.</p>
+      <p *ngIf="searchForm.get('query')!.value && !loading">
+        {{ "SEARCH_USERS.NO_RESULT" | translate }}
+      </p>
     </ng-template>
   </div>
 </div>

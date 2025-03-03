@@ -1,9 +1,26 @@
-<header *ngIf="this.isLoggedIn()">
+<header *ngIf="this.isLoggedIn()" [dir]="currentLang === 'ar' ? 'rtl' : 'ltr'">
   <div class="logo">
-    <a routerLink="/home"
-      ><img src="/assets/image/Aqqrablogo.jpg" alt="logo"
-    /></a>
+    <a routerLink="/home">
+      <img src="/assets/image/Aqqrablogo.jpg" alt="logo" />
+    </a>
   </div>
+
+  <!-- Language Switcher -->
+  <div class="language-switcher">
+    <button
+      [class.active]="currentLang === 'en'"
+      (click)="switchLanguage('en')"
+    >
+      EN
+    </button>
+    <button
+      [class.active]="currentLang === 'ar'"
+      (click)="switchLanguage('ar')"
+    >
+      AR
+    </button>
+  </div>
+
   <nav>
     <span class="icon" id="menu-icon" (click)="toggleMenu()" #mobileMenuButton>
       <span></span>
@@ -11,18 +28,66 @@
       <span></span>
     </span>
     <ul id="nav-menu" [class.show]="isMenuOpen" #mobileNav>
-      <li (click)="isMenuOpen = false"><a routerLink="/home">Home</a></li>
-      <li (click)="isMenuOpen = false"><a routerLink="/search">Search</a></li>
       <li (click)="isMenuOpen = false">
-        <a routerLink="/profile"
-          ><i class="fa fa-user-tie"></i> {{ firstName || "Profile" }}</a
+        <a routerLink="/home">{{ "HOME" | translate }}</a>
+      </li>
+      <li (click)="isMenuOpen = false">
+        <a routerLink="/search">
+          <i class="fa fa-search"></i> {{ "SEARCH" | translate }}</a
         >
       </li>
-      <li (click)="isMenuOpen = false" *ngIf="this.isAdmin">
-        <a routerLink="/dashboard"><i class="fa fa-user-shield"></i> Admin</a>
+      <li class="profile-dropdown" *ngIf="!isMenuOpen">
+        <a>
+          <div class="dropdown" #dropdown>
+            <a class="dropbtn" (click)="toggleDropdown()">
+              <div class="user-info">
+                <i class="fa fa-user-circle"></i>
+                <span> {{ firstName || ("PROFILE" | translate) }}</span>
+              </div>
+            </a>
+            <div
+              class="dropdown-content"
+              [class.align-left]="currentLang === 'en'"
+              [class.align-right]="currentLang === 'ar'"
+              [class.show]="isDropdownOpen"
+            >
+              <a routerLink="/profile" (click)="closeDropdown()">
+                <i class="fa fa-user"></i> {{ "PROFILE" | translate }}
+              </a>
+              <a
+                *ngIf="this.isAdmin"
+                routerLink="/dashboard"
+                (click)="closeDropdown()"
+              >
+                <i class="fa fa-user-shield"></i> {{ "ADMIN" | translate }}
+              </a>
+              <a (click)="logout(); closeDropdown()">
+                <i
+                  class="fa fa-sign-out"
+                  [class.rotate]="currentLang === 'ar'"
+                ></i>
+                {{ "LOGOUT" | translate }}
+              </a>
+            </div>
+          </div>
+        </a>
       </li>
-      <li (click)="isMenuOpen = false; logout()">
-        <a><i class="fa fa-sign-out"></i> Logout</a>
+
+      <li *ngIf="isMenuOpen">
+        <a routerLink="/profile" (click)="isMenuOpen = false">
+          <i class="fa fa-user"></i> {{ "PROFILE" | translate }}
+        </a>
+      </li>
+      <li *ngIf="isMenuOpen && isAdmin">
+        <a routerLink="/dashboard" (click)="isMenuOpen = false">
+          <i class="fa fa-user-shield"></i> {{ "ADMIN" | translate }}
+        </a>
+      </li>
+      <li *ngIf="isMenuOpen">
+        <a (click)="logout(); isMenuOpen = false">
+          <i class="fa fa-sign-out" [class.rotate]="currentLang === 'ar'"></i>
+          {{ "LOGOUT" | translate }}
+        </a>
       </li>
     </ul>
   </nav>

@@ -1,32 +1,38 @@
 <div *ngIf="isProfileLoading" class="spinner-overlay">
   <div class="spinner"></div>
-  <p>Loading profile...</p>
+  <p>{{ "USER_PROFILE.LOADING" | translate }}</p>
 </div>
 <div class="main-container">
   <div *ngIf="!isProfileLoading && userProfile" class="user-profile">
     <h2>{{ userProfile.firstName }} {{ userProfile.lastName }}</h2>
     <h2>
-      <small
-        ><h6>&#64;{{ userProfile.userName }}</h6></small
-      >
+      <small>
+        <h6 dir="ltr">&#64;{{ userProfile.userName }}</h6>
+      </small>
     </h2>
-    <p><strong>Email:</strong> {{ userProfile.email }}</p>
-    <p><strong>Role:</strong> {{ userProfile.role }}</p>
+    <p>
+      <strong>{{ "USER_PROFILE.EMAIL" | translate }} :</strong>
+      {{ userProfile.email }}
+    </p>
+    <p>
+      <strong>{{ "USER_PROFILE.ROLE" | translate }}:</strong>
+      {{ userProfile.role }}
+    </p>
 
     <div
       *ngIf="posts.length > 0 || isPostsLoading; else noPosts"
       class="posts-grid"
     >
-      <h2>User's Posts</h2>
+      <h2>{{ "USER_PROFILE.POSTS_HEADER" | translate }}</h2>
       <div class="post-card" *ngFor="let post of posts">
         <p class="post-content">
           <a [routerLink]="['/post', post.id]">
             <div>
-            <span *ngIf="post.content.length > 200"
-              >{{ post.content | slice : 0 : 200 }}...</span
-            >
-            <span *ngIf="post.content.length <= 200">{{ post.content }}</span>
-          </div>
+              <span *ngIf="post.content.length > 200"
+                >{{ post.content | slice : 0 : 200 }}...</span
+              >
+              <span *ngIf="post.content.length <= 200">{{ post.content }}</span>
+            </div>
           </a>
         </p>
         <div class="media">
@@ -42,22 +48,26 @@
             controls
             class="post-video"
           >
-            Your browser does not support the video tag.
+            {{ "POST.VIDEO_NOT_SUPPORTED" | translate }}
           </video>
         </div>
         <p class="post-date">
-          Created: {{ post.createdDate | date : "medium" }}
+          {{ "POST.CREATED" | translate }}
+          : {{ post.createdDate | date : "medium" }}
           <br />
           <span *ngIf="post.modifiedDate">
-            | Modified: {{ post.modifiedDate | date : "medium" }}
+            | {{ "POST.MODIFIED" | translate }}:
+            {{ post.modifiedDate | date : "medium" }}
           </span>
         </p>
         <p class="post-date">
-          <small>Comments: {{ post.comments.length }}</small>
+          <small>
+            {{ "POST.COMMENTS" | translate }}: {{ post.comments.length }}
+          </small>
         </p>
         <div class="comments-section">
-          <h3>Comments</h3>
-          <div *ngIf="post.comments.length > 0; else noComments">
+          <h3>{{ "POST.COMMENTS" | translate }}</h3>
+          <div *ngIf="post.comments.length > 0">
             <div
               *ngFor="let comment of post.comments | slice : 0 : 2"
               class="comment"
@@ -73,9 +83,6 @@
               </p>
             </div>
           </div>
-          <ng-template #noComments>
-            <p class="no-comments">No comments yet.</p>
-          </ng-template>
         </div>
       </div>
       <div class="pagination">
@@ -84,21 +91,21 @@
           (click)="loadMorePosts()"
           class="btn-load-more"
         >
-          Load More Posts
+          {{ "POST.LOAD_MORE_POSTS" | translate }}
         </button>
       </div>
       <div *ngIf="isPostsLoading" class="spinner-overlay">
         <div class="spinner"></div>
-        <p>Loading posts...</p>
+        <p>{{ "POST.LOADING_POSTS" | translate }}</p>
       </div>
     </div>
 
     <ng-template #noPosts>
-      <p class="no-posts">This user has not authored any posts yet.</p>
+      <p class="no-posts">{{ "USER_PROFILE.NO_POSTS" | translate }}</p>
     </ng-template>
   </div>
 
   <div *ngIf="!isProfileLoading && !userProfile" class="no-profile">
-    <p>No profile data found.</p>
+    <p>{{ "USER_PROFILE.NO_DATA" | translate }}</p>
   </div>
 </div>

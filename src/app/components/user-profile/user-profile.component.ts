@@ -11,10 +11,11 @@ import {
   PostService,
 } from '../../services/post/post.service';
 import { SharedService } from '../../services/shared.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-profile',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TranslateModule],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
 })

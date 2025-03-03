@@ -1,13 +1,14 @@
-<h2 mat-dialog-title>Confirm Posr Deletion</h2>
+<h2 mat-dialog-title>{{ "DIALOG.CONFIRM_DELETE_POST_TITLE" | translate }}</h2>
 <mat-dialog-content>
   <p>
-    You are about to delete this Post. This action cannot be undone. Are you
-    sure?
+    {{ "DIALOG.CONFIRM_DELETE_POST_MESSAGE" | translate }}
   </p>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close="cancel">Cancel</button>
+  <button mat-button mat-dialog-close="cancel">
+    {{ "DIALOG.CANCEL" | translate }}
+  </button>
   <button mat-raised-button color="warn" [mat-dialog-close]="'confirm'">
-    Delete
+    {{ "DIALOG.DELETE" | translate }}
   </button>
 </mat-dialog-actions>

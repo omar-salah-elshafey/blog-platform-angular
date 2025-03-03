@@ -6,6 +6,7 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
 import { UserProfile } from '../profile/profile.service';
 import { PaginatedResponse } from '../shared.service';
 import { CommentResponseModel } from '../comment/comment.service';
+import { environment } from '../../environments/environment';
 
 export interface ChangeUserRoleDto {
   userName: string;
@@ -16,10 +17,10 @@ export interface ChangeUserRoleDto {
   providedIn: 'root',
 })
 export class AdminService {
-  private baseUrl = 'https://localhost:7293/api/Auth';
-  private userUrl = 'https://localhost:7293/api/UserManagement';
-  private postUrl = 'https://localhost:7293/api/Post';
-  private commentUrl = 'https://localhost:7293/api/Comment';
+  private baseUrl = `${environment.apiUrl}/api/Auth`;
+  private userUrl = `${environment.apiUrl}/api/UserManagement`;
+  private postUrl = `${environment.apiUrl}/api/Post`;
+  private commentUrl = `${environment.apiUrl}/api/Comment`;
   constructor(private http: HttpClient, private toastr: ToastrService) {}
 
   addUser(userData: any): Observable<any> {

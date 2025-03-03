@@ -10,10 +10,11 @@ import { ToastrService } from 'ngx-toastr';
 import { ProfileService } from '../../services/profile/profile.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-search-users',
-  imports: [ReactiveFormsModule, CommonModule, RouterModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule, TranslateModule],
   templateUrl: './search-users.component.html',
   styleUrl: './search-users.component.scss',
 })

@@ -27,10 +27,11 @@ import {
 import { ProfileService } from '../../services/profile/profile.service';
 import { PostDeletingConfermationComponent } from '../post-deleting-confermation/post-deleting-confermation.component';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-post',
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss',
 })
