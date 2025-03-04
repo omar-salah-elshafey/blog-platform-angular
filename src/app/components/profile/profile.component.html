@@ -19,7 +19,7 @@
   </p>
   <p>
     <strong>{{ "USER_PROFILE.ROLE" | translate }}:</strong>
-    {{ userProfile.role }}
+    {{ "USER_PROFILE.ROLES." + userProfile.role.toUpperCase() | translate }}
   </p>
   <div class="profile-buttons">
     <button (click)="profileSettings()" class="edit-btn">
@@ -35,7 +35,12 @@
     <div class="post-card" *ngFor="let post of posts">
       <p class="post-content">
         <a [routerLink]="['/post', post.id]">
-          {{ post.content }}
+          <div>
+            <span *ngIf="post.content.length > 200"
+              >{{ post.content | slice : 0 : 200 }}...</span
+            >
+            <span *ngIf="post.content.length <= 200">{{ post.content }}</span>
+          </div>
         </a>
       </p>
       <div class="media">

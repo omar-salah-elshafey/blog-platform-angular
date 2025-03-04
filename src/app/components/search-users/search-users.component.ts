@@ -58,7 +58,6 @@ export class SearchUsersComponent implements OnInit {
         next: (response) => {
           this.users = [...this.users, ...response.items];
           this.totalPages = response.totalPages;
-          console.log(response);
         },
         error: (error) => {
           this.toastr.error('Error fetching results.', 'Error');

@@ -10,10 +10,11 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth/auth-service.service';
 import { ToastrService } from 'ngx-toastr';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-registration',
-  imports: [RouterModule, CommonModule, ReactiveFormsModule],
+  imports: [RouterModule, CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.scss'],
 })
@@ -36,7 +37,6 @@ export class RegistrationComponent implements OnInit {
         lastName: ['', [Validators.required, Validators.minLength(3)]],
         username: ['', [Validators.required, Validators.minLength(3)]],
         email: ['', [Validators.required, Validators.email]],
-        role: ['', [Validators.required]],
         password: [
           '',
           [
@@ -75,7 +75,7 @@ export class RegistrationComponent implements OnInit {
       lastName: this.registrationForm.value.lastName.trim(),
       username: this.registrationForm.value.username.trim(),
       email: this.registrationForm.value.email.trim(),
-      role: this.registrationForm.value.role,
+      role: 'Reader',
       password: this.registrationForm.value.password.trim(),
       confirmPassword: this.registrationForm.value.confirmPassword.trim(),
     };
@@ -83,7 +83,6 @@ export class RegistrationComponent implements OnInit {
       this.isLoading = true;
       this.authService.registerUser(trimmedFormValue).subscribe({
         next: (response) => {
-          console.log('Registration successful:', response);
           this.router.navigate(['/confirm-email']);
         },
         error: (error) => {
@@ -95,7 +94,6 @@ export class RegistrationComponent implements OnInit {
           this.isLoading = false;
         },
       });
-      console.log('Form Submitted', trimmedFormValue);
     } else {
       this.toastr.warning('Please fill in all required fields.', 'Warning');
       console.error('Form Invalid');

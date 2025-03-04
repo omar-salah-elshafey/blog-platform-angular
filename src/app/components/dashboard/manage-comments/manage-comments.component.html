@@ -1,32 +1,36 @@
 <div class="dashboard-pages-container">
-  <h2 class="section-title">Manage Comments</h2>
-
   <div *ngIf="loading" class="spinner-overlay">
     <div class="spinner"></div>
-    <p>Loading profile...</p>
   </div>
 
   <table class="dashboard-pages-table" *ngIf="comments.length > 0">
     <thead>
       <tr>
-        <th>#</th>
-        <th>Content</th>
-        <th>Author</th>
-        <th>Created At</th>
-        <th>Actions</th>
+        <th>{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.CONTENT" | translate }}</th>
+        <th>{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.WRITER" | translate }}</th>
+        <th>{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.DATE" | translate }}</th>
+        <th>{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.ACTIONS" | translate }}</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let comment of comments; let i = index">
-        <td>{{ i + 1 }}</td>
         <td>
           <a [routerLink]="['/post', comment.postId]">
-            {{ comment.content | slice : 0 : 30 }}
+            <div>
+              <span *ngIf="comment.content.length > 10"
+                >{{ comment.content | slice : 0 : 10 }}...</span
+              >
+              <span *ngIf="comment.content.length <= 10">{{
+                comment.content
+              }}</span>
+            </div>
           </a>
         </td>
         <td>
           <a [routerLink]="['/user-profile', comment.userName]">
-            &#64;{{ comment.userName }}
+            <div>
+              <span dir="ltr">&#64;{{ comment.userName }}</span>
+            </div>
           </a>
         </td>
         <td>{{ comment.createdDate | date : "short" }}</td>
@@ -36,7 +40,7 @@
             (click)="onDeleteComment(comment.id)"
             title="Delete Comment"
           >
-            Delete
+            {{ "DASHBOARD.BUTTONS.DELETE" | translate }}
           </button>
         </td>
       </tr>
@@ -45,11 +49,22 @@
 
   <!-- No Comments Message -->
   <div *ngIf="comments.length === 0 && !loading" class="no-results">
-    <p>No comments available.</p>
+    <p>
+      {{
+        "DASHBOARD.SECTIONS.NO_RESULTS"
+          | translate : { type: ("DASHBOARD.SECTIONS.COMMENTS" | translate) }
+      }}
+    </p>
   </div>
 
   <!-- Load More Button -->
   <div class="centered-link" *ngIf="currentPage < totalPages && !loading">
-    <a (click)="loadMoreComments()">Load More Comments &gt;</a>
+    <a (click)="loadMoreComments()">
+      {{
+        "DASHBOARD.SECTIONS.LOAD_MORE"
+          | translate : { type: ("DASHBOARD.SECTIONS.COMMENTS" | translate) }
+      }}
+      &gt;</a
+    >
   </div>
 </div>

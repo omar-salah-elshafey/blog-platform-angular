@@ -20,10 +20,17 @@ import {
 import { CookieService } from 'ngx-cookie-service';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-manage-users',
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+    FormsModule,
+    TranslateModule,
+  ],
   templateUrl: './manage-users.component.html',
   styleUrl: './manage-users.component.scss',
 })
@@ -39,7 +46,7 @@ export class ManageUsersComponent implements OnInit {
   profileUpdateState: { [userId: string]: boolean } = {};
   roleChangeState: { [userId: string]: boolean } = {};
 
-  roles = ['Admin', 'Author', 'Reader'];
+  roles = ['Admin', 'Writer', 'Reader'];
   constructor(
     private adminService: AdminService,
     private toastr: ToastrService,
@@ -69,7 +76,6 @@ export class ManageUsersComponent implements OnInit {
         });
         this.loading = false;
         this.totalPages = response.totalPages;
-        console.log(response);
       },
       error: (error) => {
         this.toastr.error(
@@ -116,7 +122,6 @@ export class ManageUsersComponent implements OnInit {
       next: (response) => {
         this.toastr.success(response.message, 'Success');
         user.role = updatedRole;
-        console.log(response);
         this.cancelRoleChange(user);
       },
       error: (error) => {
@@ -158,7 +163,6 @@ export class ManageUsersComponent implements OnInit {
     this.profileService.updateUserProfile(updatedProfile).subscribe({
       next: (response) => {
         this.toastr.success('Profile updated successfully.', 'Success');
-        console.log(response);
         user.firstName = updatedFirstName;
         user.lastName = updatedLastName;
         this.profileUpdateState[user.userName] = false;
@@ -178,14 +182,12 @@ export class ManageUsersComponent implements OnInit {
           userName: userName,
           refreshToken: this.cookieService.get('refreshToken'),
         };
-        console.log(userData);
         this.profileService.deleteUserProfile(userData).subscribe({
           next: (response) => {
             this.toastr.success('Profile deleted successfully.', 'Success');
             this.users = this.users.filter(
               (user) => user.userName !== userName
             );
-            console.log('Profile Deleted!: ', response);
           },
           error: (error: any) => {
             this.toastr.error(error.error!.error, 'Error');

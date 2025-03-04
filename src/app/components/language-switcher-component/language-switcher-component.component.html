@@ -1,0 +1,19 @@
+<!-- <div class="language-switcher">
+  <button [class.active]="currentLang === 'en'" (click)="switchLanguage('en')">
+    EN
+  </button>
+  <button [class.active]="currentLang === 'ar'" (click)="switchLanguage('ar')">
+    AR
+  </button>
+</div> -->
+
+<div class="language-switcher">
+  <label class="switch">
+    <input type="checkbox" (change)="onLanguageSwitch($event)" [checked]="currentLang === 'en'">
+    <span class="slider">
+      <span class="label-en">EN</span>
+      <span class="label-ar">AR</span>
+    </span>
+  </label>
+</div>
+

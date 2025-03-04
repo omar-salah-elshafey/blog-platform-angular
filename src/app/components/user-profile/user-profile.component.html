@@ -16,7 +16,7 @@
     </p>
     <p>
       <strong>{{ "USER_PROFILE.ROLE" | translate }}:</strong>
-      {{ userProfile.role }}
+      {{ "USER_PROFILE.ROLES." + userProfile.role.toUpperCase() | translate }}
     </p>
 
     <div

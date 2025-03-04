@@ -4,6 +4,31 @@
   "PROFILE": "Profile",
   "ADMIN": "Dashboard",
   "LOGOUT": "Logout",
+  "AUTH": {
+    "LOGIN": "Login",
+    "REGISTER": "Register",
+    "USERNAME": "Username or Email",
+    "PASSWORD": "Password",
+    "CONFIRM_PASSWORD": "Confirm Password",
+    "FORGOT_PASSWORD": "Forgot Password?",
+    "DONT_HAVE_ACCOUNT": "Don't have an account?",
+    "HAVE_ACCOUNT": "Already have an account?",
+    "NOT_CONFIRMED": "Email Not Confirmed?",
+    "CONFIRM": "Confirm it Now!",
+    "ERROR_MESSAGES": {
+      "NAME_REQUIRED": "{{type}}  is required",
+      "NAME_MIN_LENGTH": "{{type}}  must be at least 3 characters",
+      "EMAIL_PATTERN": "Invalid email address. Example: example@domain.com",
+      "REQUIRED": "This field is required"
+    }
+  },
+  "CONFIRMATION_FORM": {
+    "CONFIRM_EMAIL_TITLE": "Confirm Your Email",
+    "EMAIL_LABEL": "Email",
+    "TOKEN_LABEL": "Verification Token",
+    "CONFIRM_BUTTON": "Confirm Email",
+    "RESEND_LINK": "Resend Confirmation Email"
+  },
   "ACTIONS": {
     "CANCEL": "Cancel",
     "EDIT": "Edit",
@@ -54,7 +79,13 @@
     "SETTINGS": "Settings",
     "POSTS_HEADER": "User's Posts",
     "NO_POSTS": "This user has not shared any posts yet.",
-    "NO_DATA": "No profile data found."
+    "NO_DATA": "No profile data found.",
+    "ROLES": {
+      "ADMIN": "Admin",
+      "WRITER": "Writer",
+      "READER": "Reader",
+      "SELECT": "Select a role"
+    }
   },
   "DIALOG": {
     "CONFIRM_DELETE_POST_TITLE": "Confirm Post Deletion",
@@ -86,8 +117,56 @@
       "OLD_PASSWORD": "Old Password",
       "NEW_PASSWORD": "Confirm Password",
       "CONFIRM_NEW_PASSWORD": "Confirm New Password",
-      "PASSWORD_MISMATCH": "Passwords do not match.",
       "SUBMIT": "Change Your Password"
+    }
+  },
+  "PASSWORD_ERRORS": {
+    "PASSWORD_MISMATCH": "Passwords do not match.",
+    "REQUIRED": "Password is required.",
+    "MIN_LENGTH": "Password must be at least 8 characters.",
+    "PATTERN": "Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character."
+  },
+  "DASHBOARD": {
+    "WELCOME": "Welcome",
+    "SUBTITLE": "Here you can manage the platform",
+    "STATS": {
+      "USERS": "Total Users",
+      "POSTS": "Total Posts",
+      "COMMENTS": "Total Comments"
+    },
+    "SECTIONS": {
+      "USERS": "Users",
+      "POSTS": "Posts",
+      "COMMENTS": "Comments",
+      "MANAGE": "Manage {{type}}",
+      "TABLE_HEADERS": {
+        "FULL_NAME": "Full Name",
+        "FIRST_NAME": "First Name",
+        "LAST_NAME": "Last Name",
+        "USERNAME": "Username",
+        "EMAIL": "Email",
+        "ROLE": "Role",
+        "CONTENT": "Content",
+        "WRITER": "Writer",
+        "ACTIONS": "Actions",
+        "DATE": "Date",
+        "CREATED_AT": "Created At"
+      },
+      "NO_RESULTS": "No {{type}} found.",
+      "LOAD_MORE": "Load More {{type}}"
+    },
+    "SIDEBAR": {
+      "USERS": "Manage Users",
+      "POSTS": "Manage Posts",
+      "COMMENTS": "Manage Comments",
+      "ADD_USER": "Add User"
+    },
+    "BUTTONS": {
+      "UPDATE_PROFILE": "Update Profile",
+      "CHANGE_ROLE": "Change Role",
+      "DELETE": "Delete",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
     }
   }
 }

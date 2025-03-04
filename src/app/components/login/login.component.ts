@@ -11,10 +11,11 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth/auth-service.service';
 import { ToastrService } from 'ngx-toastr';
 import { CookieService } from 'ngx-cookie-service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
-  imports: [RouterModule, CommonModule, ReactiveFormsModule],
+  imports: [RouterModule, CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
@@ -60,8 +61,6 @@ export class LoginComponent {
       this.isLoading = true;
       this.authService.login(trimmedFormValue).subscribe({
         next: (response) => {
-          console.log('login successful:', response);
-          this.toastr.success('Login successful!', 'Success');
           this.loginForm.reset();
           this.router.navigate(['/profile']);
           this.isLoading = false;
@@ -75,7 +74,6 @@ export class LoginComponent {
           this.isLoading = false;
         },
       });
-      console.log('Form Submitted', trimmedFormValue);
     } else {
       this.toastr.warning('Please fill in all required fields.', 'Warning');
       console.error('Form Invalid');

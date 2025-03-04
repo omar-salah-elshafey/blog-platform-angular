@@ -10,10 +10,11 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-reset-password-request',
-  imports: [RouterModule, ReactiveFormsModule, CommonModule],
+  imports: [RouterModule, ReactiveFormsModule, CommonModule, TranslateModule],
   templateUrl: './reset-password-request.component.html',
   styleUrl: './reset-password-request.component.scss',
 })
@@ -42,7 +43,6 @@ export class ResetPasswordRequestComponent {
         next: (response) => {
           this.tokenSent = true;
           this.toastr.success('Token sent to your email', 'Success');
-          console.log('Token sent to your email', response!);
         },
         error: (err) => {
           console.error('Error sending token', err.error!.error);
@@ -67,7 +67,6 @@ export class ResetPasswordRequestComponent {
           this.resetPasswordRequestForm.value.token
         );
         this.toastr.success('Token verified successfully', 'Success');
-        console.log('Token verified successfully');
         this.router.navigate(['/reset-password']);
       },
       error: (err) => {

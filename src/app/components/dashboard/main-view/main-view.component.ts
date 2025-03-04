@@ -12,10 +12,11 @@ import {
 } from '../../../services/profile/profile.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-main-view',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TranslateModule],
   templateUrl: './main-view.component.html',
   styleUrl: './main-view.component.scss',
 })
@@ -49,7 +50,6 @@ export class MainViewComponent {
     this.adminService.getUsersCount().subscribe({
       next: (value) => {
         this.usersCount = value;
-        console.log('Users Count: ' + value);
       },
       error: (error) => {
         this.toastr.error(
@@ -65,7 +65,6 @@ export class MainViewComponent {
     this.adminService.getPostsCount().subscribe({
       next: (value) => {
         this.postsCount = value;
-        console.log('Posts Count: ' + value);
       },
       error: (error) => {
         this.toastr.error(
@@ -81,7 +80,6 @@ export class MainViewComponent {
     this.adminService.getCommentsCount().subscribe({
       next: (value) => {
         this.commentsCount = value;
-        console.log('Comments Count: ' + value);
       },
     });
   }
@@ -92,7 +90,6 @@ export class MainViewComponent {
       next: (response) => {
         this.users = response.items;
         this.loading = false;
-        console.log(response.items);
       },
       error: (error) => {
         this.toastr.error(
@@ -111,7 +108,6 @@ export class MainViewComponent {
       next: (response) => {
         this.posts = response.items;
         this.loading = false;
-        console.log(response.items);
       },
       error: (error) => {
         this.toastr.error(
@@ -130,7 +126,6 @@ export class MainViewComponent {
       next: (response) => {
         this.comments = response.items;
         this.loading = false;
-        console.log(response.items);
       },
       error: (error) => {
         this.toastr.error(

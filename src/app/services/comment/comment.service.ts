@@ -27,9 +27,6 @@ export class CommentService {
     return this.http
       .post<CommentResponseModel>(`${this.baseUrl}/add-comment`, commentDto)
       .pipe(
-        tap((response) => {
-          console.log('Comment Created: ', response);
-        }),
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Creating the comment!', error);
@@ -40,9 +37,6 @@ export class CommentService {
 
   deleteComment(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/delete-comment/${id}`).pipe(
-      tap((response) => {
-        console.log('Comment Deleted: ', response);
-      }),
       catchError((error) => {
         this.toastr.error(error.error!.error, 'Error');
         console.error('Error Deleted the comment!', error);
@@ -61,9 +55,6 @@ export class CommentService {
         commentData
       )
       .pipe(
-        tap((response) => {
-          console.log('Comment Updated: ', response);
-        }),
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Updating the comment!', error);

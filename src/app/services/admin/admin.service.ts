@@ -25,9 +25,7 @@ export class AdminService {
 
   addUser(userData: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/add-user`, userData).pipe(
-      tap((response) => {
-        console.log('User Added successfully: ', response);
-      }),
+      tap((response) => {}),
       catchError((error) => {
         console.error('Error while Adding: ' + error);
         return throwError(() => error);
@@ -47,9 +45,6 @@ export class AdminService {
         },
       })
       .pipe(
-        tap((response) => {
-          console.log('Getting Users: ', response);
-        }),
         catchError((error) => {
           console.error('Error while Getting Users: ', error);
           return throwError(() => error);
@@ -59,9 +54,6 @@ export class AdminService {
 
   getUsersCount(): Observable<number> {
     return this.http.get<number>(`${this.userUrl}/get-users-count`).pipe(
-      tap((response) => {
-        console.log('Getting Users count: ', response);
-      }),
       catchError((error) => {
         console.error('Error Getting Users count', error);
         return throwError(() => new error(error));
@@ -71,9 +63,6 @@ export class AdminService {
 
   getPostsCount(): Observable<number> {
     return this.http.get<number>(`${this.postUrl}/get-posts-count`).pipe(
-      tap((response) => {
-        console.log('Getting Posts count: ', response);
-      }),
       catchError((error) => {
         console.error('Error Getting Posts count', error);
         return throwError(() => new error(error));
@@ -83,9 +72,6 @@ export class AdminService {
 
   getCommentsCount(): Observable<number> {
     return this.http.get<number>(`${this.commentUrl}/get-comments-count`).pipe(
-      tap((response) => {
-        console.log('Getting Comments count: ', response);
-      }),
       catchError((error) => {
         console.error('Error Getting Comments count', error);
         return throwError(() => new error(error));
@@ -108,9 +94,6 @@ export class AdminService {
         }
       )
       .pipe(
-        tap((response) => {
-          console.log('Getting comments data: ', response);
-        }),
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Getting comments data', error);
@@ -121,9 +104,6 @@ export class AdminService {
 
   changeRole(userData: ChangeUserRoleDto): Observable<any> {
     return this.http.put(`${this.userUrl}/change-role`, userData).pipe(
-      tap((response) => {
-        console.log('Changing the role: ', response);
-      }),
       catchError((error) => {
         this.toastr.error(error.error!.error, 'Error');
         console.error('Error Changing the role', error);

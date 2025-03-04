@@ -1,19 +1,18 @@
 <div *ngIf="loading" class="spinner-overlay">
   <div class="spinner"></div>
-  <p>Loading profile...</p>
 </div>
 <section class="dashboard-pages-container">
-  <h2 class="section-title">Manage Users</h2>
-
   <table *ngIf="users.length > 0" class="dashboard-pages-table">
     <thead>
       <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Actions</th>
+        <th>
+          {{ "DASHBOARD.SECTIONS.TABLE_HEADERS.FIRST_NAME" | translate }}
+        </th>
+        <th>{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.LAST_NAME" | translate }}</th>
+        <th>{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.USERNAME" | translate }}</th>
+        <th>{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.EMAIL" | translate }}</th>
+        <th>{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.ROLE" | translate }}</th>
+        <th>{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.ACTIONS" | translate }}</th>
       </tr>
     </thead>
     <tbody>
@@ -45,16 +44,14 @@
           </div>
         </td>
         <td>
-          <a
-            [routerLink]="['/user-profile', user.userName]"
-          >
+          <a [routerLink]="['/user-profile', user.userName]" dir="ltr">
             &#64;{{ user.userName }}
           </a>
         </td>
         <td>{{ user.email }}</td>
         <td>
           <div *ngIf="!roleChangeState[user.userName]">
-            {{ user.role }}
+            {{ "USER_PROFILE.ROLES." + user.role.toUpperCase() | translate }}
           </div>
           <div *ngIf="roleChangeState[user.userName]">
             <select
@@ -62,7 +59,7 @@
               class="form-select"
             >
               <option *ngFor="let role of roles" [value]="role">
-                {{ role }}
+                {{ "USER_PROFILE.ROLES." + role.toUpperCase() | translate }}
               </option>
             </select>
           </div>
@@ -76,34 +73,34 @@
             "
           >
             <button class="btn btn-primary" (click)="toggleEditMode(user)">
-              Update Profile
+              {{ "DASHBOARD.BUTTONS.UPDATE_PROFILE" | translate }}
             </button>
 
             <button class="btn btn-primary" (click)="onChangeRole(user)">
-              Change Role
+              {{ "DASHBOARD.BUTTONS.CHANGE_ROLE" | translate }}
             </button>
 
             <button
               class="btn btn-danger"
               (click)="onDeleteAccount(user.userName)"
             >
-              Delete
+              {{ "DASHBOARD.BUTTONS.DELETE" | translate }}
             </button>
           </div>
           <div class="btns" *ngIf="roleChangeState[user.userName]">
             <button class="btn btn-success" (click)="saveRole(user)">
-              Save
+              {{ "DASHBOARD.BUTTONS.SAVE" | translate }}
             </button>
             <button class="btn btn-danger" (click)="cancelRoleChange(user)">
-              Cancel
+              {{ "DASHBOARD.BUTTONS.CANCEL" | translate }}
             </button>
           </div>
           <div class="btns" *ngIf="profileUpdateState[user.userName]">
             <button class="btn btn-success" (click)="saveProfileUpdate(user)">
-              Save
+              {{ "DASHBOARD.BUTTONS.SAVE" | translate }}
             </button>
             <button class="btn btn-danger" (click)="cancelProfileUpdate(user)">
-              Cancel
+              {{ "DASHBOARD.BUTTONS.CANCEL" | translate }}
             </button>
           </div>
         </td>
@@ -112,10 +109,21 @@
   </table>
 
   <div class="centered-link" *ngIf="currentPage < totalPages && !loading">
-    <a (click)="loadMoreUsers()">Load More Users &gt;</a>
+    <a (click)="loadMoreUsers()"
+      >{{
+        "DASHBOARD.SECTIONS.LOAD_MORE"
+          | translate : { type: ("DASHBOARD.SECTIONS.USERS" | translate) }
+      }}
+      &gt;</a
+    >
   </div>
 
   <div *ngIf="!loading && users.length === 0" class="no-results">
-    <p>No users found.</p>
+    <p>
+      {{
+        "DASHBOARD.SECTIONS.NO_RESULTS"
+          | translate : { type: ("DASHBOARD.SECTIONS.USERS" | translate) }
+      }}
+    </p>
   </div>
 </section>

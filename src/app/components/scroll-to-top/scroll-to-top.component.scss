@@ -1,7 +1,7 @@
 .scroll-to-top {
   position: fixed;
   bottom: 2rem;
-  right: 2rem;
+  inset-inline-end: 2rem;
   z-index: 1000;
   cursor: pointer;
   width: 30px;

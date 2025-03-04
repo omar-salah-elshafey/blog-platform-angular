@@ -1,34 +1,38 @@
 <div class="content">
   <div class="head">
-    <h1>Welcome, {{ userName }}</h1>
-    <p>Here you can manage the platform.</p>
+    <h1>{{ "DASHBOARD.WELCOME" | translate }} {{ userName }}</h1>
+    <p>{{ "DASHBOARD.SUBTITLE" | translate }}</p>
   </div>
 
   <section class="quick-stats">
     <div class="stat-card">
-      <h3>Total Users</h3>
+      <h3>{{ "DASHBOARD.STATS.USERS" | translate }}</h3>
       <p>{{ usersCount }}</p>
     </div>
     <div class="stat-card">
-      <h3>Total Posts</h3>
+      <h3>{{ "DASHBOARD.STATS.POSTS" | translate }}</h3>
       <p>{{ postsCount }}</p>
     </div>
     <div class="stat-card">
-      <h3>Total Comments</h3>
+      <h3>{{ "DASHBOARD.STATS.COMMENTS" | translate }}</h3>
       <p>{{ commentsCount }}</p>
     </div>
   </section>
 
   <!-- Users Section -->
   <section class="dashboard-section">
-    <h3>Users</h3>
+    <h3>{{ "DASHBOARD.SECTIONS.USERS" | translate }}</h3>
     <table class="dashboard-table">
       <thead>
         <tr>
-          <th>Full Name</th>
-          <th>Username</th>
-          <th>Email</th>
-          <th>Role</th>
+          <th>
+            {{ "DASHBOARD.SECTIONS.TABLE_HEADERS.FULL_NAME" | translate }}
+          </th>
+          <th>
+            {{ "DASHBOARD.SECTIONS.TABLE_HEADERS.USERNAME" | translate }}
+          </th>
+          <th>{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.EMAIL" | translate }}</th>
+          <th>{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.ROLE" | translate }}</th>
         </tr>
       </thead>
       <tbody>
@@ -36,82 +40,120 @@
           <td>{{ user.firstName }} {{ user.lastName }}</td>
           <td>
             <a [routerLink]="['/user-profile', user.userName]">
-              &#64;{{ user.userName }}
+              <div>
+                <span dir="ltr">&#64;{{ user.userName }}</span>
+              </div>
             </a>
           </td>
           <td>{{ user.email }}</td>
-          <td>{{ user.role }}</td>
+          <td>
+            {{ "USER_PROFILE.ROLES." + user.role.toUpperCase() | translate }}
+          </td>
         </tr>
       </tbody>
     </table>
     <div class="centered-link">
-      <a [routerLink]="['/dashboard/manage-users']">Manage Users &gt;</a>
+      <a [routerLink]="['/dashboard/manage-users']">
+        {{
+          "DASHBOARD.SECTIONS.MANAGE"
+            | translate : { type: ("DASHBOARD.SECTIONS.USERS" | translate) }
+        }}
+        &gt;
+      </a>
     </div>
   </section>
 
   <!-- Posts Section -->
   <section class="dashboard-section">
-    <h3>Posts</h3>
+    <h3>{{ "DASHBOARD.SECTIONS.POSTS" | translate }}</h3>
     <table class="dashboard-table">
       <thead>
         <tr>
-          <th>Content</th>
-          <th>Author</th>
-          <th>Date</th>
+          <th>{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.CONTENT" | translate }}</th>
+          <th>{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.WRITER" | translate }}</th>
+          <th>{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.DATE" | translate }}</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let post of posts">
           <td>
             <a [routerLink]="['/post', post.id]">
-              {{ post.content | slice : 0 : 30 }}...
+              <div>
+                <span *ngIf="post.content.length > 10"
+                  >{{ post.content | slice : 0 : 10 }}...</span
+                >
+                <span *ngIf="post.content.length <= 10">{{
+                  post.content
+                }}</span>
+              </div>
             </a>
           </td>
           <td>
             <a [routerLink]="['/user-profile', post.authorName]">
-              &#64;{{ post.authorName }}
+              <div>
+                <span dir="ltr">&#64;{{ post.authorName }}</span>
+              </div>
             </a>
           </td>
-          <td>{{ post.createdDate | date : "yyyy-MM-dd HH:mm" }}</td>
+          <td>{{ post.createdDate | date : "short" }}</td>
         </tr>
       </tbody>
     </table>
     <div class="centered-link">
-      <a [routerLink]="['/dashboard/manage-posts']">Manage Posts &gt;</a>
+      <a [routerLink]="['/dashboard/manage-posts']">
+        {{
+          "DASHBOARD.SECTIONS.MANAGE"
+            | translate : { type: ("DASHBOARD.SECTIONS.POSTS" | translate) }
+        }}
+        &gt;</a
+      >
     </div>
   </section>
 
   <!-- Comments Section -->
   <section class="dashboard-section">
-    <h3>Comments</h3>
+    <h3>{{ "DASHBOARD.SECTIONS.COMMENTS" | translate }}</h3>
     <table class="dashboard-table">
       <thead>
         <tr>
-          <th>Author</th>
-          <th>Content</th>
-          <th>Date</th>
+          <th>{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.CONTENT" | translate }}</th>
+          <th>{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.WRITER" | translate }}</th>
+          <th>{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.DATE" | translate }}</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let comment of comments">
           <td>
-            <a [routerLink]="['/user-profile', comment.userName]">
-              &#64;{{ comment.userName }}
+            <a [routerLink]="['/post', comment.postId]">
+              <div>
+                <span *ngIf="comment.content.length > 10"
+                  >{{ comment.content | slice : 0 : 10 }}...</span
+                >
+                <span *ngIf="comment.content.length <= 10">{{
+                  comment.content
+                }}</span>
+              </div>
             </a>
           </td>
           <td>
-            <a
-              [routerLink]="['/post', comment.postId]"
-            >
-              {{ comment.content }}
+            <a [routerLink]="['/user-profile', comment.userName]">
+              <div>
+                <span dir="ltr">&#64;{{ comment.userName }}</span>
+              </div>
             </a>
           </td>
-          <td>{{ comment.createdDate | date : "yyyy-MM-dd HH:mm" }}</td>
+          <td>{{ comment.createdDate | date : "short" }}</td>
         </tr>
       </tbody>
     </table>
     <div class="centered-link">
-      <a [routerLink]="['/dashboard/manage-comments']">Manage Comments &gt;</a>
+      <a [routerLink]="['/dashboard/manage-comments']">
+        {{
+          "DASHBOARD.SECTIONS.MANAGE"
+            | translate : { type: ("DASHBOARD.SECTIONS.COMMENTS" | translate) }
+        }}
+        &gt;</a
+      >
     </div>
   </section>
 </div>

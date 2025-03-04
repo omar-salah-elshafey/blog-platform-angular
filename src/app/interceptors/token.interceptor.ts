@@ -42,8 +42,6 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
 
           return authService.refreshAccessToken(refreshToken).pipe(
             switchMap((newTokens) => {
-              console.log('Token successfully refreshed:', newTokens);
-
               cookieService.set('accessToken', newTokens.accessToken, 1, '/');
               cookieService.set('refreshToken', newTokens.refreshToken, 1, '/');
 

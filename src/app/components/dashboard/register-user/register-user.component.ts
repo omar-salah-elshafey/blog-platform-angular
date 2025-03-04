@@ -10,10 +10,11 @@ import { RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AdminService } from '../../../services/admin/admin.service';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register-user',
-  imports: [RouterModule, ReactiveFormsModule, CommonModule],
+  imports: [RouterModule, ReactiveFormsModule, CommonModule, TranslateModule],
   templateUrl: './register-user.component.html',
   styleUrl: './register-user.component.scss',
 })
@@ -87,7 +88,6 @@ export class RegisterUserComponent implements OnInit {
       this.isLoading = true;
       this.adminService.addUser(trimmedFormValue).subscribe({
         next: (response) => {
-          console.log('Registration successful:', response);
           this.toastr.success('User was Added Succefully.', 'Success');
           this.addUserForm.reset();
           this.showConfirmNewPassword = false;
@@ -102,7 +102,6 @@ export class RegisterUserComponent implements OnInit {
           this.isLoading = false;
         },
       });
-      console.log('Form Submitted', trimmedFormValue);
     } else {
       this.toastr.warning('Please fill in all required fields.', 'Warning');
       console.error('Form Invalid');

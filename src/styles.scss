@@ -24,7 +24,7 @@ main {
   }
   .toggle-password {
     position: absolute;
-    right: 10px;
+    inset-inline-end: 10px;
     top: 50%;
     transform: translateY(-50%);
     background: none;
@@ -377,9 +377,9 @@ main {
 
     th,
     td {
-      padding: 0.8rem 1rem;
+      padding: 0.3rem ;
       border: 1px solid #ddd;
-      text-align: left;
+      text-align: center;
     }
 
     th {
@@ -396,8 +396,9 @@ main {
     a {
       color: #007bff;
       text-decoration: none;
+      transition: 0.3s;
       &:hover {
-        text-decoration: underline;
+        color: #0056b3;
       }
     }
   }

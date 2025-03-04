@@ -50,9 +50,6 @@ export class AuthService {
   //register
   registerUser(userData: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/register-user`, userData).pipe(
-      tap((response) => {
-        console.log('User registered successfully: ', response);
-      }),
       catchError((error) => {
         console.error('Error while registering: ' + error);
         return throwError(() => error);
@@ -65,7 +62,6 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/login`, userData).pipe(
       tap((response: any) => {
         this.setTokens(response.accessToken, response.refreshToken);
-        // this.startTokenRefreshScheduler();
       }),
       catchError((error) => {
         console.error('Error while logging in: ' + error);
@@ -89,37 +85,6 @@ export class AuthService {
         })
       );
   }
-
-  // private startTokenRefreshScheduler() {
-  //   const refreshTime = 8 * 60 * 1000;
-
-  //   if (this.refreshTimer) {
-  //     clearTimeout(this.refreshTimer);
-  //   }
-
-  //   this.refreshTimer = setTimeout(() => {
-  //     const refreshToken = this.cookieService.get('refreshToken');
-  //     if (refreshToken) {
-  //       this.refreshAccessToken(refreshToken).subscribe({
-  //         next: () => {
-  //           this.startTokenRefreshScheduler();
-  //         },
-  //         error: () => {
-  //           this.toastr.error('Session expired, please log in again.');
-  //           this.logout().subscribe(() => {});
-  //         },
-  //       });
-  //     } else {
-  //       this.logout().subscribe(() => {
-  //         this.toastr.error('Session expired, please log in again.');
-  //       });
-  //     }
-  //   }, refreshTime);
-  // }
-
-  // initializeSession() {
-  //   this.startTokenRefreshScheduler();
-  // }
 
   //logout
   logout(): Observable<any> {

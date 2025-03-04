@@ -4,9 +4,11 @@
     [formGroup]="registrationForm"
     (ngSubmit)="onSubmit()"
   >
-    <h2>Create an Account</h2>
+    <h2>{{ "AUTH.REGISTER" | translate }}</h2>
     <div class="form-group">
-      <label for="firstName">First Name</label>
+      <label for="firstName">
+        {{ "DASHBOARD.SECTIONS.TABLE_HEADERS.FIRST_NAME" | translate }}
+      </label>
       <input type="text" id="firstName" formControlName="firstName" />
       <div
         class="error-message"
@@ -16,16 +18,34 @@
         "
       >
         <small *ngIf="registrationForm.get('firstName')?.errors?.['required']">
-          First Name is required.
+          {{
+            "AUTH.ERROR_MESSAGES.NAME_REQUIRED"
+              | translate
+                : {
+                    type:
+                      ("DASHBOARD.SECTIONS.TABLE_HEADERS.FIRST_NAME"
+                      | translate)
+                  }
+          }}
         </small>
         <small *ngIf="registrationForm.get('firstName')?.errors?.['minlength']">
-          First Name must be at least 3 characters long.
+          {{
+            "AUTH.ERROR_MESSAGES.NAME_MIN_LENGTH"
+              | translate
+                : {
+                    type:
+                      ("DASHBOARD.SECTIONS.TABLE_HEADERS.FIRST_NAME"
+                      | translate)
+                  }
+          }}
         </small>
       </div>
     </div>
 
     <div class="form-group">
-      <label for="lastName">Last Name</label>
+      <label for="lastName">
+        {{ "DASHBOARD.SECTIONS.TABLE_HEADERS.LAST_NAME" | translate }}
+      </label>
       <input type="text" id="lastName" formControlName="lastName" />
       <div
         class="error-message"
@@ -35,16 +55,32 @@
         "
       >
         <small *ngIf="registrationForm.get('lastName')?.errors?.['required']">
-          Last Name is required.
+          {{
+            "AUTH.ERROR_MESSAGES.NAME_REQUIRED"
+              | translate
+                : {
+                    type:
+                      ("DASHBOARD.SECTIONS.TABLE_HEADERS.LAST_NAME" | translate)
+                  }
+          }}
         </small>
         <small *ngIf="registrationForm.get('lastName')?.errors?.['minlength']">
-          Last Name must be at least 3 characters long.
+          {{
+            "AUTH.ERROR_MESSAGES.NAME_MIN_LENGTH"
+              | translate
+                : {
+                    type:
+                      ("DASHBOARD.SECTIONS.TABLE_HEADERS.LAST_NAME" | translate)
+                  }
+          }}
         </small>
       </div>
     </div>
 
     <div class="form-group">
-      <label for="username">Username</label>
+      <label for="username">
+        {{ "DASHBOARD.SECTIONS.TABLE_HEADERS.USERNAME" | translate }}
+      </label>
       <input type="text" id="username" formControlName="username" />
       <div
         class="error-message"
@@ -54,16 +90,32 @@
         "
       >
         <small *ngIf="registrationForm.get('username')?.errors?.['required']">
-          Username is required.
+          {{
+            "AUTH.ERROR_MESSAGES.NAME_REQUIRED"
+              | translate
+                : {
+                    type:
+                      ("DASHBOARD.SECTIONS.TABLE_HEADERS.USERNAME" | translate)
+                  }
+          }}
         </small>
         <small *ngIf="registrationForm.get('username')?.errors?.['minlength']">
-          Username must be at least 3 characters long.
+          {{
+            "AUTH.ERROR_MESSAGES.NAME_MIN_LENGTH"
+              | translate
+                : {
+                    type:
+                      ("DASHBOARD.SECTIONS.TABLE_HEADERS.USERNAME" | translate)
+                  }
+          }}
         </small>
       </div>
     </div>
 
     <div class="form-group">
-      <label for="email">Email</label>
+      <label for="email">
+        {{ "DASHBOARD.SECTIONS.TABLE_HEADERS.EMAIL" | translate }}
+      </label>
       <input type="email" id="email" formControlName="email" />
       <div
         class="error-message"
@@ -73,36 +125,28 @@
         "
       >
         <small *ngIf="registrationForm.get('email')?.errors?.['required']">
-          Email is required.
+          {{
+            "AUTH.ERROR_MESSAGES.NAME_REQUIRED"
+              | translate
+                : {
+                    type: ("DASHBOARD.SECTIONS.TABLE_HEADERS.EMAIL" | translate)
+                  }
+          }}
         </small>
         <small *ngIf="registrationForm.get('email')?.errors?.['email']">
-          Invalid email address. Example: example&#64;domain.com
+          {{
+            "AUTH.ERROR_MESSAGES.EMAIL_PATTERN"
+              | translate
+                : {
+                    type: ("DASHBOARD.SECTIONS.TABLE_HEADERS.EMAIL" | translate)
+                  }
+          }}
         </small>
       </div>
     </div>
 
     <div class="form-group">
-      <label for="role">Role</label>
-      <select id="role" formControlName="role">
-        <option value="" disabled selected>Select a role</option>
-        <option value="Reader">Reader</option>
-        <option value="Author">Writer</option>
-      </select>
-      <div
-        class="error-message"
-        *ngIf="
-          registrationForm.get('role')?.touched &&
-          registrationForm.get('role')?.invalid
-        "
-      >
-        <small *ngIf="registrationForm.get('role')?.errors?.['required']">
-          Role is required.
-        </small>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="password">Password</label>
+      <label for="password">{{ "AUTH.PASSWORD" | translate }}</label>
       <div class="password-container">
         <input
           [type]="showPassword ? 'text' : 'password'"
@@ -126,20 +170,21 @@
         "
       >
         <small *ngIf="registrationForm.get('password')?.errors?.['required']">
-          Password is required.
+          {{ "PASSWORD_ERRORS.REQUIRED" | translate }}
         </small>
         <small *ngIf="registrationForm.get('password')?.errors?.['minlength']">
-          Password must be at least 8 characters long.
+          {{ "PASSWORD_ERRORS.MIN_LENGTH" | translate }}
         </small>
         <small *ngIf="registrationForm.get('password')?.errors?.['pattern']">
-          Password must contain at least 1 uppercase letter, 1 lowercase letter,
-          1 number, and 1 special character.
+          {{ "PASSWORD_ERRORS.PATTERN" | translate }}
         </small>
       </div>
     </div>
 
     <div class="form-group">
-      <label for="confirmPassword">Confirm Password</label>
+      <label for="confirmPassword">
+        {{ "AUTH.CONFIRM_PASSWORD" | translate }}
+      </label>
       <div class="password-container">
         <input
           [type]="showPassword ? 'text' : 'password'"
@@ -165,12 +210,12 @@
         <small
           *ngIf="registrationForm.get('confirmPassword')?.errors?.['required']"
         >
-          Confirm Password is required.
+          {{ "PASSWORD_ERRORS.REQUIRED" | translate }}
         </small>
         <small
           *ngIf="registrationForm.get('confirmPassword')?.errors?.['passwordMismatch']"
         >
-          Passwords do not match.
+          {{ "PASSWORD_ERRORS.PASSWORD_MISMATCH" | translate }}
         </small>
       </div>
     </div>
@@ -180,13 +225,15 @@
       class="btn-submit"
       [disabled]="registrationForm.invalid"
     >
-      Register
+      {{ "AUTH.REGISTER" | translate }}
     </button>
     <hr />
-    <p>Already have an account? <a routerLink="/login">Login!</a></p>
+    <p>
+      {{ "AUTH.HAVE_ACCOUNT" | translate }}
+      <a routerLink="/login">{{ "AUTH.LOGIN" | translate }}</a>
+    </p>
   </form>
   <div *ngIf="isLoading" class="spinner-overlay">
     <div class="spinner"></div>
-    <p>Loading...</p>
   </div>
 </div>

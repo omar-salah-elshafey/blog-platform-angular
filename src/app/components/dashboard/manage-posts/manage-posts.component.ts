@@ -9,10 +9,11 @@ import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmat
 import { MatDialog } from '@angular/material/dialog';
 import { PostDeletingConfermationComponent } from '../../post-deleting-confermation/post-deleting-confermation.component';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-manage-posts',
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, TranslateModule],
   templateUrl: './manage-posts.component.html',
   styleUrl: './manage-posts.component.scss',
 })
@@ -40,7 +41,6 @@ export class ManagePostsComponent implements OnInit {
         this.posts = [...this.posts, ...response.items];
         this.loading = false;
         this.totalPages = response.totalPages;
-        console.log(response.items);
       },
       error: (error) => {
         this.toastr.error(
@@ -68,7 +68,6 @@ export class ManagePostsComponent implements OnInit {
           next: (response) => {
             this.toastr.success('Post deleted successfully!', 'Success');
             this.posts = this.posts.filter((post) => post.id !== id);
-            console.log('Psot Delted: ', response);
           },
           error: (error) => {
             console.error('Error deleting the Post:', error);

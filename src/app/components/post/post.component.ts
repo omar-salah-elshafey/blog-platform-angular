@@ -161,7 +161,6 @@ export class PostComponent implements OnInit {
         this.postService.deletePost(id).subscribe({
           next: (response) => {
             this.toastr.success('Post deleted successfully!', 'Success');
-            console.log('Psot Delted: ', response);
             if (this.userRole === 'admin') this.router.navigate(['/home']);
             else this.router.navigate(['/profile']);
           },
@@ -227,7 +226,6 @@ export class PostComponent implements OnInit {
     this.postService.updatePost(this.post.id, updatedPost).subscribe({
       next: (response) => {
         this.toastr.success('Post updated successfully!', 'Success');
-        console.log('Post Updated: ', response);
         this.post = response;
         this.isEditingPost = false;
         this.deleteImage = false;
@@ -278,7 +276,6 @@ export class PostComponent implements OnInit {
         });
         this.changeDetectorRef.detectChanges();
         this.commentForm.reset({ content: '', postId: this.post.id });
-        console.log('comment added: ', response);
       },
       error: (error) => {
         this.toastr.error('Failed to add comment. Please try again.', 'Error');

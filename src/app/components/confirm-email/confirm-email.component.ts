@@ -9,10 +9,11 @@ import { ToastrService } from 'ngx-toastr';
 import { Router, RouterModule } from '@angular/router';
 import { EmailService } from '../../services/email/email.service';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-confirm-email',
-  imports: [RouterModule, CommonModule, ReactiveFormsModule],
+  imports: [RouterModule, CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './confirm-email.component.html',
   styleUrl: './confirm-email.component.scss',
 })
@@ -40,7 +41,6 @@ export class ConfirmEmailComponent {
       this.isLoading = true;
       this.emailService.confirmEmail(this.confirmEmailForm.value).subscribe({
         next: (response) => {
-          console.log(response);
           this.toastr.success(
             'Your email has been confirmed successfully.',
             'Success'
@@ -75,12 +75,10 @@ export class ConfirmEmailComponent {
 
   onResendRequest(): void {
     const emailControl = this.confirmEmailForm.get('Email');
-    console.log(emailControl!.value);
     if (emailControl?.valid) {
       this.isLoading = true;
       this.emailService.resendConfirmationEmail(emailControl!.value).subscribe({
         next: (response) => {
-          console.log(response);
           this.toastr.success(
             'A new confirmation email has been sent to your email.',
             'Success'

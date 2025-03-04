@@ -18,7 +18,7 @@
   </p>
   <p>
     <strong>{{ "USER_PROFILE.ROLE" | translate }}:</strong>
-    {{ userProfile.role }}
+    {{ "USER_PROFILE.ROLES." + userProfile.role.toUpperCase() | translate }}
   </p>
   <div class="profile-buttons" *ngIf="!updateMode && !changePasswordMode">
     <button (click)="toggleEditForm()" class="edit-btn">
@@ -156,18 +156,17 @@
         <small
           *ngIf="changePasswordForm.get('oldPassword')?.errors?.['required']"
         >
-          Password is required.
+          {{ "PASSWORD_ERRORS.REQUIRED" | translate }}
         </small>
         <small
           *ngIf="changePasswordForm.get('oldPassword')?.errors?.['minlength']"
         >
-          Password must be at least 8 characters long.
+          {{ "PASSWORD_ERRORS.MIN_LENGTH" | translate }}
         </small>
         <small
           *ngIf="changePasswordForm.get('oldPassword')?.errors?.['pattern']"
         >
-          Password must contain at least 1 uppercase letter, 1 lowercase letter,
-          1 number, and 1 special character.
+          {{ "PASSWORD_ERRORS.PATTERN" | translate }}
         </small>
       </div>
     </div>
@@ -203,18 +202,17 @@
         <small
           *ngIf="changePasswordForm.get('newPassword')?.errors?.['required']"
         >
-          Password is required.
+          {{ "PASSWORD_ERRORS.REQUIRED" | translate }}
         </small>
         <small
           *ngIf="changePasswordForm.get('newPassword')?.errors?.['minlength']"
         >
-          Password must be at least 8 characters long.
+          {{ "PASSWORD_ERRORS.MIN_LENGTH" | translate }}
         </small>
         <small
           *ngIf="changePasswordForm.get('newPassword')?.errors?.['pattern']"
         >
-          Password must contain at least 1 uppercase letter, 1 lowercase letter,
-          1 number, and 1 special character.
+          {{ "PASSWORD_ERRORS.PATTERN" | translate }}
         </small>
       </div>
     </div>
@@ -252,12 +250,12 @@
         <small
           *ngIf="changePasswordForm.get('confirmNewPassword')?.errors?.['required']"
         >
-          Confirm Password is required.
+          {{ "PASSWORD_ERRORS.REQUIRED" | translate }}
         </small>
         <small
           *ngIf="changePasswordForm.get('confirmNewPassword')?.errors?.['passwordMismatch']"
         >
-          Passwords do not match.
+          {{ "PASSWORD_ERRORS.PASSWORD_MISMATCH" | translate }}
         </small>
       </div>
     </div>

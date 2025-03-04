@@ -23,7 +23,7 @@
     padding: 0;
     li {
       padding: 15px;
-      text-align: left;
+      text-align: start;
       transition: 0.3s;
 
       a {
@@ -33,7 +33,7 @@
         i {
           width: 15px;
           font-size: 15px;
-          margin-right: 10px;
+          margin: 0px 10px;
         }
       }
 

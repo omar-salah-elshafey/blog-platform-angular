@@ -1,17 +1,19 @@
 <div class="auth-form-container">
   <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <h2>Login</h2>
+    <h2>{{ "AUTH.LOGIN" | translate }}</h2>
 
     <div class="form-group">
-      <label for="username">Username or Email</label>
+      <label for="username">{{ "AUTH.USERNAME" | translate }}</label>
       <input type="text" id="username" formControlName="EmailOrUserName" />
     </div>
 
     <div class="form-group">
       <div class="password-text">
-        <label for="password">Password</label>
+        <label for="password">{{ "AUTH.PASSWORD" | translate }}</label>
         <div class="forgot-password">
-          <a routerLink="/reset-password-request">Forgot Password?</a>
+          <a routerLink="/reset-password-request">
+            {{ "AUTH.FORGOT_PASSWORD" | translate }}
+          </a>
         </div>
       </div>
       <div class="password-container">
@@ -37,32 +39,33 @@
         "
       >
         <small *ngIf="loginForm.get('Password')?.errors?.['required']">
-          Password is required.
+          {{ "PASSWORD_ERRORS.REQUIRED" | translate }}
         </small>
         <small *ngIf="loginForm.get('Password')?.errors?.['minlength']">
-          Password must be at least 8 characters long.
+          {{ "PASSWORD_ERRORS.MIN_LENGTH" | translate }}
         </small>
         <small *ngIf="loginForm.get('Password')?.errors?.['pattern']">
-          Password must contain at least 1 uppercase letter, 1 lowercase letter,
-          1 number, and 1 special character.
+          {{ "PASSWORD_ERRORS.PATTERN" | translate }}
         </small>
       </div>
     </div>
 
     <button type="submit" class="btn-submit" [disabled]="loginForm.invalid">
-      Login
+      {{ "AUTH.LOGIN" | translate }}
     </button>
 
-    <p>Don't have an account? <a routerLink="/register">Signup!</a></p>
     <p>
-      <small
-        >Email Not Confirmed?
-        <a routerLink="/confirm-email">Confirm it Now!</a></small
-      >
+      {{ "AUTH.DONT_HAVE_ACCOUNT" | translate }}
+      <a routerLink="/register">{{ "AUTH.REGISTER" | translate }}</a>
+    </p>
+    <p>
+      <small>
+        {{ "AUTH.NOT_CONFIRMED" | translate }}
+        <a routerLink="/confirm-email">{{ "AUTH.CONFIRM" | translate }}</a>
+      </small>
     </p>
   </form>
   <div *ngIf="isLoading" class="spinner-overlay">
     <div class="spinner"></div>
-    <p>Loading...</p>
   </div>
 </div>

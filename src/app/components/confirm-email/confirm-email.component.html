@@ -4,15 +4,19 @@
     [formGroup]="confirmEmailForm"
     (ngSubmit)="onSubmit()"
   >
-    <h2>Confirm Your Email</h2>
+    <h2>{{ "CONFIRMATION_FORM.CONFIRM_EMAIL_TITLE" | translate }}</h2>
 
     <div class="form-group">
-      <label for="email">Email</label>
+      <label for="email">{{
+        "CONFIRMATION_FORM.EMAIL_LABEL" | translate
+      }}</label>
       <input type="email" id="email" formControlName="Email" />
     </div>
 
     <div class="form-group">
-      <label for="token">Verification Token</label>
+      <label for="token">{{
+        "CONFIRMATION_FORM.TOKEN_LABEL" | translate
+      }}</label>
       <input type="text" id="token" formControlName="Token" />
     </div>
 
@@ -21,15 +25,16 @@
       class="btn-submit"
       [disabled]="confirmEmailForm.invalid"
     >
-      Confirm Email
+      {{ "CONFIRMATION_FORM.CONFIRM_BUTTON" | translate }}
     </button>
 
     <p *ngIf="showResendForm" class="resend">
-      <a (click)="onResendRequest()"> Resend Confirmation Email </a>
+      <a (click)="onResendRequest()">
+        {{ "CONFIRMATION_FORM.RESEND_LINK" | translate }}
+      </a>
     </p>
   </form>
 </div>
 <div *ngIf="isLoading" class="spinner-overlay">
   <div class="spinner"></div>
-  <p>Loading...</p>
 </div>

@@ -1,28 +1,32 @@
 <div class="sidebar">
   <h2>
-    <a routerLink="/dashboard"
-      ><i class="fas fa-tachometer-alt"></i> Dashboard</a
-    >
+    <a routerLink="/dashboard">
+      <i class="fas fa-tachometer-alt"></i> {{ "ADMIN" | translate }}
+    </a>
   </h2>
   <ul>
     <li>
       <a routerLink="/dashboard/manage-users" routerLinkActive="active"
-        ><i class="fas fa-users"></i> Manage Users</a
+        ><i class="fas fa-users"></i>
+        {{ "DASHBOARD.SIDEBAR.USERS" | translate }}</a
       >
     </li>
     <li>
       <a routerLink="/dashboard/manage-posts" routerLinkActive="active"
-        ><i class="fas fa-clipboard-list"></i> Manage Posts</a
+        ><i class="fas fa-clipboard-list"></i>
+        {{ "DASHBOARD.SIDEBAR.POSTS" | translate }}</a
       >
     </li>
     <li>
       <a routerLink="/dashboard/manage-comments" routerLinkActive="active"
-        ><i class="fas fa-comments"></i> Manage Comments</a
+        ><i class="fas fa-comments"></i>
+        {{ "DASHBOARD.SIDEBAR.COMMENTS" | translate }}</a
       >
     </li>
     <li>
       <a routerLink="/dashboard/register-user" routerLinkActive="active"
-        ><i class="fas fa-user-plus"></i> Add User</a
+        ><i class="fas fa-user-plus"></i>
+        {{ "DASHBOARD.SIDEBAR.ADD_USER" | translate }}</a
       >
     </li>
   </ul>

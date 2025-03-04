@@ -10,10 +10,11 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PasswordService } from '../../../services/password/password.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-reset-password',
-  imports: [RouterModule, CommonModule, ReactiveFormsModule],
+  imports: [RouterModule, CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.scss',
 })
@@ -73,12 +74,10 @@ export class ResetPasswordComponent {
       newPassword: this.ResetPasswordForm.get('password')?.value,
       confirmNewPassword: this.ResetPasswordForm.get('confirmPassword')?.value,
     };
-    console.log(userData);
     this.passwordService.resetPassword(userData).subscribe({
       next: (response) => {
         this.toastr.success('Password reset successfully', 'Success');
         this.ResetPasswordForm.reset();
-        console.log('Password Reseted Succesfully' + response.response);
         sessionStorage.removeItem('resetEmail');
         sessionStorage.removeItem('resetToken');
         this.router.navigate(['/login']);

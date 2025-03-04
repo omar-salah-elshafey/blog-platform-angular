@@ -22,10 +22,7 @@ export class HeaderComponent {
     private profileServie: ProfileService,
     private sharedService: SharedService,
     private translate: TranslateService
-  ) {
-    translate.setDefaultLang('en');
-    translate.use('en');
-  }
+  ) {}
 
   isMenuOpen = false;
   firstName: string | null = null;
@@ -33,25 +30,13 @@ export class HeaderComponent {
   currentLang = 'en';
   isDropdownOpen = false;
 
-  switchLanguage(lang: string) {
-    this.currentLang = lang;
-    this.translate.use(lang);
-    document.documentElement.lang = lang;
-    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-    localStorage.setItem('language', lang);
-  }
-
   @ViewChild('mobileNav') mobileNav!: ElementRef;
   @ViewChild('mobileMenuButton')
   mobileMenuButton!: ElementRef;
   @ViewChild('dropdown') dropdown!: ElementRef;
 
   ngOnInit(): void {
-    const savedLang = localStorage.getItem('language');
-    if (savedLang) {
-      this.switchLanguage(savedLang);
-    }
-
+    this.currentLang = localStorage.getItem('language') || 'en';
     this.loadUserInfo();
 
     this.sharedService.userProfile$.subscribe((profile) => {
@@ -97,7 +82,6 @@ export class HeaderComponent {
     this.authService.logout().subscribe({
       next: (response) => {
         this.toastr.success('Logout successful!', 'Success');
-        console.log('Logout successful', response!);
         this.sharedService.clearUserProfile();
         this.firstName = null;
         this.isAdmin = false;

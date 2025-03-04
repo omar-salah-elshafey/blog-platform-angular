@@ -1,42 +1,44 @@
 <div class="dashboard-pages-container">
-  <h2 class="section-title">Manage Posts</h2>
-
   <div *ngIf="loading" class="spinner-overlay">
     <div class="spinner"></div>
-    <p>Loading profile...</p>
   </div>
 
   <table class="dashboard-pages-table" *ngIf="posts.length > 0">
     <thead>
       <tr>
-        <th>#</th>
-        <th>Content</th>
-        <th>Author</th>
-        <th>Created At</th>
-        <th>Actions</th>
+        <th>{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.CONTENT" | translate }}</th>
+        <th>{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.WRITER" | translate }}</th>
+        <th>{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.DATE" | translate }}</th>
+        <th>{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.ACTIONS" | translate }}</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let post of posts; let i = index">
-        <td>{{ i + 1 }}</td>
         <td>
           <a [routerLink]="['/post', post.id]">
-            {{ post.content | slice : 0 : 30 }}
+            <div>
+              <span *ngIf="post.content.length > 10"
+                >{{ post.content | slice : 0 : 10 }}...</span
+              >
+              <span *ngIf="post.content.length <= 10">{{ post.content }}</span>
+            </div>
           </a>
         </td>
         <td>
           <a [routerLink]="['/user-profile', post.authorName]">
-            &#64;{{ post.authorName }}
+            <div>
+              <span dir="ltr">&#64;{{ post.authorName }}</span>
+            </div>
           </a>
         </td>
-        <td>{{ post.createdDate | date : "yyyy-MM-dd HH:mm" }}</td>
+        <td>{{ post.createdDate | date : "short" }}</td>
         <td>
           <button
             class="delete-button"
             (click)="onDeleteAccount(post.id)"
             title="Delete Post"
           >
-            Delete
+            {{ "DASHBOARD.BUTTONS.DELETE" | translate }}
           </button>
         </td>
       </tr>
@@ -44,10 +46,21 @@
   </table>
 
   <div *ngIf="posts.length === 0 && !loading" class="no-results">
-    <p>No posts available.</p>
+    <p>
+      {{
+        "DASHBOARD.SECTIONS.NO_RESULTS"
+          | translate : { type: ("DASHBOARD.SECTIONS.POSTS" | translate) }
+      }}
+    </p>
   </div>
 
   <div class="centered-link" *ngIf="currentPage < totalPages && !loading">
-    <a (click)="loadMorePosts()">Load More Posts &gt;</a>
+    <a (click)="loadMorePosts()">
+      {{
+        "DASHBOARD.SECTIONS.LOAD_MORE"
+          | translate : { type: ("DASHBOARD.SECTIONS.POSTS" | translate) }
+      }}
+      &gt;</a
+    >
   </div>
 </div>

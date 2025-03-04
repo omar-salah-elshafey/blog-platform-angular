@@ -1,3 +1,38 @@
 .auth-form-container {
   margin-top: 10px;
 }
+.select-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  margin: 0 auto;
+}
+select {
+  width: 100%;
+  padding: 10px 15px;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #333;
+  font-size: 16px;
+  cursor: pointer;
+  appearance: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+select:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  outline: none;
+}
+
+.select-container::after {
+  content: "\25BC";
+  position: absolute;
+  top: 50%;
+  inset-inline-end: 15px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #007bff;
+  font-size: 12px;
+}

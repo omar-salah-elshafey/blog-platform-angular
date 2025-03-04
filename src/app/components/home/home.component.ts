@@ -113,13 +113,9 @@ export class HomeComponent implements OnInit {
     this.postService.addPost(postDto).subscribe({
       next: (response) => {
         this.posts.unshift(response);
-        console.log(response.imageUrl);
-        console.log(response.videoUrl);
         this.toastr.success('Post created successfully!', 'Success');
-        console.log(this.imageFile);
         this.imageFile = undefined;
         this.videoFile = undefined;
-        console.log(this.imageFile);
         this.postForm.reset();
       },
       error: (err) => {

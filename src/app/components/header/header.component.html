@@ -1,24 +1,8 @@
-<header *ngIf="this.isLoggedIn()" [dir]="currentLang === 'ar' ? 'rtl' : 'ltr'">
+<header *ngIf="this.isLoggedIn()" >
   <div class="logo">
     <a routerLink="/home">
       <img src="/assets/image/Aqqrablogo.jpg" alt="logo" />
     </a>
-  </div>
-
-  <!-- Language Switcher -->
-  <div class="language-switcher">
-    <button
-      [class.active]="currentLang === 'en'"
-      (click)="switchLanguage('en')"
-    >
-      EN
-    </button>
-    <button
-      [class.active]="currentLang === 'ar'"
-      (click)="switchLanguage('ar')"
-    >
-      AR
-    </button>
   </div>
 
   <nav>
@@ -47,8 +31,6 @@
             </a>
             <div
               class="dropdown-content"
-              [class.align-left]="currentLang === 'en'"
-              [class.align-right]="currentLang === 'ar'"
               [class.show]="isDropdownOpen"
             >
               <a routerLink="/profile" (click)="closeDropdown()">

@@ -7,10 +7,11 @@ import {
 import { AdminService } from '../../../services/admin/admin.service';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-manage-comments',
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, TranslateModule],
   templateUrl: './manage-comments.component.html',
   styleUrl: './manage-comments.component.scss',
 })
@@ -39,7 +40,6 @@ export class ManageCommentsComponent implements OnInit {
           this.comments = [...this.comments, ...response.items];
           this.totalPages = response.totalPages;
           this.loading = false;
-          console.log(response.items);
         },
         error: (error) => {
           this.toastr.error(
@@ -64,7 +64,6 @@ export class ManageCommentsComponent implements OnInit {
       next: (response) => {
         this.toastr.success('Comment deleted successfully!', 'Success');
         this.comments = this.comments.filter((comment) => comment.id !== id);
-        console.log(response);
       },
       error: (error) => {
         console.error('Error deleting comment:', error);
