@@ -10,5 +10,9 @@ import { CommonModule } from '@angular/common';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {
+  isSidebarCollapsed = false;
 
+  toggleSidebar() {
+    this.isSidebarCollapsed = !this.isSidebarCollapsed;
+  }
 }

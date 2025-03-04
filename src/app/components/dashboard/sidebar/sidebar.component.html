@@ -1,33 +1,39 @@
-<div class="sidebar">
+<div class="sidebar" [class.collapsed]="isCollapsed">
+  <div class="toggle-btn" (click)="onToggleSidebar()">
+    <i
+      [class]="isCollapsed ? 'fas fa-chevron-right' : 'fas fa-chevron-left'"
+    ></i>
+  </div>
   <h2>
     <a routerLink="/dashboard">
-      <i class="fas fa-tachometer-alt"></i> {{ "ADMIN" | translate }}
+      <i class="fas fa-tachometer-alt"></i>
+      <span *ngIf="!isCollapsed">{{ "ADMIN" | translate }}</span>
     </a>
   </h2>
   <ul>
     <li>
-      <a routerLink="/dashboard/manage-users" routerLinkActive="active"
-        ><i class="fas fa-users"></i>
-        {{ "DASHBOARD.SIDEBAR.USERS" | translate }}</a
-      >
+      <a routerLink="/dashboard/manage-users" routerLinkActive="active">
+        <i class="fas fa-users"></i>
+        <span *ngIf="!isCollapsed">{{ "DASHBOARD.SIDEBAR.USERS" | translate }}</span>
+      </a>
     </li>
     <li>
-      <a routerLink="/dashboard/manage-posts" routerLinkActive="active"
-        ><i class="fas fa-clipboard-list"></i>
-        {{ "DASHBOARD.SIDEBAR.POSTS" | translate }}</a
-      >
+      <a routerLink="/dashboard/manage-posts" routerLinkActive="active">
+        <i class="fas fa-clipboard-list"></i>
+        <span *ngIf="!isCollapsed">{{ "DASHBOARD.SIDEBAR.POSTS" | translate }}</span>
+      </a>
     </li>
     <li>
-      <a routerLink="/dashboard/manage-comments" routerLinkActive="active"
-        ><i class="fas fa-comments"></i>
-        {{ "DASHBOARD.SIDEBAR.COMMENTS" | translate }}</a
-      >
+      <a routerLink="/dashboard/manage-comments" routerLinkActive="active">
+        <i class="fas fa-comments"></i>
+        <span *ngIf="!isCollapsed">{{ "DASHBOARD.SIDEBAR.COMMENTS" | translate }}</span>
+      </a>
     </li>
     <li>
-      <a routerLink="/dashboard/register-user" routerLinkActive="active"
-        ><i class="fas fa-user-plus"></i>
-        {{ "DASHBOARD.SIDEBAR.ADD_USER" | translate }}</a
-      >
+      <a routerLink="/dashboard/register-user" routerLinkActive="active">
+        <i class="fas fa-user-plus"></i>
+        <span *ngIf="!isCollapsed">{{ "DASHBOARD.SIDEBAR.ADD_USER" | translate }}</span>
+      </a>
     </li>
   </ul>
 </div>

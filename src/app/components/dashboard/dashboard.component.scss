@@ -6,4 +6,9 @@
   margin-inline-start: 220px;
   padding: 20px;
   flex-grow: 1;
+  transition: margin-inline-start 0.3s ease;
+}
+
+.dashboard-layout.sidebar-collapsed .content-area {
+  margin-inline-start: 60px;
 }
