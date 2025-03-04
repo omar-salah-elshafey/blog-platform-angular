@@ -1,8 +1,6 @@
 <div class="sidebar" [class.collapsed]="isCollapsed">
   <div class="toggle-btn" (click)="onToggleSidebar()">
-    <i
-      [class]="isCollapsed ? 'fas fa-chevron-right' : 'fas fa-chevron-left'"
-    ></i>
+    <i [class]="isCollapsed ? 'fas fa-bars' : 'fas fa-times '"></i>
   </div>
   <h2>
     <a routerLink="/dashboard">
@@ -14,25 +12,33 @@
     <li>
       <a routerLink="/dashboard/manage-users" routerLinkActive="active">
         <i class="fas fa-users"></i>
-        <span *ngIf="!isCollapsed">{{ "DASHBOARD.SIDEBAR.USERS" | translate }}</span>
+        <span *ngIf="!isCollapsed">{{
+          "DASHBOARD.SIDEBAR.USERS" | translate
+        }}</span>
       </a>
     </li>
     <li>
       <a routerLink="/dashboard/manage-posts" routerLinkActive="active">
         <i class="fas fa-clipboard-list"></i>
-        <span *ngIf="!isCollapsed">{{ "DASHBOARD.SIDEBAR.POSTS" | translate }}</span>
+        <span *ngIf="!isCollapsed">{{
+          "DASHBOARD.SIDEBAR.POSTS" | translate
+        }}</span>
       </a>
     </li>
     <li>
       <a routerLink="/dashboard/manage-comments" routerLinkActive="active">
         <i class="fas fa-comments"></i>
-        <span *ngIf="!isCollapsed">{{ "DASHBOARD.SIDEBAR.COMMENTS" | translate }}</span>
+        <span *ngIf="!isCollapsed">{{
+          "DASHBOARD.SIDEBAR.COMMENTS" | translate
+        }}</span>
       </a>
     </li>
     <li>
       <a routerLink="/dashboard/register-user" routerLinkActive="active">
         <i class="fas fa-user-plus"></i>
-        <span *ngIf="!isCollapsed">{{ "DASHBOARD.SIDEBAR.ADD_USER" | translate }}</span>
+        <span *ngIf="!isCollapsed">{{
+          "DASHBOARD.SIDEBAR.ADD_USER" | translate
+        }}</span>
       </a>
     </li>
   </ul>
