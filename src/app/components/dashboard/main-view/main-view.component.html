@@ -52,6 +52,40 @@
         </tr>
       </tbody>
     </table>
+    <div *ngFor="let user of users" class="dashboard-card">
+      <div class="card-item">
+        <span class="card-label"
+          >{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.FULL_NAME" | translate }}:</span
+        >
+        <span class="card-value">{{ user.firstName }} {{ user.lastName }}</span>
+      </div>
+      <div class="card-item">
+        <span class="card-label"
+          >{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.USERNAME" | translate }}:</span
+        >
+        <a
+          [routerLink]="['/user-profile', user.userName]"
+          class="card-value"
+          dir="ltr"
+        >
+          &#64;{{ user.userName }}
+        </a>
+      </div>
+      <div class="card-item">
+        <span class="card-label"
+          >{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.EMAIL" | translate }}:</span
+        >
+        <span class="card-value">{{ user.email }}</span>
+      </div>
+      <div class="card-item">
+        <span class="card-label"
+          >{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.ROLE" | translate }}:</span
+        >
+        <span class="card-value">
+          {{ "USER_PROFILE.ROLES." + user.role.toUpperCase() | translate }}
+        </span>
+      </div>
+    </div>
     <div class="centered-link">
       <a [routerLink]="['/dashboard/manage-users']">
         {{
@@ -95,10 +129,49 @@
               </div>
             </a>
           </td>
-          <td>{{ post.createdDate | date : "short" }}</td>
+          <td>
+            <span dir="ltr">{{ post.createdDate | date : "short" }}</span>
+          </td>
         </tr>
       </tbody>
     </table>
+    <div *ngFor="let post of posts" class="dashboard-card">
+      <div class="card-item">
+        <span class="card-label">
+          {{ "DASHBOARD.SECTIONS.TABLE_HEADERS.CONTENT" | translate }}:
+        </span>
+        <span class="card-value">
+          <a [routerLink]="['/post', post.id]">
+            <div>
+              <span *ngIf="post.content.length > 10"
+                >{{ post.content | slice : 0 : 10 }}...</span
+              >
+              <span *ngIf="post.content.length <= 10">{{ post.content }}</span>
+            </div>
+          </a>
+        </span>
+      </div>
+      <div class="card-item">
+        <span class="card-label">
+          {{ "DASHBOARD.SECTIONS.TABLE_HEADERS.WRITER" | translate }}:
+        </span>
+        <span class="card-value">
+          <a [routerLink]="['/user-profile', post.authorName]">
+            <div>
+              <span dir="ltr">&#64;{{ post.authorName }}</span>
+            </div>
+          </a>
+        </span>
+      </div>
+      <div class="card-item">
+        <span class="card-label">
+          {{ "DASHBOARD.SECTIONS.TABLE_HEADERS.DATE" | translate }}:
+        </span>
+        <span class="card-value" dir="ltr">
+          {{ post.createdDate | date : "short" }}
+        </span>
+      </div>
+    </div>
     <div class="centered-link">
       <a [routerLink]="['/dashboard/manage-posts']">
         {{
@@ -142,10 +215,51 @@
               </div>
             </a>
           </td>
-          <td>{{ comment.createdDate | date : "short" }}</td>
+          <td>
+            <span dir="ltr">{{ comment.createdDate | date : "short" }}</span>
+          </td>
         </tr>
       </tbody>
     </table>
+    <div *ngFor="let comment of comments" class="dashboard-card">
+      <div class="card-item">
+        <span class="card-label">
+          {{ "DASHBOARD.SECTIONS.TABLE_HEADERS.CONTENT" | translate }}:
+        </span>
+        <span class="card-value">
+          <a [routerLink]="['/post', comment.id]">
+            <div>
+              <span *ngIf="comment.content.length > 10"
+                >{{ comment.content | slice : 0 : 10 }}...</span
+              >
+              <span *ngIf="comment.content.length <= 10">{{
+                comment.content
+              }}</span>
+            </div>
+          </a>
+        </span>
+      </div>
+      <div class="card-item">
+        <span class="card-label">
+          {{ "DASHBOARD.SECTIONS.TABLE_HEADERS.WRITER" | translate }}:
+        </span>
+        <span class="card-value">
+          <a [routerLink]="['/user-profile', comment.userName]">
+            <div>
+              <span dir="ltr">&#64;{{ comment.userName }}</span>
+            </div>
+          </a>
+        </span>
+      </div>
+      <div class="card-item">
+        <span class="card-label">
+          {{ "DASHBOARD.SECTIONS.TABLE_HEADERS.DATE" | translate }}:
+        </span>
+        <span class="card-value" dir="ltr">
+          {{ comment.createdDate | date : "short" }}
+        </span>
+      </div>
+    </div>
     <div class="centered-link">
       <a [routerLink]="['/dashboard/manage-comments']">
         {{
