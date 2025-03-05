@@ -107,6 +107,127 @@
       </tr>
     </tbody>
   </table>
+  <div *ngFor="let user of users" class="dashboard-card">
+    <div class="card-item">
+      <span class="card-label">
+        {{ "DASHBOARD.SECTIONS.TABLE_HEADERS.FIRST_NAME" | translate }}:
+      </span>
+      <span class="card-value">
+        <div *ngIf="!profileUpdateState[user.userName]">
+          {{ user.firstName }}
+        </div>
+        <div *ngIf="profileUpdateState[user.userName]">
+          <input
+            type="text"
+            [(ngModel)]="userForms[user.userName].firstName"
+            class="form-control"
+            placeholder="First Name"
+          />
+        </div>
+      </span>
+    </div>
+    <div class="card-item">
+      <span class="card-label">
+        {{ "DASHBOARD.SECTIONS.TABLE_HEADERS.LAST_NAME" | translate }}:
+      </span>
+      <span class="card-value">
+        <div *ngIf="!profileUpdateState[user.userName]">
+          {{ user.lastName }}
+        </div>
+        <div *ngIf="profileUpdateState[user.userName]">
+          <input
+            type="text"
+            [(ngModel)]="userForms[user.userName].lastName"
+            class="form-control"
+            placeholder="Last Name"
+          />
+        </div>
+      </span>
+    </div>
+    <div class="card-item">
+      <span class="card-label"
+        >{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.USERNAME" | translate }}:</span
+      >
+      <a
+        [routerLink]="['/user-profile', user.userName]"
+        class="card-value"
+        dir="ltr"
+      >
+        &#64;{{ user.userName }}
+      </a>
+    </div>
+    <div class="card-item">
+      <span class="card-label"
+        >{{ "DASHBOARD.SECTIONS.TABLE_HEADERS.EMAIL" | translate }}:</span
+      >
+      <span class="card-value">{{ user.email }}</span>
+    </div>
+    <div class="card-item">
+      <span class="card-label">
+        {{ "DASHBOARD.SECTIONS.TABLE_HEADERS.ROLE" | translate }}:
+      </span>
+      <span class="card-value">
+        <div *ngIf="!roleChangeState[user.userName]">
+          {{ "USER_PROFILE.ROLES." + user.role.toUpperCase() | translate }}
+        </div>
+        <div *ngIf="roleChangeState[user.userName]">
+          <select
+            [(ngModel)]="userForms[user.userName].role"
+            class="form-select"
+          >
+            <option *ngFor="let role of roles" [value]="role">
+              {{ "USER_PROFILE.ROLES." + role.toUpperCase() | translate }}
+            </option>
+          </select>
+        </div>
+      </span>
+    </div>
+    <div class="card-item">
+      <span class="card-label">
+        {{ "DASHBOARD.SECTIONS.TABLE_HEADERS.ACTIONS" | translate }}:
+      </span>
+      <span class="card-value">
+        <div
+          class="btns"
+          *ngIf="
+            !roleChangeState[user.userName] &&
+            !profileUpdateState[user.userName]
+          "
+        >
+          <button class="btn btn-primary" (click)="toggleEditMode(user)">
+            {{ "DASHBOARD.BUTTONS.UPDATE_PROFILE" | translate }}
+          </button>
+
+          <button class="btn btn-primary" (click)="onChangeRole(user)">
+            {{ "DASHBOARD.BUTTONS.CHANGE_ROLE" | translate }}
+          </button>
+
+          <button
+            class="btn btn-danger"
+            (click)="onDeleteAccount(user.userName)"
+          >
+            {{ "DASHBOARD.BUTTONS.DELETE" | translate }}
+          </button>
+        </div>
+        <div class="btns" *ngIf="roleChangeState[user.userName]">
+          <button class="btn btn-success" (click)="saveRole(user)">
+            {{ "DASHBOARD.BUTTONS.SAVE" | translate }}
+          </button>
+          <button class="btn btn-danger" (click)="cancelRoleChange(user)">
+            {{ "DASHBOARD.BUTTONS.CANCEL" | translate }}
+          </button>
+        </div>
+        <div class="btns" *ngIf="profileUpdateState[user.userName]">
+          <button class="btn btn-success" (click)="saveProfileUpdate(user)">
+            {{ "DASHBOARD.BUTTONS.SAVE" | translate }}
+          </button>
+          <button class="btn btn-danger" (click)="cancelProfileUpdate(user)">
+            {{ "DASHBOARD.BUTTONS.CANCEL" | translate }}
+          </button>
+        </div>
+      </span>
+    </div>
+  </div>
 
   <div class="centered-link" *ngIf="currentPage < totalPages && !loading">
     <a (click)="loadMoreUsers()"

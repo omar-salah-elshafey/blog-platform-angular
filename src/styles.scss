@@ -374,10 +374,13 @@ main {
     border-collapse: collapse;
     margin: 0 auto;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    @media (max-width: 768px) {
+      display: none;
+    }
 
     th,
     td {
-      padding: 0.3rem ;
+      padding: 0.3rem;
       border: 1px solid #ddd;
       text-align: center;
     }
@@ -407,6 +410,54 @@ main {
     text-align: center;
     font-size: 2rem;
     color: #999;
+  }
+}
+
+.dashboard-card {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+  margin-bottom: 15px;
+  background-color: white;
+  display: none;
+  @media (max-width: 768px) {
+    display: block !important;
+  }
+
+  .card-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    gap: 0.2rem;
+    @media (max-width: 500px) {
+      flex-direction: column;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .card-label {
+    font-weight: bold;
+    color: #666;
+    flex-shrink: 0;
+  }
+
+  .card-value {
+    text-align: right;
+    word-break: break-word;
+  }
+
+  a {
+    color: #007bff;
+    text-decoration: none;
+    transition: 0.3s;
+    &:hover {
+      color: #0056b3;
+    }
   }
 }
 // Responsive Styling - Keeping the single post layout regardless of screen size

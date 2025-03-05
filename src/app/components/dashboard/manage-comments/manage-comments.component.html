@@ -33,7 +33,11 @@
             </div>
           </a>
         </td>
-        <td>{{ comment.createdDate | date : "short" }}</td>
+        <td>
+          <span dir="ltr">
+            {{ comment.createdDate | date : "short" }}
+          </span>
+        </td>
         <td>
           <button
             class="delete-button"
@@ -46,6 +50,59 @@
       </tr>
     </tbody>
   </table>
+  <div *ngFor="let comment of comments" class="dashboard-card">
+    <div class="card-item">
+      <span class="card-label">
+        {{ "DASHBOARD.SECTIONS.TABLE_HEADERS.CONTENT" | translate }}:
+      </span>
+      <span class="card-value">
+        <a [routerLink]="['/post', comment.id]">
+          <div>
+            <span *ngIf="comment.content.length > 10"
+              >{{ comment.content | slice : 0 : 10 }}...</span
+            >
+            <span *ngIf="comment.content.length <= 10">{{
+              comment.content
+            }}</span>
+          </div>
+        </a>
+      </span>
+    </div>
+    <div class="card-item">
+      <span class="card-label">
+        {{ "DASHBOARD.SECTIONS.TABLE_HEADERS.WRITER" | translate }}:
+      </span>
+      <span class="card-value">
+        <a [routerLink]="['/user-profile', comment.userName]">
+          <div>
+            <span dir="ltr">&#64;{{ comment.userName }}</span>
+          </div>
+        </a>
+      </span>
+    </div>
+    <div class="card-item">
+      <span class="card-label">
+        {{ "DASHBOARD.SECTIONS.TABLE_HEADERS.DATE" | translate }}:
+      </span>
+      <span class="card-value" dir="ltr">
+        {{ comment.createdDate | date : "short" }}
+      </span>
+    </div>
+    <div class="card-item">
+      <span class="card-label">
+        {{ "DASHBOARD.SECTIONS.TABLE_HEADERS.ACTIONS" | translate }}:
+      </span>
+      <span class="card-value">
+        <button
+          class="delete-button"
+          (click)="onDeleteComment(comment.id)"
+          title="Delete Comment"
+        >
+          {{ "DASHBOARD.BUTTONS.DELETE" | translate }}
+        </button>
+      </span>
+    </div>
+  </div>
 
   <!-- No Comments Message -->
   <div *ngIf="comments.length === 0 && !loading" class="no-results">
