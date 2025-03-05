@@ -79,7 +79,9 @@
               </p>
               <p class="comment-content">{{ comment.content }}</p>
               <p class="comment-date">
-                {{ comment.createdDate | date : "short" }}
+                <span dir="ltr">
+                  {{ comment.createdDate | date : "short" }}
+                </span>
               </p>
             </div>
           </div>
