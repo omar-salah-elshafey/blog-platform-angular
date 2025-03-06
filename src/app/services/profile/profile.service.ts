@@ -127,9 +127,8 @@ export class ProfileService {
 
   deleteUserProfile(userData: DeleteProfile): Observable<any> {
     return this.http
-      .delete(`${this.baseUrl}/delete-user`, {
+      .delete(`${this.baseUrl}/delete-user/${userData.userName}`, {
         params: {
-          userName: userData.userName,
           refreshToken: userData.refreshToken,
         },
       })

@@ -62,7 +62,35 @@
             </label>
           </div>
 
-          <div class="delete-media">
+          <div class="selected-files">
+            <div *ngIf="imageFile" class="file-preview">
+              <span class="file-name">
+                <i class="fa fa-image"></i> {{ imageFile.name }}
+              </span>
+              <button
+                type="button"
+                class="remove-file"
+                (click)="removeFile('image')"
+              >
+                &times;
+              </button>
+            </div>
+
+            <div *ngIf="videoFile" class="file-preview">
+              <span class="file-name">
+                <i class="fa fa-video"></i> {{ videoFile.name }}
+              </span>
+              <button
+                type="button"
+                class="remove-file"
+                (click)="removeFile('video')"
+              >
+                &times;
+              </button>
+            </div>
+          </div>
+
+          <div class="delete-media" *ngIf="post.imageUrl">
             <input
               type="checkbox"
               id="deleteImage"
@@ -73,7 +101,7 @@
             </label>
           </div>
 
-          <div class="delete-media">
+          <div class="delete-media" *ngIf="post.videoUrl">
             <input
               type="checkbox"
               id="deleteVideo"
@@ -307,7 +335,6 @@
     <ng-template #loadingPost>
       <div class="spinner-overlay">
         <div class="spinner"></div>
-        <p>{{ "POST.LOADING" | translate }}</p>
       </div>
     </ng-template>
   </div>

@@ -1,6 +1,5 @@
 <div *ngIf="isProfileLoading" class="spinner-overlay">
   <div class="spinner"></div>
-  <p>{{ "USER_PROFILE.LOADING" | translate }}</p>
 </div>
 
 <div
@@ -112,5 +111,5 @@
 </div>
 
 <div *ngIf="!isProfileLoading && !userProfile" class="error main-container">
-  {{ "USER_PROFILE.NO_DATA" | translate }}
+  {{ "USER_PROFILE.ERROR_LOADING" | translate }}
 </div>

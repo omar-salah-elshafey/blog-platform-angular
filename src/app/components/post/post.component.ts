@@ -49,7 +49,7 @@ export class PostComponent implements OnInit {
   isEditingPost = false;
   updatePostForm!: FormGroup;
   currentPage = 1;
-  pageSize = 5;
+  pageSize = 10;
   totalPages = 1;
 
   deleteImage = false;
@@ -208,14 +208,21 @@ export class PostComponent implements OnInit {
     }
   }
 
+  removeFile(type: 'image' | 'video') {
+    if (type === 'image') {
+      this.imageFile = undefined;
+    } else {
+      this.videoFile = undefined;
+    }
+  }
+
   onUpdatePost() {
     if (this.updatePostForm.invalid) {
       this.toastr.error('Please fill out the form correctly.', 'Error');
       return;
     }
-
+    this.isLoading = true;
     const updatedPost: UpdatePostDto = {
-      title: this.updatePostForm.value.title.trim(),
       content: this.updatePostForm.value.content.trim(),
       imageFile: this.imageFile,
       videoFile: this.videoFile,
@@ -230,6 +237,7 @@ export class PostComponent implements OnInit {
         this.isEditingPost = false;
         this.deleteImage = false;
         this.deleteVideo = false;
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error updating the post:', error);
@@ -237,6 +245,7 @@ export class PostComponent implements OnInit {
           'Failed to update the post. Please try again.',
           'Error'
         );
+        this.isLoading = false;
       },
     });
   }

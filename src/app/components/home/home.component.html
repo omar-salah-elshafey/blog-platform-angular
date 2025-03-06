@@ -33,27 +33,63 @@
       </div>
 
       <div class="upload-container">
-        <label class="upload-btn">
+        <label class="upload-btn" [class.disabled]="posting">
           <i class="fa fa-image"></i>
           <input
             type="file"
             (change)="onFileSelected($event, 'image')"
             accept="image/*"
+            [disabled]="posting"
           />
         </label>
 
-        <label class="upload-btn">
+        <label class="upload-btn" [class.disabled]="posting">
           <i class="fa fa-video"></i>
           <input
             type="file"
             (change)="onFileSelected($event, 'video')"
             accept="video/*"
+            [disabled]="posting"
           />
         </label>
       </div>
 
-      <button type="submit" [disabled]="postForm.invalid">
-        <i class="fa fa-paper-plane"></i> {{ "POST.SUBMIT" | translate }}
+      <div class="selected-files">
+        <div *ngIf="imageFile" class="file-preview">
+          <span class="file-name">
+            <i class="fa fa-image"></i> {{ imageFile.name }}
+          </span>
+          <button
+            type="button"
+            class="remove-file"
+            (click)="removeFile('image')"
+            [disabled]="posting"
+            [class.disabled]="posting"
+          >
+            &times;
+          </button>
+        </div>
+
+        <div *ngIf="videoFile" class="file-preview">
+          <span class="file-name">
+            <i class="fa fa-video"></i> {{ videoFile.name }}
+          </span>
+          <button
+            type="button"
+            class="remove-file"
+            (click)="removeFile('video')"
+            [disabled]="posting"
+            [class.disabled]="posting"
+          >
+            &times;
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="postForm.invalid || posting">
+        <i *ngIf="!posting" class="fa fa-paper-plane"></i>
+        <i *ngIf="posting" class="fa fa-spinner fa-spin"></i>
+        {{ "POST.SUBMIT" | translate }}
       </button>
     </form>
   </div>
@@ -152,5 +188,4 @@
 </div>
 <div *ngIf="isLoading" class="spinner-overlay">
   <div class="spinner"></div>
-  <p>{{ "POST.LOADING_POSTS" | translate }}</p>
 </div>

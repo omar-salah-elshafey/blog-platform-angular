@@ -25,10 +25,11 @@ export class HomeComponent implements OnInit {
   posts: PostResponseModel[] = [];
   isLoading = false;
   currentPage = 1;
-  pageSize = 5;
+  pageSize = 20;
   totalPages = 1;
   userRole: any;
   postForm!: FormGroup;
+  posting = false;
 
   imageFile?: File;
   videoFile?: File;
@@ -85,6 +86,13 @@ export class HomeComponent implements OnInit {
       }
     }
   }
+  removeFile(type: 'image' | 'video') {
+    if (type === 'image') {
+      this.imageFile = undefined;
+    } else {
+      this.videoFile = undefined;
+    }
+  }
   initializeForm(): void {
     this.postForm = this.fb.group({
       content: [
@@ -103,9 +111,9 @@ export class HomeComponent implements OnInit {
     if (this.postForm.invalid) {
       return;
     }
-
+    this.posting = true;
+    this.postForm.disable();
     const postDto = {
-      title: this.postForm.value.title.trim(),
       content: this.postForm.value.content.trim(),
       imageFile: this.imageFile,
       videoFile: this.videoFile,
@@ -117,10 +125,14 @@ export class HomeComponent implements OnInit {
         this.imageFile = undefined;
         this.videoFile = undefined;
         this.postForm.reset();
+        this.posting = false;
+        this.postForm.enable();
       },
       error: (err) => {
         console.error('Error creating post:', err);
         this.toastr.error('Error creating post.', 'Error');
+        this.posting = false;
+        this.postForm.enable();
       },
     });
   }

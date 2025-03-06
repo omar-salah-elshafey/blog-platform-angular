@@ -29,6 +29,7 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
     req = req.clone({
       setHeaders: {
         Authorization: `Bearer ${accessToken}`,
+        'ngrok-skip-browser-warning': 'true',
       },
     });
   }
@@ -51,6 +52,7 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
               req = req.clone({
                 setHeaders: {
                   Authorization: `Bearer ${newTokens.accessToken}`,
+                  'ngrok-skip-browser-warning': 'true',
                 },
               });
               return next(req);
@@ -76,6 +78,7 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
               req = req.clone({
                 setHeaders: {
                   Authorization: `Bearer ${token}`,
+                  'ngrok-skip-browser-warning': 'true',
                 },
               });
               return next(req);

@@ -24,7 +24,7 @@ export class SearchUsersComponent implements OnInit {
   paginatedUsers: any[] = [];
   loading = false;
   currentPage = 1;
-  pageSize = 5;
+  pageSize = 10;
   totalPages = 1;
 
   constructor(

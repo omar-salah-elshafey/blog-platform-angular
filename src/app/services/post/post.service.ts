@@ -25,14 +25,12 @@ export interface PostResponseModel {
 }
 
 export interface PostDto {
-  title: string;
   content: string;
   imageFile?: File;
   videoFile?: File;
 }
 
 export interface UpdatePostDto {
-  title: string;
   content: string;
   imageFile?: File;
   videoFile?: File;
@@ -45,7 +43,18 @@ export interface UpdatePostDto {
 })
 export class PostService {
   private baseUrl = `${environment.apiUrl}/api/Post`;
+  private ngrokUrl = `${environment.apiUrl}`;
   constructor(private http: HttpClient, private toastr: ToastrService) {}
+
+  private updateUrls(post: PostResponseModel): PostResponseModel {
+    if (post.imageUrl) {
+      post.imageUrl = post.imageUrl.replace('https://localhost', this.ngrokUrl);
+    }
+    if (post.videoUrl) {
+      post.videoUrl = post.videoUrl.replace('https://localhost', this.ngrokUrl);
+    }
+    return post;
+  }
 
   getAllPosts(
     pageNumber: number,
@@ -62,6 +71,9 @@ export class PostService {
         }
       )
       .pipe(
+        tap((response) => {
+          response.items = response.items.map((post) => this.updateUrls(post));
+        }),
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Getting Posts data', error);
@@ -74,6 +86,7 @@ export class PostService {
     return this.http
       .get<PostResponseModel>(`${this.baseUrl}/get-post-by-id/${id}`)
       .pipe(
+        tap((post) => this.updateUrls(post)),
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Getting post data', error);
@@ -98,6 +111,9 @@ export class PostService {
         }
       )
       .pipe(
+        tap((response) => {
+          response.items = response.items.map((post) => this.updateUrls(post));
+        }),
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Getting post data', error);
@@ -121,7 +137,6 @@ export class PostService {
     postDto: UpdatePostDto
   ): Observable<PostResponseModel> {
     const formData = new FormData();
-    formData.append('title', postDto.title);
     formData.append('content', postDto.content);
     if (postDto.imageFile) formData.append('imageFile', postDto.imageFile);
     if (postDto.videoFile) formData.append('videoFile', postDto.videoFile);
@@ -140,7 +155,6 @@ export class PostService {
 
   addPost(postDto: PostDto): Observable<PostResponseModel> {
     const formData = new FormData();
-    formData.append('title', postDto.title);
     formData.append('content', postDto.content);
     if (postDto.imageFile) formData.append('imageFile', postDto.imageFile);
     if (postDto.videoFile) formData.append('videoFile', postDto.videoFile);
