@@ -27,17 +27,20 @@ export class UserProfileComponent {
   currentPage = 1;
   pageSize = 10;
   totalPages = 1;
+  userRole: any;
 
   constructor(
     private route: ActivatedRoute,
     private profileService: ProfileService,
     private toastr: ToastrService,
     private router: Router,
-    private postService: PostService,
-    private sharedService: SharedService
+    private postService: PostService
   ) {}
 
   ngOnInit() {
+    this.userRole = this.profileService
+      .getCurrentUserRoleFromToken()
+      ?.toLowerCase();
     const username = this.route.snapshot.paramMap.get('username');
     if (username) {
       this.posts = [];

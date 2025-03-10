@@ -9,7 +9,7 @@
         <h6 dir="ltr">&#64;{{ userProfile.userName }}</h6>
       </small>
     </h2>
-    <p>
+    <p *ngIf="userRole === 'admin'">
       <strong>{{ "USER_PROFILE.EMAIL" | translate }} :</strong>
       {{ userProfile.email }}
     </p>
@@ -22,7 +22,6 @@
       *ngIf="posts.length > 0 || isPostsLoading; else noPosts"
       class="posts-grid"
     >
-      <h2>{{ "USER_PROFILE.POSTS_HEADER" | translate }}</h2>
       <div class="post-card" *ngFor="let post of posts">
         <p class="post-content">
           <a [routerLink]="['/post', post.id]">

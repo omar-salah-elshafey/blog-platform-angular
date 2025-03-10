@@ -77,7 +77,7 @@ export class PostService {
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Getting Posts data', error);
-          return throwError(() => new error(error));
+          return throwError(() => error);
         })
       );
   }
@@ -90,7 +90,7 @@ export class PostService {
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Getting post data', error);
-          return throwError(() => new error(error));
+          return throwError(() => error);
         })
       );
   }
@@ -116,8 +116,8 @@ export class PostService {
         }),
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
-          console.error('Error Getting post data', error);
-          return throwError(() => new error(error));
+          console.error('Error Getting post data', error.error!.error);
+          return throwError(() => error);
         })
       );
   }
@@ -127,7 +127,7 @@ export class PostService {
       catchError((error) => {
         this.toastr.error(error.error!.error, 'Error');
         console.error('Error Deleting the Post', error);
-        return throwError(() => new error(error));
+        return throwError(() => error);
       })
     );
   }
@@ -148,7 +148,7 @@ export class PostService {
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Updating the Post', error);
-          return throwError(() => new error(error));
+          return throwError(() => error);
         })
       );
   }
@@ -164,7 +164,7 @@ export class PostService {
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Creating the Post', error);
-          return throwError(() => new error(error));
+          return throwError(() => error);
         })
       );
   }

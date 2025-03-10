@@ -1,6 +1,6 @@
 <div class="main-container">
   <div
-    *ngIf="userRole === 'admin' || userRole === 'author'"
+    *ngIf="userRole === 'admin' || userRole === 'writer'"
     class="new-post-form"
   >
     <form [formGroup]="postForm" (ngSubmit)="onCreatePost()">

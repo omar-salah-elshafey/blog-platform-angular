@@ -27,7 +27,7 @@ export const routes: Routes = [
     component: RegistrationComponent,
     canActivate: [guestGuard],
   },
-  { path: '', component: LoginComponent, canActivate: [guestGuard] },
+  { path: '', component: HomeComponent, canActivate: [authGuard] },
   { path: 'login', component: LoginComponent, canActivate: [guestGuard] },
   { path: 'confirm-email', component: ConfirmEmailComponent },
   { path: 'reset-password-request', component: ResetPasswordRequestComponent },
@@ -48,7 +48,6 @@ export const routes: Routes = [
     component: UserProfileComponent,
     canActivate: [authGuard],
   },
-  { path: 'home', component: HomeComponent, canActivate: [authGuard] },
   { path: 'post/:postId', component: PostComponent, canActivate: [authGuard] },
   {
     path: 'dashboard',
@@ -65,5 +64,5 @@ export const routes: Routes = [
     ],
   },
   { path: 'not-found', component: NotFoundComponent, canActivate: [authGuard] },
-  { path: '**', redirectTo: 'home', pathMatch: 'full' },
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

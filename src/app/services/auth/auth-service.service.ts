@@ -64,7 +64,7 @@ export class AuthService {
         this.setTokens(response.accessToken, response.refreshToken);
       }),
       catchError((error) => {
-        console.error('Error while logging in: ' + error);
+        console.error('Error while logging in: ' , error.error!);
         return throwError(() => error);
       })
     );

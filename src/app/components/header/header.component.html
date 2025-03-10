@@ -1,6 +1,6 @@
-<header *ngIf="this.isLoggedIn()" >
+<header *ngIf="this.isLoggedIn()">
   <div class="logo">
-    <a routerLink="/home">
+    <a routerLink="/">
       <img src="/assets/image/Aqqrablogo.jpg" alt="logo" />
     </a>
   </div>
@@ -13,7 +13,7 @@
     </span>
     <ul id="nav-menu" [class.show]="isMenuOpen" #mobileNav>
       <li (click)="isMenuOpen = false">
-        <a routerLink="/home">{{ "HOME" | translate }}</a>
+        <a routerLink="/">{{ "HOME" | translate }}</a>
       </li>
       <li (click)="isMenuOpen = false">
         <a routerLink="/search">
@@ -29,10 +29,7 @@
                 <span> {{ firstName || ("PROFILE" | translate) }}</span>
               </div>
             </a>
-            <div
-              class="dropdown-content"
-              [class.show]="isDropdownOpen"
-            >
+            <div class="dropdown-content" [class.show]="isDropdownOpen">
               <a routerLink="/profile" (click)="closeDropdown()">
                 <i class="fa fa-user"></i> {{ "PROFILE" | translate }}
               </a>
@@ -42,6 +39,10 @@
                 (click)="closeDropdown()"
               >
                 <i class="fa fa-user-shield"></i> {{ "ADMIN" | translate }}
+              </a>
+              <a (click)="profileSettings(); closeDropdown()">
+                <i class="fas fa-cogs"></i>
+                {{ "USER_PROFILE.SETTINGS" | translate }}
               </a>
               <a (click)="logout(); closeDropdown()">
                 <i
@@ -63,6 +64,11 @@
       <li *ngIf="isMenuOpen && isAdmin">
         <a routerLink="/dashboard" (click)="isMenuOpen = false">
           <i class="fa fa-user-shield"></i> {{ "ADMIN" | translate }}
+        </a>
+      </li>
+      <li *ngIf="isMenuOpen">
+        <a (click)="profileSettings(); isMenuOpen = false">
+          <i class="fas fa-cogs"></i> {{ "USER_PROFILE.SETTINGS" | translate }}
         </a>
       </li>
       <li *ngIf="isMenuOpen">

@@ -88,11 +88,10 @@ export class HeaderComponent {
         this.router.navigate(['/login']);
       },
       error: (error) => {
-        this.toastr.error(error.error!.error, 'error');
-        console.error('Logout failed:', error.error);
+        this.sharedService.clearUserProfile();
+        this.router.navigate(['/login']);
       },
     });
-    this.sharedService.clearUserProfile();
   }
 
   toggleDropdown() {
@@ -122,5 +121,9 @@ export class HeaderComponent {
     ) {
       this.isDropdownOpen = false;
     }
+  }
+
+  profileSettings() {
+    this.router.navigate(['/account-settings']);
   }
 }

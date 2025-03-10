@@ -20,17 +20,10 @@
     <strong>{{ "USER_PROFILE.ROLE" | translate }}:</strong>
     {{ "USER_PROFILE.ROLES." + userProfile.role.toUpperCase() | translate }}
   </p>
-  <div class="profile-buttons">
-    <button (click)="profileSettings()" class="edit-btn">
-      <i class="fas fa-cogs"></i>
-      {{ "USER_PROFILE.SETTINGS" | translate }}
-    </button>
-  </div>
   <div
     *ngIf="posts.length > 0 || isPostsLoading; else noPosts"
     class="posts-grid"
   >
-    <h2>{{ "USER_PROFILE.POSTS_HEADER" | translate }}</h2>
     <div class="post-card" *ngFor="let post of posts">
       <p class="post-content">
         <a [routerLink]="['/post', post.id]">
@@ -101,7 +94,6 @@
     </div>
     <div *ngIf="isPostsLoading" class="spinner-overlay">
       <div class="spinner"></div>
-      <p>{{ "POST.LOADING_POSTS" | translate }}</p>
     </div>
   </div>
 

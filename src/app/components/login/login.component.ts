@@ -29,7 +29,6 @@ export class LoginComponent {
     private authService: AuthService,
     private router: Router,
     private toastr: ToastrService,
-    private cookieService: CookieService
   ) {}
 
   ngOnInit(): void {
@@ -70,7 +69,6 @@ export class LoginComponent {
             error.error?.error || 'An unexpected error occurred.',
             'Error'
           );
-          console.error('Login failed:', error.error);
           this.isLoading = false;
         },
       });

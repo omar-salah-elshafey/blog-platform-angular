@@ -13,6 +13,7 @@ import {
   PostService,
 } from '../../services/post/post.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { AuthService } from '../../services/auth/auth-service.service';
 
 @Component({
   selector: 'app-profile',
@@ -25,7 +26,7 @@ export class ProfileComponent implements OnInit {
   isProfileLoading = false;
   isPostsLoading = false;
   currentPage = 1;
-  pageSize = 10;
+  pageSize = 4;
   totalPages = 1;
   posts: PostResponseModel[] = [];
 
@@ -34,43 +35,38 @@ export class ProfileComponent implements OnInit {
     private toastr: ToastrService,
     private sharedService: SharedService,
     private router: Router,
-    private postService: PostService
+    private postService: PostService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.sharedService.userProfile$.subscribe((profile) => {
-      if (profile) {
-        this.userProfile = { ...this.userProfile, ...profile };
-        this.fetchUserPosts(profile.userName);
-      }
-    });
-
-    const cachedProfile = this.sharedService.getUserProfile();
-    if (!cachedProfile) {
-      this.fetchUserProfile();
-    } else {
-      this.userProfile = cachedProfile;
-
-      this.fetchUserPosts(cachedProfile.userName);
-    }
+    this.fetchUserProfile();
+    const userName = this.profileService.getUserNameFromToken();
+    this.fetchUserPosts(userName!);
   }
 
   fetchUserProfile(): void {
     this.isProfileLoading = true;
     this.profileService.getCurrentUserProfile().subscribe({
       next: (profile) => {
+        this.isProfileLoading = false;
         this.userProfile = profile;
         this.sharedService.setUserProfile(profile);
       },
-      error: (error) => {
+      error: () => {
         this.toastr.error(
           'Failed to fetch user profile. Please try again later.',
           'Error'
         );
-        console.error('Error fetching user profile:', error);
-      },
-      complete: () => {
         this.isProfileLoading = false;
+        this.authService.logout().subscribe({
+          next: () => {
+            this.router.navigate(['/login']);
+          },
+          error: (logoutError) => {
+            this.router.navigate(['/login']);
+          },
+        });
       },
     });
   }
@@ -81,6 +77,7 @@ export class ProfileComponent implements OnInit {
       .getPostsByUser(userName, this.currentPage, this.pageSize)
       .subscribe({
         next: (data) => {
+          this.isPostsLoading = false;
           this.posts = [...this.posts, ...data.items];
           this.totalPages = data.totalPages;
         },
@@ -89,9 +86,6 @@ export class ProfileComponent implements OnInit {
             'Failed to fetch posts. Please try again later.',
             'Error'
           );
-          console.error('Error fetching user posts:', error);
-        },
-        complete: () => {
           this.isPostsLoading = false;
         },
       });
@@ -102,9 +96,5 @@ export class ProfileComponent implements OnInit {
       this.currentPage++;
       this.fetchUserPosts(userName);
     }
-  }
-
-  profileSettings() {
-    this.router.navigate(['/account-settings']);
   }
 }

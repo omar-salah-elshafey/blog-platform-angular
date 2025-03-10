@@ -6,6 +6,7 @@
   "LOGOUT": "Logout",
   "AUTH": {
     "LOGIN": "Login",
+    "READER": "Register As A Reader",
     "REGISTER": "Register",
     "USERNAME": "Username or Email",
     "PASSWORD": "Password",

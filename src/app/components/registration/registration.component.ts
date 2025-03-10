@@ -83,7 +83,7 @@ export class RegistrationComponent implements OnInit {
       this.isLoading = true;
       this.authService.registerUser(trimmedFormValue).subscribe({
         next: (response) => {
-          this.router.navigate(['/confirm-email']);
+          this.router.navigate(['/login']);
         },
         error: (error) => {
           this.toastr.error(error.error!.error, 'Error');
