@@ -179,9 +179,18 @@
             {{ post.modifiedDate | date : "medium" }}
           </span>
         </p>
+
+        <div class="like-section">
+          <button class="like-btn" (click)="toggleLike()">
+            <i
+              class="fa-heart"
+              [ngClass]="isLikedByCurrentUser ? 'fa-solid' : 'fa-regular'"
+            ></i>
+          </button>
+          <span>{{ likes.length }} {{ "POST.LIKES" | translate }}</span>
+        </div>
       </ng-template>
       <div class="comments-section">
-        <h3>{{ "POST.COMMENTS" | translate }}</h3>
         <div class="comment-form">
           <form [formGroup]="commentForm" (ngSubmit)="onAddComment()">
             <textarea

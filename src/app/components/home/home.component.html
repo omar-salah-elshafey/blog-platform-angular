@@ -96,7 +96,6 @@
 
   <div *ngIf="posts.length > 0 || isLoading; else noPosts" class="posts-grid">
     <div class="post-card" *ngFor="let post of posts">
-      <!-- <h2 class="post-title"></h2> -->
       <p class="post-author">
         <a [routerLink]="['/user-profile', post.authorName]">{{
           post.authorName
@@ -136,21 +135,28 @@
           {{ post.modifiedDate | date : "medium" }}
         </span>
       </p>
+
       <div class="comments">
-        <small class="count"
-          >{{ "POST.COMMENTS" | translate }}: {{ post.comments.length }}</small
-        >
-        <a (click)="toggleComments(post.id)" class="btn-toggle-comments">
-          {{
-            post.showComments
-              ? ("POST.HIDE_COMMENTS" | translate)
-              : ("POST.SHOW_COMMENTS" | translate)
-          }}
-        </a>
+        <div class="like-section">
+          <button class="like-btn" (click)="toggleLike(post.id)">
+            <i
+              class="fa-heart"
+              [ngClass]="
+                isLikedByCurrentUser(post.id) ? 'fa-solid' : 'fa-regular'
+              "
+            ></i>
+          </button>
+          <span>
+            {{ (postLikesMap[post.id] || []).length }}
+            {{ "POST.LIKES" | translate }}
+          </span>
+        </div>
+        <small class="count">
+          {{ "POST.COMMENTS" | translate }}: {{ post.comments.length }}
+        </small>
       </div>
 
-      <div *ngIf="post.showComments" class="comments-section">
-        <h3>{{ "POST.COMMENTS" | translate }}</h3>
+      <div class="comments-section">
         <div *ngIf="post.comments.length > 0; else noComments">
           <div
             *ngFor="let comment of post.comments | slice : 0 : 2"

@@ -41,7 +41,7 @@ export class PasswordService {
       catchError((error) => {
         this.toastr.error(error.error!.error, 'Error');
         console.error('Error Changing the Password:', error);
-        return throwError(() => new error(error));
+        return throwError(() => error);
       })
     );
   }

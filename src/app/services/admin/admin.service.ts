@@ -56,7 +56,7 @@ export class AdminService {
     return this.http.get<number>(`${this.userUrl}/get-users-count`).pipe(
       catchError((error) => {
         console.error('Error Getting Users count', error);
-        return throwError(() => new error(error));
+        return throwError(() => error);
       })
     );
   }
@@ -65,7 +65,7 @@ export class AdminService {
     return this.http.get<number>(`${this.postUrl}/get-posts-count`).pipe(
       catchError((error) => {
         console.error('Error Getting Posts count', error);
-        return throwError(() => new error(error));
+        return throwError(() => error);
       })
     );
   }
@@ -74,7 +74,7 @@ export class AdminService {
     return this.http.get<number>(`${this.commentUrl}/get-comments-count`).pipe(
       catchError((error) => {
         console.error('Error Getting Comments count', error);
-        return throwError(() => new error(error));
+        return throwError(() => error);
       })
     );
   }
@@ -97,7 +97,7 @@ export class AdminService {
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Getting comments data', error);
-          return throwError(() => new error(error));
+          return throwError(() => error);
         })
       );
   }
@@ -107,7 +107,7 @@ export class AdminService {
       catchError((error) => {
         this.toastr.error(error.error!.error, 'Error');
         console.error('Error Changing the role', error);
-        return throwError(() => new error(error));
+        return throwError(() => error);
       })
     );
   }

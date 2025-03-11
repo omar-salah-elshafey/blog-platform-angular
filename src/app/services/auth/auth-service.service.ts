@@ -64,7 +64,7 @@ export class AuthService {
         this.setTokens(response.accessToken, response.refreshToken);
       }),
       catchError((error) => {
-        console.error('Error while logging in: ' , error.error!);
+        console.error('Error while logging in: ', error.error!);
         return throwError(() => error);
       })
     );
@@ -81,7 +81,7 @@ export class AuthService {
       .pipe(
         catchError((error) => {
           console.error('Token refresh failed:', error);
-          return throwError(() => new error(error));
+          return throwError(() => error);
         })
       );
   }
@@ -101,7 +101,7 @@ export class AuthService {
           console.error('Error during logout:', error);
           if (error.status == 401) this.toastr.error('Unauthorized', 'error');
           else this.toastr.error(error.error!.error, 'error');
-          return throwError(() => new error(error));
+          return throwError(() => error);
         })
       );
   }

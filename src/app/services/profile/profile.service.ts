@@ -109,7 +109,7 @@ export class ProfileService {
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Getting User Profile');
-          return throwError(() => new error(error));
+          return throwError(() => error);
         })
       );
   }
@@ -120,7 +120,7 @@ export class ProfileService {
         console.error('Error during updating:', error);
         if (error.status == 401) this.toastr.error('Unauthorized', 'error');
         else this.toastr.error(error.error!.error, 'error');
-        return throwError(() => new error(error));
+        return throwError(() => error);
       })
     );
   }
@@ -137,7 +137,7 @@ export class ProfileService {
           console.error('Error during deleting:', error);
           if (error.status == 401) this.toastr.error('Unauthorized', 'error');
           else this.toastr.error(error.error!.error, 'error');
-          return throwError(() => new error(error));
+          return throwError(() => error);
         })
       );
   }
@@ -158,7 +158,7 @@ export class ProfileService {
       .pipe(
         catchError((error) => {
           console.error('Error during searching:', error);
-          return throwError(() => new error(error));
+          return throwError(() => error);
         })
       );
   }

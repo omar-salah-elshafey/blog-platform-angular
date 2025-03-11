@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import {
   PostResponseModel,
   PostService,
@@ -14,6 +14,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import {
+  PostLikeDto,
+  PostLikesService,
+} from '../../services/postLikes/post-likes.service';
 
 @Component({
   selector: 'app-home',
@@ -34,17 +38,23 @@ export class HomeComponent implements OnInit {
   imageFile?: File;
   videoFile?: File;
 
+  userName: string | null = null;
+  likes: PostLikeDto[] = [];
+  postLikesMap: { [postId: number]: PostLikeDto[] } = {};
+
   constructor(
     private postService: PostService,
     private toastr: ToastrService,
     private profileService: ProfileService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private postLikesService: PostLikesService,
   ) {}
 
   ngOnInit(): void {
     this.userRole = this.profileService
       .getCurrentUserRoleFromToken()
       ?.toLowerCase();
+    this.userName = this.profileService.getUserNameFromToken();
     this.initializeForm();
     this.loadPosts();
   }
@@ -66,6 +76,7 @@ export class HomeComponent implements OnInit {
         }
         this.posts = [...this.posts, ...data.items];
         this.totalPages = data.totalPages;
+        this.fetchAllPostLikes();
       },
       error: (err) => {
         console.error('Error fetching posts:', err);
@@ -137,10 +148,35 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  toggleComments(postId: number): void {
-    const post = this.posts.find((p) => p.id === postId);
-    if (post) {
-      post.showComments = !post.showComments; // Toggle the visibility
-    }
+  fetchAllPostLikes() {
+    this.posts.forEach((post) => {
+      this.postLikesService.getPostLikes(post.id).subscribe({
+        next: (likes) => {
+          this.postLikesMap[post.id] = likes;
+          console.log(`Likes for post ${post.id}:`, likes);
+        },
+        error: (error) => {
+          console.error(`Error fetching likes for post ${post.id}:`, error);
+        },
+      });
+    });
+  }
+
+  isLikedByCurrentUser(postId: number): boolean {
+    const likes = this.postLikesMap[postId] || [];
+    return this.userName
+      ? likes.some((like) => like.userName === this.userName)
+      : false;
+  }
+
+  toggleLike(postId: number) {
+    this.postLikesService.toggleLike(postId).subscribe({
+      next: (updatedLikes) => {
+        this.postLikesMap[postId] = updatedLikes;
+      },
+      error: (error) => {
+        console.error(`Error toggling like for post ${postId}:`, error);
+      },
+    });
   }
 }

@@ -58,30 +58,41 @@
             {{ post.modifiedDate | date : "medium" }}
           </span>
         </p>
-        <p class="post-date">
+        <div class="post-date">
+          <div class="like-section">
+            <button class="like-btn" (click)="toggleLike(post.id)">
+              <i
+                class="fa-heart"
+                [ngClass]="
+                  isLikedByCurrentUser(post.id) ? 'fa-solid' : 'fa-regular'
+                "
+              ></i>
+            </button>
+            <span>
+              {{ (postLikesMap[post.id] || []).length }}
+              {{ "POST.LIKES" | translate }}
+            </span>
+          </div>
           <small>
             {{ "POST.COMMENTS" | translate }}: {{ post.comments.length }}
           </small>
-        </p>
-        <div class="comments-section">
-          <h3>{{ "POST.COMMENTS" | translate }}</h3>
-          <div *ngIf="post.comments.length > 0">
-            <div
-              *ngFor="let comment of post.comments | slice : 0 : 2"
-              class="comment"
-            >
-              <p class="comment-user">
-                <a [routerLink]="['/user-profile', comment.userName]">{{
-                  comment.userName
-                }}</a>
-              </p>
-              <p class="comment-content">{{ comment.content }}</p>
-              <p class="comment-date">
-                <span dir="ltr">
-                  {{ comment.createdDate | date : "short" }}
-                </span>
-              </p>
-            </div>
+        </div>
+        <div class="comments-section" *ngIf="post.comments.length > 0">
+          <div
+            *ngFor="let comment of post.comments | slice : 0 : 2"
+            class="comment"
+          >
+            <p class="comment-user">
+              <a [routerLink]="['/user-profile', comment.userName]">{{
+                comment.userName
+              }}</a>
+            </p>
+            <p class="comment-content">{{ comment.content }}</p>
+            <p class="comment-date">
+              <span dir="ltr">
+                {{ comment.createdDate | date : "short" }}
+              </span>
+            </p>
           </div>
         </div>
       </div>

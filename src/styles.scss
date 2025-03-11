@@ -258,10 +258,40 @@ main {
   }
 }
 
+.like-section {
+  border-top: 2px solid #f9f9f9;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+
+  .like-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      color: #ff4444;
+    }
+
+    i {
+      font-size: 1.5rem;
+    }
+
+    .fa-solid {
+      color: #ff4444;
+    }
+
+    .fa-regular {
+      color: #333;
+    }
+  }
+}
+
 // Comments Section Styling
 .comments-section {
-  margin-top: 20px;
-  padding-top: 20px;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
   border-top: 2px solid $light-gray;
 
   h3 {
@@ -275,7 +305,7 @@ main {
     background-color: $secondary-color;
     padding: 15px;
     border-radius: 8px;
-    margin-bottom: 15px;
+    margin-bottom: 0.5rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
     .comment-user {
@@ -320,7 +350,6 @@ main {
   text-align: center;
   color: $dark-gray;
   font-size: 1.2rem;
-  margin-top: 40px;
   font-weight: 300;
   padding: 20px;
   background-color: $secondary-color;
@@ -546,7 +575,8 @@ main {
   z-index: 1050;
   position: fixed;
   top: 10%;
-  left: 50%;
+  inset-inline-start: 50%;
+  width: fit-content;
   transform: translateX(-50%);
 }
 

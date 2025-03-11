@@ -14,6 +14,10 @@ import {
 } from '../../services/post/post.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../services/auth/auth-service.service';
+import {
+  PostLikeDto,
+  PostLikesService,
+} from '../../services/postLikes/post-likes.service';
 
 @Component({
   selector: 'app-profile',
@@ -30,19 +34,24 @@ export class ProfileComponent implements OnInit {
   totalPages = 1;
   posts: PostResponseModel[] = [];
 
+  userName: string | null = null;
+  likes: PostLikeDto[] = [];
+  postLikesMap: { [postId: number]: PostLikeDto[] } = {};
+
   constructor(
     private profileService: ProfileService,
     private toastr: ToastrService,
     private sharedService: SharedService,
     private router: Router,
     private postService: PostService,
-    private authService: AuthService
+    private authService: AuthService,
+    private postLikesService: PostLikesService
   ) {}
 
   ngOnInit(): void {
     this.fetchUserProfile();
-    const userName = this.profileService.getUserNameFromToken();
-    this.fetchUserPosts(userName!);
+    this.userName = this.profileService.getUserNameFromToken();
+    this.fetchUserPosts(this.userName!);
   }
 
   fetchUserProfile(): void {
@@ -80,6 +89,7 @@ export class ProfileComponent implements OnInit {
           this.isPostsLoading = false;
           this.posts = [...this.posts, ...data.items];
           this.totalPages = data.totalPages;
+          this.fetchAllPostLikes();
         },
         error: (error) => {
           this.toastr.error(
@@ -96,5 +106,37 @@ export class ProfileComponent implements OnInit {
       this.currentPage++;
       this.fetchUserPosts(userName);
     }
+  }
+
+  fetchAllPostLikes() {
+    this.posts.forEach((post) => {
+      this.postLikesService.getPostLikes(post.id).subscribe({
+        next: (likes) => {
+          this.postLikesMap[post.id] = likes;
+          console.log(`Likes for post ${post.id}:`, likes);
+        },
+        error: (error) => {
+          console.error(`Error fetching likes for post ${post.id}:`, error);
+        },
+      });
+    });
+  }
+
+  isLikedByCurrentUser(postId: number): boolean {
+    const likes = this.postLikesMap[postId] || [];
+    return this.userName
+      ? likes.some((like) => like.userName === this.userName)
+      : false;
+  }
+
+  toggleLike(postId: number) {
+    this.postLikesService.toggleLike(postId).subscribe({
+      next: (updatedLikes) => {
+        this.postLikesMap[postId] = updatedLikes;
+      },
+      error: (error) => {
+        console.error(`Error toggling like for post ${postId}:`, error);
+      },
+    });
   }
 }

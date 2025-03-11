@@ -28,6 +28,10 @@ import { ProfileService } from '../../services/profile/profile.service';
 import { PostDeletingConfermationComponent } from '../post-deleting-confermation/post-deleting-confermation.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
+import {
+  PostLikeDto,
+  PostLikesService,
+} from '../../services/postLikes/post-likes.service';
 
 @Component({
   selector: 'app-post',
@@ -58,6 +62,12 @@ export class PostComponent implements OnInit {
   videoFile?: File;
 
   postMenuOpen: number | null = null;
+  showPostOptions = false;
+  activeCommentMenu: number | null = null;
+
+  // New properties for likes
+  likes: PostLikeDto[] = [];
+  isLikedByCurrentUser = false;
 
   togglePostMenu(postId: number) {
     this.postMenuOpen = this.postMenuOpen === postId ? null : postId;
@@ -68,9 +78,6 @@ export class PostComponent implements OnInit {
       this.activeCommentMenu === commentId ? null : commentId;
   }
 
-  showPostOptions = false;
-  activeCommentMenu: number | null = null;
-
   constructor(
     private postService: PostService,
     private route: ActivatedRoute,
@@ -80,7 +87,8 @@ export class PostComponent implements OnInit {
     private fb: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
     private profileService: ProfileService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private postLikesService: PostLikesService
   ) {}
 
   ngOnInit(): void {
@@ -92,6 +100,7 @@ export class PostComponent implements OnInit {
     this.initCommentForm(+postId!);
     if (postId) {
       this.fetchPostDetails(+postId);
+      this.fetchPostLikes(+postId);
     } else {
       this.toastr.error('Invalid Post ID', 'Error');
       this.router.navigate(['/not-found']);
@@ -115,6 +124,34 @@ export class PostComponent implements OnInit {
       },
       complete: () => {
         this.isLoading = false;
+      },
+    });
+  }
+
+  fetchPostLikes(postId: number) {
+    this.postLikesService.getPostLikes(postId).subscribe({
+      next: (likes) => {
+        this.likes = likes;
+        this.isLikedByCurrentUser = this.userName
+          ? likes.some((like) => like.userName === this.userName)
+          : false;
+      },
+      error: (error) => {
+        console.error('Error fetching likes:', error);
+      },
+    });
+  }
+
+  toggleLike() {
+    this.postLikesService.toggleLike(this.post.id).subscribe({
+      next: (updatedLikes) => {
+        this.likes = updatedLikes;
+        this.isLikedByCurrentUser = this.userName
+          ? updatedLikes.some((like) => like.userName === this.userName)
+          : false;
+      },
+      error: (error) => {
+        console.error('Error toggling like:', error);
       },
     });
   }

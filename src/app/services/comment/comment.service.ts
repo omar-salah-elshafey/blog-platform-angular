@@ -30,7 +30,7 @@ export class CommentService {
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Creating the comment!', error);
-          return throwError(() => new error(error));
+          return throwError(() => error);
         })
       );
   }
@@ -40,7 +40,7 @@ export class CommentService {
       catchError((error) => {
         this.toastr.error(error.error!.error, 'Error');
         console.error('Error Deleted the comment!', error);
-        return throwError(() => new error(error));
+        return throwError(() => error);
       })
     );
   }
@@ -58,7 +58,7 @@ export class CommentService {
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Updating the comment!', error);
-          return throwError(() => new error(error));
+          return throwError(() => error);
         })
       );
   }
@@ -82,7 +82,7 @@ export class CommentService {
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Getting comments data', error);
-          return throwError(() => new error(error));
+          return throwError(() => error);
         })
       );
   }
@@ -106,7 +106,7 @@ export class CommentService {
         catchError((error) => {
           this.toastr.error(error.error!.error, 'Error');
           console.error('Error Getting comments data', error);
-          return throwError(() => new error(error));
+          return throwError(() => error);
         })
       );
   }
