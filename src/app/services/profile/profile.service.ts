@@ -24,6 +24,7 @@ export interface UpdateProfile {
 export interface DeleteProfile {
   userName: string;
   refreshToken: string;
+  password?: string;
 }
 
 interface JwtPayload {
@@ -77,7 +78,8 @@ export class ProfileService {
   }
 
   isAdmin() {
-    return this.getCurrentUserRoleFromToken() === 'admin';
+    const role = this.getCurrentUserRoleFromToken();
+    return role === 'admin' || role === 'superadmin';
   }
 
   getEmailFromToken(): string {
@@ -127,16 +129,10 @@ export class ProfileService {
 
   deleteUserProfile(userData: DeleteProfile): Observable<any> {
     return this.http
-      .delete(`${this.baseUrl}/delete-user/${userData.userName}`, {
-        params: {
-          refreshToken: userData.refreshToken,
-        },
-      })
+      .delete(`${this.baseUrl}/delete-user`, { body: userData })
       .pipe(
         catchError((error) => {
-          console.error('Error during deleting:', error);
-          if (error.status == 401) this.toastr.error('Unauthorized', 'error');
-          else this.toastr.error(error.error!.error, 'error');
+          console.error('Error deleting user profile:', error);
           return throwError(() => error);
         })
       );

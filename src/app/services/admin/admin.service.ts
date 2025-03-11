@@ -105,7 +105,6 @@ export class AdminService {
   changeRole(userData: ChangeUserRoleDto): Observable<any> {
     return this.http.put(`${this.userUrl}/change-role`, userData).pipe(
       catchError((error) => {
-        this.toastr.error(error.error!.error, 'Error');
         console.error('Error Changing the role', error);
         return throwError(() => error);
       })

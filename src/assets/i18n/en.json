@@ -84,6 +84,7 @@
       "ADMIN": "Admin",
       "WRITER": "Writer",
       "READER": "Reader",
+      "SUPERADMIN": "Super Admin",
       "SELECT": "Select a role"
     }
   },
@@ -91,7 +92,8 @@
     "CONFIRM_DELETE_POST_TITLE": "Confirm Post Deletion",
     "CONFIRM_DELETE_POST_MESSAGE": "You are about to delete this post. This action cannot be undone. Are you sure?",
     "CONFIRM_DELETE_ACCOUNT_TITLE": "Confirm Account Deletion",
-    "CONFIRM_DELETE_ACCOUNT_MESSAGE": "You are about to delete this account. This action cannot be undone. Are you sure?"
+    "CONFIRM_DELETE_ACCOUNT_MESSAGE": "You are about to delete this account. This action cannot be undone. Are you sure?",
+    "PASSWORD": "Enter your Password."
   },
   "SEARCH_USERS": {
     "HEADER": "Search Users",

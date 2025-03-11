@@ -42,7 +42,8 @@ export class HeaderComponent {
     this.sharedService.userProfile$.subscribe((profile) => {
       if (profile) {
         this.firstName = profile.firstName;
-        this.isAdmin = profile.role === 'Admin';
+        this.isAdmin =
+          profile.role === 'Admin' || profile.role === 'SuperAdmin';
       }
     });
   }

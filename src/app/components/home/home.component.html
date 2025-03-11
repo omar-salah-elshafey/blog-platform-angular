@@ -1,6 +1,6 @@
 <div class="main-container">
   <div
-    *ngIf="userRole === 'admin' || userRole === 'writer'"
+    *ngIf="userRole === 'admin' || userRole === 'superadmin' || userRole === 'writer'"
     class="new-post-form"
   >
     <form [formGroup]="postForm" (ngSubmit)="onCreatePost()">
@@ -136,7 +136,7 @@
         </span>
       </p>
 
-      <div class="comments">
+      <div class="reactions">
         <div class="like-section">
           <button class="like-btn" (click)="toggleLike(post.id)">
             <i
@@ -151,7 +151,7 @@
             {{ "POST.LIKES" | translate }}
           </span>
         </div>
-        <small class="count">
+        <small class="comments-count">
           {{ "POST.COMMENTS" | translate }}: {{ post.comments.length }}
         </small>
       </div>

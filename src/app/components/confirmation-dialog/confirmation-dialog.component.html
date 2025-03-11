@@ -3,12 +3,31 @@
 </h2>
 <mat-dialog-content>
   <p>{{ "DIALOG.CONFIRM_DELETE_ACCOUNT_MESSAGE" | translate }}</p>
+  <mat-form-field
+    *ngIf="data.isSelfDelete"
+    appearance="outline"
+    class="password-field"
+  >
+    <mat-label>{{ "DIALOG.PASSWORD" | translate }}</mat-label>
+    <input
+      matInput
+      [type]="hidePassword ? 'password' : 'text'"
+      [(ngModel)]="password"
+      placeholder="{{ 'DIALOG.PASSWORD' | translate }}"
+      required
+    />
+  </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close="cancel">
+  <button mat-button [mat-dialog-close]="null">
     {{ "ACTIONS.CANCEL" | translate }}
   </button>
-  <button mat-raised-button color="warn" [mat-dialog-close]="'confirm'">
+  <button
+    mat-raised-button
+    color="warn"
+    [mat-dialog-close]="data.isSelfDelete ? password : true"
+    [disabled]="data.isSelfDelete && !password"
+  >
     {{ "ACTIONS.DELETE" | translate }}
   </button>
 </mat-dialog-actions>

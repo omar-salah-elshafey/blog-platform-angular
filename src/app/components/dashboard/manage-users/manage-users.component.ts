@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
+  DeleteProfile,
   ProfileService,
   UserProfile,
 } from '../../../services/profile/profile.service';
@@ -46,7 +47,7 @@ export class ManageUsersComponent implements OnInit {
   profileUpdateState: { [userId: string]: boolean } = {};
   roleChangeState: { [userId: string]: boolean } = {};
 
-  roles = ['Admin', 'Writer', 'Reader'];
+  roles = ['SuperAdmin', 'Admin', 'Writer', 'Reader'];
   constructor(
     private adminService: AdminService,
     private toastr: ToastrService,
@@ -126,7 +127,7 @@ export class ManageUsersComponent implements OnInit {
       },
       error: (error) => {
         this.toastr.error(error.error!.error, 'Error');
-        console.error('Error:', error);
+        this.cancelRoleChange(user);
       },
     });
   }
@@ -174,13 +175,18 @@ export class ManageUsersComponent implements OnInit {
   }
 
   onDeleteAccount(userName: string) {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+    const currentUserName = this.profileService.getUserNameFromToken();
+    const isSelfDelete = currentUserName === userName;
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: { isSelfDelete },
+    });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'confirm') {
-        const userData = {
+    dialogRef.afterClosed().subscribe((result: string | boolean | null) => {
+      if (result) {
+        const userData: DeleteProfile = {
           userName: userName,
           refreshToken: this.cookieService.get('refreshToken'),
+          password: isSelfDelete ? (result as string) : undefined,
         };
         this.profileService.deleteUserProfile(userData).subscribe({
           next: (response) => {
@@ -191,7 +197,6 @@ export class ManageUsersComponent implements OnInit {
           },
           error: (error: any) => {
             this.toastr.error(error.error!.error, 'Error');
-            console.error('Error deleting user profile:', error);
           },
         });
       } else {

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  DeleteProfile,
   ProfileService,
   UpdateProfile,
   UserProfile,
@@ -131,13 +132,16 @@ export class AccountSettingsComponent implements OnInit {
   }
 
   onDeleteProfile() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: { isSelfDelete: true },
+    });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'confirm') {
-        const userData = {
+    dialogRef.afterClosed().subscribe((password: string | null) => {
+      if (password) {
+        const userData: DeleteProfile = {
           userName: this.userProfile!.userName,
           refreshToken: this.cookieService.get('refreshToken'),
+          password: password,
         };
         this.profileService.deleteUserProfile(userData).subscribe({
           next: (response) => {
@@ -148,8 +152,7 @@ export class AccountSettingsComponent implements OnInit {
             this.router.navigate(['/login']);
           },
           error: (error: any) => {
-            this.toastr.error(error.error!.error, 'Error');
-            console.error('Error deleting user profile:', error);
+            this.toastr.error(error.error!.error, 'error');
           },
         });
       }

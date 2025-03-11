@@ -83,6 +83,7 @@
       "ADMIN": "مسؤول",
       "WRITER": "كاتب",
       "READER": "قارئ",
+      "SUPERADMIN": "مدير النظام",
       "SELECT": "اختر الصلاحية"
     }
   },
@@ -90,7 +91,8 @@
     "CONFIRM_DELETE_POST_TITLE": "تأكيد حذف المنشور",
     "CONFIRM_DELETE_POST_MESSAGE": "أنت على وشك حذف هذا المنشور. لا يمكن التراجع عن هذا الإجراء. هل أنت متأكد؟",
     "CONFIRM_DELETE_ACCOUNT_TITLE": "تأكيد حذف الحساب",
-    "CONFIRM_DELETE_ACCOUNT_MESSAGE": "أنت على وشك حذف هذا الحساب. لا يمكن التراجع عن هذا الإجراء. هل أنت متأكد؟"
+    "CONFIRM_DELETE_ACCOUNT_MESSAGE": "أنت على وشك حذف هذا الحساب. لا يمكن التراجع عن هذا الإجراء. هل أنت متأكد؟",
+    "PASSWORD": "أدخل كلمة المرور."
   },
   "SEARCH_USERS": {
     "HEADER": "البحث عن المستخدمين",

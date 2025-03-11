@@ -60,7 +60,7 @@
           {{ post.modifiedDate | date : "medium" }}
         </span>
       </p>
-      <div class="post-date">
+      <div class="reactions">
         <div class="like-section">
           <button class="like-btn" (click)="toggleLike(post.id)">
             <i
@@ -75,7 +75,7 @@
             {{ "POST.LIKES" | translate }}
           </span>
         </div>
-        <small>
+        <small class="comments-count">
           {{ "POST.COMMENTS" | translate }}: {{ post.comments.length }}
         </small>
       </div>

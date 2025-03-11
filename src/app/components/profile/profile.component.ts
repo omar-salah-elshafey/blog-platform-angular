@@ -113,7 +113,6 @@ export class ProfileComponent implements OnInit {
       this.postLikesService.getPostLikes(post.id).subscribe({
         next: (likes) => {
           this.postLikesMap[post.id] = likes;
-          console.log(`Likes for post ${post.id}:`, likes);
         },
         error: (error) => {
           console.error(`Error fetching likes for post ${post.id}:`, error);

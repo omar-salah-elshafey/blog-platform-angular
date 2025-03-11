@@ -198,7 +198,8 @@ export class PostComponent implements OnInit {
         this.postService.deletePost(id).subscribe({
           next: (response) => {
             this.toastr.success('Post deleted successfully!', 'Success');
-            if (this.userRole === 'admin') this.router.navigate(['/']);
+            if (this.userRole === 'admin' || this.userRole === 'superadmin')
+              this.router.navigate(['/']);
             else this.router.navigate(['/profile']);
           },
           error: (error) => {

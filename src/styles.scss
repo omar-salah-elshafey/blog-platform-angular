@@ -258,6 +258,18 @@ main {
   }
 }
 
+.reactions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 2px solid #f9f9f9;
+  .comments-count {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 300;
+  }
+}
+
 .like-section {
   border-top: 2px solid #f9f9f9;
   display: flex;

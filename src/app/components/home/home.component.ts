@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
     private toastr: ToastrService,
     private profileService: ProfileService,
     private fb: FormBuilder,
-    private postLikesService: PostLikesService,
+    private postLikesService: PostLikesService
   ) {}
 
   ngOnInit(): void {
@@ -153,7 +153,6 @@ export class HomeComponent implements OnInit {
       this.postLikesService.getPostLikes(post.id).subscribe({
         next: (likes) => {
           this.postLikesMap[post.id] = likes;
-          console.log(`Likes for post ${post.id}:`, likes);
         },
         error: (error) => {
           console.error(`Error fetching likes for post ${post.id}:`, error);
