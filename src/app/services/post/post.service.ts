@@ -148,6 +148,31 @@ export class PostService {
       );
   }
 
+  getHomeFeed(
+    pageNumber: number,
+    pageSize: number
+  ): Observable<PaginatedResponse<PostResponseModel>> {
+    return this.http
+      .get<PaginatedResponse<PostResponseModel>>(
+        `${this.baseUrl}/get-home-feed`,
+        {
+          params: {
+            pageNumber: pageNumber.toString(),
+            pageSize: pageSize.toString(),
+          },
+        }
+      )
+      .pipe(
+        tap((response) => {
+          response.items = response.items.map((post) => this.updateUrls(post));
+        }),
+        catchError((error) => {
+          console.error('Error Getting home feed', error);
+          return throwError(() => error);
+        })
+      );
+  }
+
   deletePost(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/delete-post/${id}`).pipe(
       catchError((error) => {

@@ -411,4 +411,15 @@ export class PostComponent implements OnInit {
       this.activeCommentMenu = null;
     }
   }
+
+  sharePost(postId: number) {
+    this.postService.sharePost(postId).subscribe({
+      next: () => {
+        this.toastr.success('Post shared successfully', 'Success');
+      },
+      error: (error) => {
+        this.toastr.error(error.error?.error || 'Error sharing post', 'Error');
+      },
+    });
+  }
 }

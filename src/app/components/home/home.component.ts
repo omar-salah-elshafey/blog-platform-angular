@@ -69,7 +69,7 @@ export class HomeComponent implements OnInit {
 
   loadPosts() {
     this.isLoading = true;
-    this.postService.getAllPosts(this.currentPage, this.pageSize).subscribe({
+    this.postService.getHomeFeed(this.currentPage, this.pageSize).subscribe({
       next: (data) => {
         if (data.items.length === 0 && this.currentPage === 1) {
           this.toastr.info('No posts available.', 'Info');
@@ -150,7 +150,8 @@ export class HomeComponent implements OnInit {
 
   fetchAllPostLikes() {
     this.posts.forEach((post) => {
-      this.postLikesService.getPostLikes(post.id).subscribe({
+      const postId = post.sharedPostId ? post.originalPost!.id : post.id;
+      this.postLikesService.getPostLikes(postId).subscribe({
         next: (likes) => {
           this.postLikesMap[post.id] = likes;
         },
@@ -181,8 +182,9 @@ export class HomeComponent implements OnInit {
 
   sharePost(postId: number) {
     this.postService.sharePost(postId).subscribe({
-      next: () => {
+      next: (sharedPost) => {
         this.toastr.success('Post shared successfully', 'Success');
+        this.posts.unshift(sharedPost);
       },
       error: (error) => {
         this.toastr.error(error.error?.error || 'Error sharing post', 'Error');
