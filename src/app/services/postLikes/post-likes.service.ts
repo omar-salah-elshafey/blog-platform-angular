@@ -25,11 +25,7 @@ export class PostLikesService {
       .post<PostLikeDto[]>(`${this.baseUrl}/${postId}/toggle-like`, {})
       .pipe(
         catchError((error) => {
-          this.toastr.error(
-            error.error!.error || 'Failed to toggle like',
-            'Error'
-          );
-          console.error('Error: ', error);
+          console.error('Error toggling likes: ', error);
           return throwError(() => error);
         })
       );
@@ -38,11 +34,7 @@ export class PostLikesService {
   getPostLikes(postId: number): Observable<PostLikeDto[]> {
     return this.http.get<PostLikeDto[]>(`${this.baseUrl}/${postId}/likes`).pipe(
       catchError((error) => {
-        this.toastr.error(
-          error.error!.error || 'Failed to fetch likes',
-          'Error'
-        );
-        console.error('Error: ', error);
+        console.error('Error fetching likes: ', error);
         return throwError(() => error);
       })
     );

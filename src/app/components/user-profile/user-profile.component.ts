@@ -54,7 +54,7 @@ export class UserProfileComponent {
     if (this.userName) {
       this.posts = [];
       this.getUserProfile(this.userName);
-      this.fetchUserPosts(this.userName);
+      this.fetchUserFeed(this.userName);
     }
   }
 
@@ -79,28 +79,26 @@ export class UserProfileComponent {
     var userName = this.userProfile.userName;
     if (this.currentPage < this.totalPages && !this.isPostsLoading) {
       this.currentPage++;
-      this.fetchUserPosts(userName);
+      this.fetchUserFeed(userName);
     }
   }
 
-  fetchUserPosts(userName: string): void {
+  fetchUserFeed(userName: string): void {
     this.isPostsLoading = true;
     this.postService
-      .getPostsByUser(userName, this.currentPage, this.pageSize)
+      .getUserFeed(userName, this.currentPage, this.pageSize)
       .subscribe({
         next: (data) => {
+          this.isPostsLoading = false;
           this.posts = [...this.posts, ...data.items];
           this.totalPages = data.totalPages;
           this.fetchAllPostLikes();
         },
         error: (error) => {
           this.toastr.error(
-            'Failed to fetch posts. Please try again later.',
+            'Failed to fetch feed. Please try again later.',
             'Error'
           );
-          console.error('Error fetching user posts:', error);
-        },
-        complete: () => {
           this.isPostsLoading = false;
         },
       });
@@ -108,7 +106,8 @@ export class UserProfileComponent {
 
   fetchAllPostLikes() {
     this.posts.forEach((post) => {
-      this.postLikesService.getPostLikes(post.id).subscribe({
+      const postId = post.sharedPostId ? post.originalPost!.id : post.id;
+      this.postLikesService.getPostLikes(postId).subscribe({
         next: (likes) => {
           this.postLikesMap[post.id] = likes;
         },
@@ -133,6 +132,17 @@ export class UserProfileComponent {
       },
       error: (error) => {
         console.error(`Error toggling like for post ${postId}:`, error);
+      },
+    });
+  }
+
+  sharePost(postId: number) {
+    this.postService.sharePost(postId).subscribe({
+      next: () => {
+        this.toastr.success('Post shared successfully', 'Success');
+      },
+      error: (error) => {
+        this.toastr.error(error.error?.error || 'Error sharing post', 'Error');
       },
     });
   }

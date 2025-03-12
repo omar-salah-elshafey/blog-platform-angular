@@ -22,6 +22,9 @@ export interface PostResponseModel {
   modifiedDate?: string;
   comments: PostCommentsModel[];
   showComments?: boolean;
+  sharedPostId?: number;
+  sharerName?: string;
+  originalPost?: PostResponseModel;
 }
 
 export interface PostDto {
@@ -87,7 +90,6 @@ export class PostService {
       .pipe(
         tap((post) => this.updateUrls(post)),
         catchError((error) => {
-          this.toastr.error(error.error!.error, 'Error');
           console.error('Error Getting post data', error);
           return throwError(() => error);
         })
@@ -114,8 +116,33 @@ export class PostService {
           response.items = response.items.map((post) => this.updateUrls(post));
         }),
         catchError((error) => {
-          this.toastr.error(error.error!.error, 'Error');
           console.error('Error Getting post data', error.error!.error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  getUserFeed(
+    userName: string,
+    pageNumber: number,
+    pageSize: number
+  ): Observable<PaginatedResponse<PostResponseModel>> {
+    return this.http
+      .get<PaginatedResponse<PostResponseModel>>(
+        `${this.baseUrl}/get-user-feed/${userName}`,
+        {
+          params: {
+            pageNumber: pageNumber.toString(),
+            pageSize: pageSize.toString(),
+          },
+        }
+      )
+      .pipe(
+        tap((response) => {
+          response.items = response.items.map((post) => this.updateUrls(post));
+        }),
+        catchError((error) => {
+          console.error('Error Getting user feed', error);
           return throwError(() => error);
         })
       );
@@ -124,7 +151,6 @@ export class PostService {
   deletePost(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/delete-post/${id}`).pipe(
       catchError((error) => {
-        this.toastr.error(error.error!.error, 'Error');
         console.error('Error Deleting the Post', error);
         return throwError(() => error);
       })
@@ -145,7 +171,6 @@ export class PostService {
       .put<PostResponseModel>(`${this.baseUrl}/update-post/${id}`, formData)
       .pipe(
         catchError((error) => {
-          this.toastr.error(error.error!.error, 'Error');
           console.error('Error Updating the Post', error);
           return throwError(() => error);
         })
@@ -161,8 +186,19 @@ export class PostService {
       .post<PostResponseModel>(`${this.baseUrl}/create-post`, formData)
       .pipe(
         catchError((error) => {
-          this.toastr.error(error.error!.error, 'Error');
           console.error('Error Creating the Post', error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  sharePost(postId: number): Observable<PostResponseModel> {
+    return this.http
+      .post<PostResponseModel>(`${this.baseUrl}/share-post/${postId}`, {})
+      .pipe(
+        tap((post) => this.updateUrls(post)),
+        catchError((error) => {
+          console.error('Error sharing post', error);
           return throwError(() => error);
         })
       );

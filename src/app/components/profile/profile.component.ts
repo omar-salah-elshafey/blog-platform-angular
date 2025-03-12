@@ -30,7 +30,7 @@ export class ProfileComponent implements OnInit {
   isProfileLoading = false;
   isPostsLoading = false;
   currentPage = 1;
-  pageSize = 4;
+  pageSize = 10;
   totalPages = 1;
   posts: PostResponseModel[] = [];
 
@@ -51,7 +51,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.fetchUserProfile();
     this.userName = this.profileService.getUserNameFromToken();
-    this.fetchUserPosts(this.userName!);
+    this.fetchUserFeed(this.userName!);
   }
 
   fetchUserProfile(): void {
@@ -80,10 +80,10 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  fetchUserPosts(userName: string): void {
+  fetchUserFeed(userName: string): void {
     this.isPostsLoading = true;
     this.postService
-      .getPostsByUser(userName, this.currentPage, this.pageSize)
+      .getUserFeed(userName, this.currentPage, this.pageSize)
       .subscribe({
         next: (data) => {
           this.isPostsLoading = false;
@@ -93,24 +93,26 @@ export class ProfileComponent implements OnInit {
         },
         error: (error) => {
           this.toastr.error(
-            'Failed to fetch posts. Please try again later.',
+            'Failed to fetch feed. Please try again later.',
             'Error'
           );
           this.isPostsLoading = false;
         },
       });
   }
+
   loadMorePosts(): void {
     var userName = this.userProfile!.userName;
     if (this.currentPage < this.totalPages && !this.isPostsLoading) {
       this.currentPage++;
-      this.fetchUserPosts(userName);
+      this.fetchUserFeed(userName);
     }
   }
 
   fetchAllPostLikes() {
     this.posts.forEach((post) => {
-      this.postLikesService.getPostLikes(post.id).subscribe({
+      const postId = post.sharedPostId ? post.originalPost!.id : post.id;
+      this.postLikesService.getPostLikes(postId).subscribe({
         next: (likes) => {
           this.postLikesMap[post.id] = likes;
         },
@@ -135,6 +137,18 @@ export class ProfileComponent implements OnInit {
       },
       error: (error) => {
         console.error(`Error toggling like for post ${postId}:`, error);
+      },
+    });
+  }
+
+  sharePost(postId: number) {
+    this.postService.sharePost(postId).subscribe({
+      next: (sharedPost) => {
+        this.toastr.success('Post shared successfully', 'Success');
+        this.posts.unshift(sharedPost);
+      },
+      error: (error) => {
+        this.toastr.error(error.error?.error || 'Error sharing post', 'Error');
       },
     });
   }

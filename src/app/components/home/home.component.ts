@@ -79,7 +79,6 @@ export class HomeComponent implements OnInit {
         this.fetchAllPostLikes();
       },
       error: (err) => {
-        console.error('Error fetching posts:', err);
         this.toastr.error('Error fetching posts.', 'error');
         this.isLoading = false;
       },
@@ -155,9 +154,6 @@ export class HomeComponent implements OnInit {
         next: (likes) => {
           this.postLikesMap[post.id] = likes;
         },
-        error: (error) => {
-          console.error(`Error fetching likes for post ${post.id}:`, error);
-        },
       });
     });
   }
@@ -175,7 +171,21 @@ export class HomeComponent implements OnInit {
         this.postLikesMap[postId] = updatedLikes;
       },
       error: (error) => {
-        console.error(`Error toggling like for post ${postId}:`, error);
+        this.toastr.error(
+          error.error!.error || 'Failed to toggle like',
+          'Error'
+        );
+      },
+    });
+  }
+
+  sharePost(postId: number) {
+    this.postService.sharePost(postId).subscribe({
+      next: () => {
+        this.toastr.success('Post shared successfully', 'Success');
+      },
+      error: (error) => {
+        this.toastr.error(error.error?.error || 'Error sharing post', 'Error');
       },
     });
   }

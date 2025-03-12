@@ -1,6 +1,8 @@
 <div class="main-container">
   <div
-    *ngIf="userRole === 'admin' || userRole === 'superadmin' || userRole === 'writer'"
+    *ngIf="
+      userRole === 'admin' || userRole === 'superadmin' || userRole === 'writer'
+    "
     class="new-post-form"
   >
     <form [formGroup]="postForm" (ngSubmit)="onCreatePost()">
@@ -154,6 +156,10 @@
         <small class="comments-count">
           {{ "POST.COMMENTS" | translate }}: {{ post.comments.length }}
         </small>
+        <a class="share-btn" (click)="sharePost(post.id)">
+          <i class="fa fa-share"></i>
+          {{ "POST.SHARE" | translate }}
+        </a>
       </div>
 
       <div class="comments-section">

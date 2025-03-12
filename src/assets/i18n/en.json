@@ -50,8 +50,10 @@
     "VIDEO_NOT_SUPPORTED": "Your browser does not support the video tag.",
     "CREATED": "Posted",
     "MODIFIED": "Modified",
+    "SHARED": "Shared on",
     "SUBMIT": "Post",
     "LIKES": "Likes",
+    "SHARE": "Share",
     "CONTENT_ERRORS": {
       "MAXLENGTH": "Content cannot exceed 5000 characters.",
       "MINLENGTH": "Content cannot be Less Than 3 characters.",

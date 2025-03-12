@@ -179,29 +179,6 @@ main {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   }
 
-  .post-title {
-    font-size: 1.8rem;
-    color: $primary-color;
-    font-weight: 600;
-    margin-bottom: 15px;
-    transition: color 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-
-    &:hover {
-      color: $hover-color;
-    }
-
-    a {
-      text-decoration: none;
-      cursor: pointer;
-      color: $primary-color;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
-
   .post-author {
     font-size: 1rem;
     color: $dark-gray;
@@ -212,7 +189,6 @@ main {
       color: $primary-color;
       &:hover {
         color: $hover-color;
-        text-decoration: underline;
       }
     }
   }
@@ -297,6 +273,29 @@ main {
     .fa-regular {
       color: #333;
     }
+  }
+}
+
+.shared-post {
+  background-color: #f9f9f9;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-inline-start: 4px solid #007bff;
+  cursor: pointer;
+}
+
+.sharer {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.share-btn {
+  color: $primary-color;
+  cursor: pointer;
+  transition: 0.3s;
+  &:hover {
+    color: $hover-color;
   }
 }
 
