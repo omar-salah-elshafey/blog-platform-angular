@@ -27,7 +27,7 @@ export class AdminService {
     return this.http.post(`${this.baseUrl}/add-user`, userData).pipe(
       tap((response) => {}),
       catchError((error) => {
-        console.error('Error while Adding: ' + error);
+        console.error('Registration failed:', error);
         return throwError(() => error);
       })
     );
@@ -95,7 +95,6 @@ export class AdminService {
       )
       .pipe(
         catchError((error) => {
-          this.toastr.error(error.error!.error, 'Error');
           console.error('Error Getting comments data', error);
           return throwError(() => error);
         })

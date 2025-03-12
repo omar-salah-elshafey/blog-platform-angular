@@ -53,10 +53,9 @@ export class MainViewComponent {
       },
       error: (error) => {
         this.toastr.error(
-          'Error fetching results, please try again later.',
+          'Error fetching users Count, please try again later.',
           'Error'
         );
-        console.error('Error:', error);
       },
     });
   }
@@ -68,10 +67,9 @@ export class MainViewComponent {
       },
       error: (error) => {
         this.toastr.error(
-          'Error fetching results, please try again later.',
+          'Error fetching posts Count, please try again later.',
           'Error'
         );
-        console.error('Error:', error);
       },
     });
   }
@@ -80,6 +78,12 @@ export class MainViewComponent {
     this.adminService.getCommentsCount().subscribe({
       next: (value) => {
         this.commentsCount = value;
+      },
+      error: (error) => {
+        this.toastr.error(
+          'Error fetching comments Count, please try again later.',
+          'Error'
+        );
       },
     });
   }
@@ -96,7 +100,6 @@ export class MainViewComponent {
           'Error fetching results, please try again later.',
           'Error'
         );
-        console.error('Error:', error);
         this.loading = false;
       },
     });
@@ -114,7 +117,6 @@ export class MainViewComponent {
           'Error fetching results, please try again later.',
           'Error'
         );
-        console.error('Error:', error);
         this.loading = false;
       },
     });
@@ -132,7 +134,6 @@ export class MainViewComponent {
           'Error fetching results, please try again later.',
           'Error'
         );
-        console.error('Error:', error);
         this.loading = false;
       },
     });

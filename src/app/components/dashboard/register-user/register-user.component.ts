@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AdminService } from '../../../services/admin/admin.service';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
+import { ProfileService } from '../../../services/profile/profile.service';
 
 @Component({
   selector: 'app-register-user',
@@ -23,11 +24,13 @@ export class RegisterUserComponent implements OnInit {
   showPassword: boolean = false;
   showConfirmNewPassword = false;
   isLoading = false;
+  isSuperAdmin = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private profileService: ProfileService
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +57,8 @@ export class RegisterUserComponent implements OnInit {
         validators: this.passwordMatchValidator,
       }
     );
+    this.isSuperAdmin =
+      this.profileService.getCurrentUserRoleFromToken() === 'superadmin';
   }
 
   passwordMatchValidator(form: AbstractControl): void | null {
@@ -95,7 +100,6 @@ export class RegisterUserComponent implements OnInit {
         },
         error: (error) => {
           this.toastr.error(error.error!.error, 'Error');
-          console.error('Registration failed:', error.error);
           this.isLoading = false;
         },
         complete: () => {

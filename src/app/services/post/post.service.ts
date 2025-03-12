@@ -75,7 +75,6 @@ export class PostService {
           response.items = response.items.map((post) => this.updateUrls(post));
         }),
         catchError((error) => {
-          this.toastr.error(error.error!.error, 'Error');
           console.error('Error Getting Posts data', error);
           return throwError(() => error);
         })

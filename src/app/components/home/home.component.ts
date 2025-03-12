@@ -81,6 +81,7 @@ export class HomeComponent implements OnInit {
       error: (err) => {
         console.error('Error fetching posts:', err);
         this.toastr.error('Error fetching posts.', 'error');
+        this.isLoading = false;
       },
       complete: () => {
         this.isLoading = false;

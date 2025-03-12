@@ -154,8 +154,11 @@
           <option value="Writer">
             {{ "USER_PROFILE.ROLES.WRITER" | translate }}
           </option>
-          <option value="Admin">
+          <option *ngIf="isSuperAdmin" value="Admin">
             {{ "USER_PROFILE.ROLES.ADMIN" | translate }}
+          </option>
+          <option *ngIf="isSuperAdmin" value="Super Admin">
+            {{ "USER_PROFILE.ROLES.SUPERADMIN" | translate }}
           </option>
         </select>
       </div>
@@ -167,7 +170,7 @@
         "
       >
         <small *ngIf="addUserForm.get('role')?.errors?.['required']">
-          {{ "AUTH.ERROR_MESSAGES.REUIRED" | translate }}
+          {{ "AUTH.ERROR_MESSAGES.REQUIRED" | translate }}
         </small>
       </div>
     </div>
