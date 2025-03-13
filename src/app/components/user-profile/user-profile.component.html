@@ -1,111 +1,77 @@
 <div *ngIf="isProfileLoading" class="spinner-overlay">
   <div class="spinner"></div>
 </div>
-<div class="main-container">
-  <div *ngIf="!isProfileLoading && userProfile" class="user-profile">
-    <h2>{{ userProfile.firstName }} {{ userProfile.lastName }}</h2>
-    <h2>
-      <small>
-        <h6 dir="ltr">&#64;{{ userProfile.userName }}</h6>
-      </small>
-    </h2>
-    <p *ngIf="userRole === 'admin'">
-      <strong>{{ "USER_PROFILE.EMAIL" | translate }} :</strong>
-      {{ userProfile.email }}
-    </p>
-    <p>
-      <strong>{{ "USER_PROFILE.ROLE" | translate }}:</strong>
-      {{ "USER_PROFILE.ROLES." + userProfile.role.toUpperCase() | translate }}
-    </p>
+<div class="main-container" *ngIf="!isProfileLoading && userProfile">
+  <h2>{{ userProfile.firstName }} {{ userProfile.lastName }}</h2>
+  <h6 dir="ltr">
+    <small>&#64;{{ userProfile.userName }}</small>
+  </h6>
+  <p *ngIf="userRole === 'admin'">
+    <strong>{{ "USER_PROFILE.EMAIL" | translate }} :</strong>
+    {{ userProfile.email }}
+  </p>
+  <p>
+    <strong>{{ "USER_PROFILE.ROLE" | translate }}:</strong>
+    {{ "USER_PROFILE.ROLES." + userProfile.role.toUpperCase() | translate }}
+  </p>
 
-    <div
-      *ngIf="posts.length > 0 || isPostsLoading; else noPosts"
-      class="posts-grid"
-    >
-      <div class="post-card" *ngFor="let post of posts">
-        <div *ngIf="post.sharedPostId">
-          <p class="sharer">
+  <div
+    *ngIf="posts.length > 0 || isPostsLoading; else noPosts"
+    class="posts-grid"
+  >
+    <div class="post-card" *ngFor="let post of posts">
+      <div *ngIf="post.sharedPostId">
+        <div class="sharer">
+          <p>
             <strong>{{ post.sharerName }}</strong>
           </p>
           <div
-            class="shared-post"
-            [routerLink]="['/post', post.originalPost!.id]"
+            class="post-options"
+            *ngIf="
+              userRole === 'admin' ||
+              userRole === 'superadmin'
+            "
           >
-            <p class="post-author">
-              <a
-                [routerLink]="['/user-profile', post.originalPost!.authorName]"
+            <button class="ellipsis-btn" (click)="togglePostMenu(post.id)">
+              ⋯
+            </button>
+            <div class="dropdown-menu" *ngIf="postMenuOpen === post.id">
+              <button
+                class="cancel-btn"
+                (click)="onDeletePost(post.id); showPostOptions = false"
               >
-                {{ post.originalPost!.authorName }}
-              </a>
-            </p>
-            <div class="post-content">
-              <span *ngIf="post.originalPost!.content.length > 200">
-                {{ post.originalPost!.content | slice : 0 : 200 }}...
-              </span>
-              <span *ngIf="post.originalPost!.content.length <= 200">
-                {{ post.originalPost!.content }}
-              </span>
+                {{ "ACTIONS.DELETE" | translate }}
+              </button>
             </div>
-            <div class="media">
-              <img
-                *ngIf="post.originalPost!.imageUrl"
-                [src]="post.originalPost!.imageUrl"
-                alt="Post Image"
-                class="post-image"
-              />
-              <video
-                *ngIf="post.originalPost!.videoUrl"
-                [src]="post.originalPost!.videoUrl"
-                controls
-                class="post-video"
-              >
-                {{ "POST.VIDEO_NOT_SUPPORTED" | translate }}
-              </video>
-            </div>
-            <p class="post-date">
-              {{ "POST.CREATED" | translate }}:
-              {{ post.originalPost!.createdDate | date : "medium" }}
-              <br />
-              <span *ngIf="post.originalPost!.modifiedDate">
-                | {{ "POST.MODIFIED" | translate }}:
-                {{ post.originalPost!.modifiedDate | date : "medium" }}
-              </span>
-            </p>
-          </div>
-          <div class="reactions">
-            <p class="post-date">
-              {{ "POST.SHARED" | translate }}:
-              {{ post.createdDate | date : "medium" }}
-            </p>
-            <a class="share-btn" (click)="sharePost(post.originalPost!.id)">
-              <i class="fa fa-share"></i>
-              {{ "POST.SHARE" | translate }}
-            </a>
           </div>
         </div>
-        <div *ngIf="!post.sharedPostId">
-          <p class="post-content">
-            <a [routerLink]="['/post', post.id]">
-              <div>
-                <span *ngIf="post.content.length > 200"
-                  >{{ post.content | slice : 0 : 200 }}...</span
-                >
-                <span *ngIf="post.content.length <= 200">{{
-                  post.content
-                }}</span>
-              </div>
+        <div
+          class="shared-post"
+          [routerLink]="['/post', post.originalPost!.id]"
+        >
+          <p class="post-author">
+            <a [routerLink]="['/user-profile', post.originalPost!.authorName]">
+              {{ post.originalPost!.authorName }}
             </a>
           </p>
+          <div class="post-content">
+            <span *ngIf="post.originalPost!.content.length > 200">
+              {{ post.originalPost!.content | slice : 0 : 200 }}...
+            </span>
+            <span *ngIf="post.originalPost!.content.length <= 200">
+              {{ post.originalPost!.content }}
+            </span>
+          </div>
           <div class="media">
             <img
-              *ngIf="post.imageUrl"
-              [src]="post.imageUrl"
+              *ngIf="post.originalPost!.imageUrl"
+              [src]="post.originalPost!.imageUrl"
               alt="Post Image"
               class="post-image"
             />
             <video
-              *ngIf="post.videoUrl"
-              [src]="post.videoUrl"
+              *ngIf="post.originalPost!.videoUrl"
+              [src]="post.originalPost!.videoUrl"
               controls
               class="post-video"
             >
@@ -113,78 +79,125 @@
             </video>
           </div>
           <p class="post-date">
-            {{ "POST.CREATED" | translate }}
-            : {{ post.createdDate | date : "medium" }}
+            {{ "POST.CREATED" | translate }}:
+            {{ post.originalPost!.createdDate | date : "medium" }}
             <br />
-            <span *ngIf="post.modifiedDate">
+            <span *ngIf="post.originalPost!.modifiedDate">
               | {{ "POST.MODIFIED" | translate }}:
-              {{ post.modifiedDate | date : "medium" }}
+              {{ post.originalPost!.modifiedDate | date : "medium" }}
             </span>
           </p>
-          <div class="reactions">
-            <div class="like-section">
-              <button class="like-btn" (click)="toggleLike(post.id)">
-                <i
-                  class="fa-heart"
-                  [ngClass]="
-                    isLikedByCurrentUser(post.id) ? 'fa-solid' : 'fa-regular'
-                  "
-                ></i>
-              </button>
-              <span>
-                {{ (postLikesMap[post.id] || []).length }}
-                {{ "POST.LIKES" | translate }}
-              </span>
+        </div>
+        <div class="reactions">
+          <p class="post-date">
+            {{ "POST.SHARED" | translate }}:
+            {{ post.createdDate | date : "medium" }}
+          </p>
+          <a class="share-btn" (click)="sharePost(post.originalPost!.id)">
+            <i class="fa fa-share"></i>
+            {{ "POST.SHARE" | translate }}
+          </a>
+        </div>
+      </div>
+      <div *ngIf="!post.sharedPostId">
+        <p class="post-content">
+          <a [routerLink]="['/post', post.id]">
+            <div>
+              <span *ngIf="post.content.length > 200"
+                >{{ post.content | slice : 0 : 200 }}...</span
+              >
+              <span *ngIf="post.content.length <= 200">{{ post.content }}</span>
             </div>
-            <small class="comments-count">
-              {{ "POST.COMMENTS" | translate }}: {{ post.comments.length }}
-            </small>
-            <a class="share-btn" (click)="sharePost(post.id)">
-              <i class="fa fa-share"></i>
-              {{ "POST.SHARE" | translate }}
-            </a>
+          </a>
+        </p>
+        <div class="media">
+          <img
+            *ngIf="post.imageUrl"
+            [src]="post.imageUrl"
+            alt="Post Image"
+            class="post-image"
+          />
+          <video
+            *ngIf="post.videoUrl"
+            [src]="post.videoUrl"
+            controls
+            class="post-video"
+          >
+            {{ "POST.VIDEO_NOT_SUPPORTED" | translate }}
+          </video>
+        </div>
+        <p class="post-date">
+          {{ "POST.CREATED" | translate }}
+          : {{ post.createdDate | date : "medium" }}
+          <br />
+          <span *ngIf="post.modifiedDate">
+            | {{ "POST.MODIFIED" | translate }}:
+            {{ post.modifiedDate | date : "medium" }}
+          </span>
+        </p>
+        <div class="reactions">
+          <div class="like-section">
+            <button class="like-btn" (click)="toggleLike(post.id)">
+              <i
+                class="fa-heart"
+                [ngClass]="
+                  isLikedByCurrentUser(post.id) ? 'fa-solid' : 'fa-regular'
+                "
+              ></i>
+            </button>
+            <span>
+              {{ (postLikesMap[post.id] || []).length }}
+              {{ "POST.LIKES" | translate }}
+            </span>
           </div>
-          <div class="comments-section" *ngIf="post.comments.length > 0">
-            <div
-              *ngFor="let comment of post.comments | slice : 0 : 2"
-              class="comment"
-            >
-              <p class="comment-user">
-                <a [routerLink]="['/user-profile', comment.userName]">
-                  {{ comment.userName }}
-                </a>
-              </p>
-              <p class="comment-content">{{ comment.content }}</p>
-              <p class="comment-date">
-                <span dir="ltr">
-                  {{ comment.createdDate | date : "short" }}
-                </span>
-              </p>
-            </div>
+          <small class="comments-count">
+            {{ "POST.COMMENTS" | translate }}: {{ post.comments.length }}
+          </small>
+          <a class="share-btn" (click)="sharePost(post.id)">
+            <i class="fa fa-share"></i>
+            {{ "POST.SHARE" | translate }}
+          </a>
+        </div>
+        <div class="comments-section" *ngIf="post.comments.length > 0">
+          <div
+            *ngFor="let comment of post.comments | slice : 0 : 2"
+            class="comment"
+          >
+            <p class="comment-user">
+              <a [routerLink]="['/user-profile', comment.userName]">
+                {{ comment.userName }}
+              </a>
+            </p>
+            <p class="comment-content">{{ comment.content }}</p>
+            <p class="comment-date">
+              <span dir="ltr">
+                {{ comment.createdDate | date : "short" }}
+              </span>
+            </p>
           </div>
         </div>
       </div>
-      <div class="pagination">
-        <button
-          *ngIf="currentPage < totalPages && !isPostsLoading"
-          (click)="loadMorePosts()"
-          class="btn-load-more"
-        >
-          {{ "POST.LOAD_MORE_POSTS" | translate }}
-        </button>
-      </div>
-      <div *ngIf="isPostsLoading" class="spinner-overlay">
-        <div class="spinner"></div>
-        <p>{{ "POST.LOADING_POSTS" | translate }}</p>
-      </div>
     </div>
-
-    <ng-template #noPosts>
-      <p class="no-posts">{{ "USER_PROFILE.NO_POSTS" | translate }}</p>
-    </ng-template>
+    <div class="pagination">
+      <button
+        *ngIf="currentPage < totalPages && !isPostsLoading"
+        (click)="loadMorePosts()"
+        class="btn-load-more"
+      >
+        {{ "POST.LOAD_MORE_POSTS" | translate }}
+      </button>
+    </div>
+    <div *ngIf="isPostsLoading" class="spinner-overlay">
+      <div class="spinner"></div>
+      <p>{{ "POST.LOADING_POSTS" | translate }}</p>
+    </div>
   </div>
 
-  <div *ngIf="!isProfileLoading && !userProfile" class="no-profile">
-    <p>{{ "USER_PROFILE.NO_DATA" | translate }}</p>
-  </div>
+  <ng-template #noPosts>
+    <p class="no-posts">{{ "USER_PROFILE.NO_POSTS" | translate }}</p>
+  </ng-template>
+</div>
+
+<div *ngIf="!isProfileLoading && !userProfile" class="no-profile">
+  <p>{{ "USER_PROFILE.NO_DATA" | translate }}</p>
 </div>

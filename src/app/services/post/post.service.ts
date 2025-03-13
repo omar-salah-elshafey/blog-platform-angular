@@ -46,15 +46,18 @@ export interface UpdatePostDto {
 })
 export class PostService {
   private baseUrl = `${environment.apiUrl}/api/Post`;
-  private ngrokUrl = `${environment.apiUrl}`;
+  private mediaUrl = `${environment.apiUrl}`;
   constructor(private http: HttpClient, private toastr: ToastrService) {}
 
-  private updateUrls(post: PostResponseModel): PostResponseModel {
+  private updateMediaUrls(post: PostResponseModel): PostResponseModel {
     if (post.imageUrl) {
-      post.imageUrl = post.imageUrl.replace('https://localhost', this.ngrokUrl);
+      post.imageUrl = `${this.mediaUrl}${post.imageUrl}`;
     }
     if (post.videoUrl) {
-      post.videoUrl = post.videoUrl.replace('https://localhost', this.ngrokUrl);
+      post.videoUrl = `${this.mediaUrl}${post.videoUrl}`;
+    }
+    if (post.originalPost) {
+      this.updateMediaUrls(post.originalPost);
     }
     return post;
   }
@@ -75,7 +78,9 @@ export class PostService {
       )
       .pipe(
         tap((response) => {
-          response.items = response.items.map((post) => this.updateUrls(post));
+          response.items = response.items.map((post) =>
+            this.updateMediaUrls(post)
+          );
         }),
         catchError((error) => {
           console.error('Error Getting Posts data', error);
@@ -88,7 +93,7 @@ export class PostService {
     return this.http
       .get<PostResponseModel>(`${this.baseUrl}/get-post-by-id/${id}`)
       .pipe(
-        tap((post) => this.updateUrls(post)),
+        tap((post) => this.updateMediaUrls(post)),
         catchError((error) => {
           console.error('Error Getting post data', error);
           return throwError(() => error);
@@ -113,7 +118,9 @@ export class PostService {
       )
       .pipe(
         tap((response) => {
-          response.items = response.items.map((post) => this.updateUrls(post));
+          response.items = response.items.map((post) =>
+            this.updateMediaUrls(post)
+          );
         }),
         catchError((error) => {
           console.error('Error Getting post data', error.error!.error);
@@ -139,7 +146,9 @@ export class PostService {
       )
       .pipe(
         tap((response) => {
-          response.items = response.items.map((post) => this.updateUrls(post));
+          response.items = response.items.map((post) =>
+            this.updateMediaUrls(post)
+          );
         }),
         catchError((error) => {
           console.error('Error Getting user feed', error);
@@ -164,7 +173,9 @@ export class PostService {
       )
       .pipe(
         tap((response) => {
-          response.items = response.items.map((post) => this.updateUrls(post));
+          response.items = response.items.map((post) =>
+            this.updateMediaUrls(post)
+          );
         }),
         catchError((error) => {
           console.error('Error Getting home feed', error);
@@ -175,6 +186,15 @@ export class PostService {
 
   deletePost(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/delete-post/${id}`).pipe(
+      catchError((error) => {
+        console.error('Error Deleting the Post', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  deleteSharedPost(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/delete-shared-post/${id}`).pipe(
       catchError((error) => {
         console.error('Error Deleting the Post', error);
         return throwError(() => error);
@@ -221,7 +241,7 @@ export class PostService {
     return this.http
       .post<PostResponseModel>(`${this.baseUrl}/share-post/${postId}`, {})
       .pipe(
-        tap((post) => this.updateUrls(post)),
+        tap((post) => this.updateMediaUrls(post)),
         catchError((error) => {
           console.error('Error sharing post', error);
           return throwError(() => error);

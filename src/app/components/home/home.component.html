@@ -99,9 +99,33 @@
   <div *ngIf="posts.length > 0 || isLoading; else noPosts" class="posts-grid">
     <div class="post-card" *ngFor="let post of posts">
       <div *ngIf="post.sharedPostId">
-        <p class="sharer">
-          <strong>{{ post.sharerName }}</strong>
-        </p>
+        <div class="sharer">
+          <div class="post-author">
+            <a [routerLink]="['/user-profile', post.sharerName]">
+              {{ post.sharerName }}
+            </a>
+          </div>
+          <div
+            class="post-options"
+            *ngIf="
+              userName === post.sharerName ||
+              userRole === 'admin' ||
+              userRole === 'superadmin'
+            "
+          >
+            <button class="ellipsis-btn" (click)="togglePostMenu(post.id)">
+              ⋯
+            </button>
+            <div class="dropdown-menu" *ngIf="postMenuOpen === post.id">
+              <button
+                class="cancel-btn"
+                (click)="onDeletePost(post.id); showPostOptions = false"
+              >
+                {{ "ACTIONS.DELETE" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
         <div
           class="shared-post"
           [routerLink]="['/post', post.originalPost!.id]"

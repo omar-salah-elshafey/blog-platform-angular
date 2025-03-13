@@ -161,16 +161,15 @@ main {
 .posts-grid {
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  margin-top: 20px;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
-// Post Card Styling
 .post-card {
   background-color: white;
   border-radius: 10px;
   padding: 25px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   width: 100%;
@@ -244,6 +243,19 @@ main {
     color: #666;
     font-weight: 300;
   }
+  .post-date {
+    padding: 0;
+    margin: 0%;
+  }
+  @media (max-width: 480px) {
+    .like-section,
+    .comments-count,
+    .share-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
 }
 
 .like-section {
@@ -285,9 +297,15 @@ main {
 }
 
 .sharer {
-  font-size: 14px;
-  color: #555;
-  margin-bottom: 8px;
+  p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 8px;
+  }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 20px;
 }
 
 .share-btn {
@@ -296,6 +314,48 @@ main {
   transition: 0.3s;
   &:hover {
     color: $hover-color;
+  }
+}
+
+.post-options {
+  position: relative;
+  .dropdown-menu {
+    top: 70%;
+    inset-inline-start: -70%;
+  }
+}
+
+.ellipsis-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #000;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 80%;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: fit-content;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+
+  button {
+    width: 100%;
+    padding: 8px 16px;
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+    transition: 0.3s;
+    cursor: pointer;
+    &.cancel-btn:hover {
+      background: #ffe6e6;
+    }
   }
 }
 
@@ -502,16 +562,15 @@ main {
 }
 // Responsive Styling - Keeping the single post layout regardless of screen size
 @media screen and (max-width: 768px) {
+  .main-container {
+    width: 90%;
+  }
   .heading {
     font-size: 2.2rem;
   }
 
   .post-card {
     padding: 20px;
-  }
-
-  .post-title {
-    font-size: 1.6rem;
   }
 
   .post-author,
@@ -534,14 +593,13 @@ main {
     padding: 15px;
   }
 
-  .post-title {
-    font-size: 1.4rem;
+  .post-author,
+  .post-content {
+    font-size: 0.9rem;
   }
 
-  .post-author,
-  .post-content,
   .post-date {
-    font-size: 0.9rem;
+    font-size: 0.7rem !important;
   }
 
   .btn-toggle-comments {

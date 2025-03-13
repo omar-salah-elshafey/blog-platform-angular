@@ -2,16 +2,11 @@
   <div class="spinner"></div>
 </div>
 
-<div
-  class="profile-container main-container"
-  *ngIf="!isProfileLoading && userProfile"
->
-  <h1>{{ userProfile.firstName }} {{ userProfile.lastName }}</h1>
-  <h1>
-    <small>
-      <h6 dir="ltr">&#64;{{ userProfile.userName }}</h6>
-    </small>
-  </h1>
+<div class="main-container" *ngIf="!isProfileLoading && userProfile">
+  <h2>{{ userProfile.firstName }} {{ userProfile.lastName }}</h2>
+  <h6 dir="ltr">
+    <small>&#64;{{ userProfile.userName }}</small>
+  </h6>
   <p>
     <strong>{{ "USER_PROFILE.EMAIL" | translate }}:</strong>
     {{ userProfile.email }}
@@ -26,9 +21,31 @@
   >
     <div class="post-card" *ngFor="let post of posts">
       <div *ngIf="post.sharedPostId">
-        <p class="sharer">
-          <strong>{{ post.sharerName }}</strong>
-        </p>
+        <div class="sharer">
+          <p>
+            <strong>{{ post.sharerName }}</strong>
+          </p>
+          <div
+            class="post-options"
+            *ngIf="
+              userName === post.sharerName ||
+              userRole === 'admin' ||
+              userRole === 'superadmin'
+            "
+          >
+            <button class="ellipsis-btn" (click)="togglePostMenu(post.id)">
+              ⋯
+            </button>
+            <div class="dropdown-menu" *ngIf="postMenuOpen === post.id">
+              <button
+                class="cancel-btn"
+                (click)="onDeletePost(post.id); showPostOptions = false"
+              >
+                {{ "ACTIONS.DELETE" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
         <div
           class="shared-post"
           [routerLink]="['/post', post.originalPost!.id]"

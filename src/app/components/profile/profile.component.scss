@@ -7,32 +7,20 @@ $border-radius: 10px;
 $font-family: "Arial", sans-serif;
 $hover-color: #0056b3;
 
-.profile-container {
-  padding: 20px;
-  margin: 20px auto;
-  background-color: #ffffff;
-  border-radius: $border-radius;
-  font-family: $font-family;
-  transition: 0.3s ease;
-
-  h1 {
-    text-align: center;
-    font-size: 2rem;
-    color: $primary-color;
-    margin-bottom: 15px;
-  }
-
+.main-container {
+  animation: fadeIn 1s ease-in-out;
   h2 {
+    text-align: center;
     font-size: 2rem;
     color: $primary-color;
     margin-bottom: 15px;
-    text-align: center;
   }
 
   h6 {
     font-size: 1rem;
     color: $dark-gray;
     margin-bottom: 15px;
+    text-align: center;
   }
 
   p {
@@ -47,43 +35,42 @@ $hover-color: #0056b3;
   }
 }
 
-.profile-buttons {
-  display: flex;
-  justify-content: center;
-  margin-top: 25px;
+.no-profile {
+  background-color: white;
+  padding: 20px;
+  border-radius: $border-radius;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+  margin: 20px auto;
+  text-align: center;
+  animation: fadeIn 1s ease-in-out;
 
-  .edit-btn {
-    padding: 12px 20px;
-    width: 48%;
-    font-size: 16px;
-    color: white;
-    border: none;
-    border-radius: $border-radius;
-    cursor: pointer;
-    background-color: $primary-color;
-    transition: 0.3s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-
-    &:hover {
-      transform: scale(1.02);
-      background-color: $primary-color;
-    }
-    i {
-      font-size: 2rem;
-    }
+  p {
+    font-size: 1.1rem;
+    color: $secondary-color;
   }
 }
 
-// Responsive Styling for Mobile
-@media (max-width: 768px) {
-  .profile-container {
-    padding: 20px;
-    margin: 10px auto;
+.main-container,
+.no-profile {
+  padding: 15px;
+}
 
-    h1 {
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .main-container {
+    h2 {
       font-size: 1.5rem;
     }
 
@@ -92,41 +79,11 @@ $hover-color: #0056b3;
     }
 
     p {
-      font-size: 14px;
+      font-size: 1rem;
     }
   }
 
-  .profile-buttons {
-    align-items: center;
-    gap: 10px;
-
-    .edit-btn {
-      width: 200px;
-      margin-bottom: 15px;
-    }
-  }
-}
-
-@media (max-width: 400px) {
-  .profile-container {
-    .post-title {
-      font-size: 1.2rem;
-    }
-    .post-date {
-      font-size: 0.8rem;
-    }
-  }
-  .profile-buttons {
-    align-items: center;
-    gap: 10px;
-
-    .edit-btn {
-      width: 200px;
-      margin-bottom: 15px;
-      font-size: 15px;
-      i {
-        font-size: 1.5rem;
-      }
-    }
+  .no-profile p {
+    font-size: 1rem;
   }
 }

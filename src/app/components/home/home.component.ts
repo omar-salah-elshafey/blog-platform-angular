@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  OnInit,
+} from '@angular/core';
 import {
   PostResponseModel,
   PostService,
@@ -18,6 +23,8 @@ import {
   PostLikeDto,
   PostLikesService,
 } from '../../services/postLikes/post-likes.service';
+import { MatDialog } from '@angular/material/dialog';
+import { PostDeletingConfermationComponent } from '../post-deleting-confermation/post-deleting-confermation.component';
 
 @Component({
   selector: 'app-home',
@@ -41,13 +48,16 @@ export class HomeComponent implements OnInit {
   userName: string | null = null;
   likes: PostLikeDto[] = [];
   postLikesMap: { [postId: number]: PostLikeDto[] } = {};
+  showPostOptions = false;
+  postMenuOpen: number | null = null;
 
   constructor(
     private postService: PostService,
     private toastr: ToastrService,
     private profileService: ProfileService,
     private fb: FormBuilder,
-    private postLikesService: PostLikesService
+    private postLikesService: PostLikesService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -190,5 +200,38 @@ export class HomeComponent implements OnInit {
         this.toastr.error(error.error?.error || 'Error sharing post', 'Error');
       },
     });
+  }
+
+  togglePostMenu(postId: number) {
+    this.postMenuOpen = this.postMenuOpen === postId ? null : postId;
+  }
+
+  onDeletePost(id: number) {
+    const dialogRef = this.dialog.open(PostDeletingConfermationComponent);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirm') {
+        this.postService.deleteSharedPost(id).subscribe({
+          next: () => {
+            this.toastr.success('Post deleted successfully!', 'Success');
+            this.posts = this.posts.filter((post) => post.id !== id);
+          },
+          error: (error) => {
+            console.error('Error deleting the Post:', error);
+            this.toastr.error(error.error!.error, 'Error');
+          },
+        });
+      } else {
+        console.log('User canceled post deletion');
+      }
+    });
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event) {
+    const targetElement = event.target as HTMLElement;
+
+    if (!targetElement.closest('.post-options')) {
+      this.postMenuOpen = null;
+    }
   }
 }
