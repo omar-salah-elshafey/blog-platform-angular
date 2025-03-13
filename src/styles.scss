@@ -255,6 +255,15 @@ main {
       flex-direction: column;
       align-items: center;
     }
+    .like-section {
+      gap: 0%;
+      span {
+        font-size: 0.8rem !important;
+      }
+    }
+    i {
+      font-size: 1rem !important;
+    }
   }
 }
 
