@@ -1,9 +1,15 @@
 {
-  "HOME": "Home",
-  "SEARCH": "Search",
-  "PROFILE": "Profile",
-  "ADMIN": "Dashboard",
-  "LOGOUT": "Logout",
+  "HEADER": {
+    "HOME": "Home",
+    "SEARCH": "Search",
+    "PROFILE": "Profile",
+    "ADMIN": "Dashboard",
+    "LOGOUT": "Logout",
+    "NOTIFICATIONS": {
+      "TITLE": "Notifications",
+      "NO_CONTENT": "No new notifications"
+    }
+  },
   "AUTH": {
     "LOGIN": "Login",
     "READER": "Register As A Reader",

@@ -7,6 +7,11 @@ import { ToastrService } from 'ngx-toastr';
 import { ProfileService } from '../../services/profile/profile.service';
 import { SharedService } from '../../services/shared.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import {
+  NotificationService,
+  Notification,
+} from '../../services/notification/notification.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -19,21 +24,29 @@ export class HeaderComponent {
     public authService: AuthService,
     private router: Router,
     private toastr: ToastrService,
-    private profileServie: ProfileService,
+    private profileService: ProfileService,
     private sharedService: SharedService,
-    private translate: TranslateService
-  ) {}
+    private translate: TranslateService,
+    private notificationService: NotificationService
+  ) {
+  }
 
   isMenuOpen = false;
   firstName: string | null = null;
   isAdmin = false;
   currentLang = 'en';
   isDropdownOpen = false;
+  isNotificationsOpen = false;
+  notifications: Notification[] = [];
+
+  private notificationSubscription: Subscription | null = null;
+  private profileSubscription: Subscription | null = null;
 
   @ViewChild('mobileNav') mobileNav!: ElementRef;
   @ViewChild('mobileMenuButton')
   mobileMenuButton!: ElementRef;
   @ViewChild('dropdown') dropdown!: ElementRef;
+  @ViewChild('notificationList') notificationList!: ElementRef;
 
   ngOnInit(): void {
     this.currentLang = localStorage.getItem('language') || 'en';
@@ -46,6 +59,21 @@ export class HeaderComponent {
           profile.role === 'Admin' || profile.role === 'SuperAdmin';
       }
     });
+
+    this.notificationSubscription =
+      this.notificationService.notifications$.subscribe((notifications) => {
+        this.notifications = notifications;
+      });
+
+  }
+
+  ngOnDestroy(): void {
+    if (this.notificationSubscription) {
+      this.notificationSubscription.unsubscribe();
+    }
+    if (this.profileSubscription) {
+      this.profileSubscription.unsubscribe();
+    }
   }
 
   loadUserInfo() {
@@ -55,7 +83,7 @@ export class HeaderComponent {
         this.firstName = userProfile.firstName;
         this.isAdmin = userProfile.role === 'Admin';
       } else {
-        this.profileServie.getCurrentUserProfile().subscribe({
+        this.profileService.getCurrentUserProfile().subscribe({
           next: (profile) => {
             this.firstName = profile.firstName;
             this.isAdmin = profile.role === 'Admin';
@@ -76,9 +104,11 @@ export class HeaderComponent {
   isLoggedIn() {
     return this.authService.isLoggedIn();
   }
+
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
+
   logout() {
     this.authService.logout().subscribe({
       next: (response) => {
@@ -103,6 +133,26 @@ export class HeaderComponent {
     this.isDropdownOpen = false;
   }
 
+  toggleNotifications() {
+    this.isNotificationsOpen = !this.isNotificationsOpen;
+    if (this.isNotificationsOpen) {
+      this.notificationService.loadNotifications();
+    }
+  }
+
+  navigateToPost(postId: number, notificationId: number) {
+    this.router.navigate(['/post', postId]);
+    this.isNotificationsOpen = false;
+    this.notificationService.markNotificationAsRead(notificationId).subscribe({
+      next: () => {
+        this.notificationService.removeNotification(notificationId);
+      },
+      error: (error) => {
+        console.error('Error marking notification as read:', error);
+      },
+    });
+  }
+
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     if (
@@ -121,6 +171,15 @@ export class HeaderComponent {
       !this.dropdown.nativeElement.contains(event.target)
     ) {
       this.isDropdownOpen = false;
+    }
+
+    if (
+      this.isNotificationsOpen &&
+      this.notificationList &&
+      !this.notificationList.nativeElement.contains(event.target) &&
+      !(event.target as HTMLElement).closest('.notification-icon')
+    ) {
+      this.isNotificationsOpen = false;
     }
   }
 
