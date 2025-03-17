@@ -96,15 +96,17 @@ export class PostComponent implements OnInit {
     this.userRole = this.profileService
       .getCurrentUserRoleFromToken()
       ?.toLowerCase();
-    const postId = this.route.snapshot.paramMap.get('postId');
-    this.initCommentForm(+postId!);
-    if (postId) {
-      this.fetchPostDetails(+postId);
-      this.fetchPostLikes(+postId);
-    } else {
-      this.toastr.error('Invalid Post ID', 'Error');
-      this.router.navigate(['/not-found']);
-    }
+    this.route.paramMap.subscribe((params) => {
+      const postId = +params.get('postId')!; // Get postId dynamically
+      this.initCommentForm(postId);
+      if (postId) {
+        this.fetchPostDetails(postId);
+        this.fetchPostLikes(postId);
+      } else {
+        this.toastr.error('Invalid Post ID', 'Error');
+        this.router.navigate(['/not-found']);
+      }
+    });
   }
 
   fetchPostDetails(id: number) {

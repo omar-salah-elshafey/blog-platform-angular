@@ -41,6 +41,8 @@ export class UserProfileComponent {
   showPostOptions = false;
   postMenuOpen: number | null = null;
 
+  currentUserName: string | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private profileService: ProfileService,
@@ -55,12 +57,17 @@ export class UserProfileComponent {
     this.userRole = this.profileService
       .getCurrentUserRoleFromToken()
       ?.toLowerCase();
-    this.userName = this.route.snapshot.paramMap.get('username');
-    if (this.userName) {
-      this.posts = [];
-      this.getUserProfile(this.userName);
-      this.fetchUserFeed(this.userName);
-    }
+
+    this.route.paramMap.subscribe((params) => {
+      this.userName = params.get('username');
+      if (this.userName) {
+        this.posts = [];
+        this.getUserProfile(this.userName);
+        this.fetchUserFeed(this.userName);
+      }
+    });
+
+    this.currentUserName = this.profileService.getUserNameFromToken();
   }
 
   getUserProfile(username: string) {
@@ -125,8 +132,8 @@ export class UserProfileComponent {
 
   isLikedByCurrentUser(postId: number): boolean {
     const likes = this.postLikesMap[postId] || [];
-    return this.userName
-      ? likes.some((like) => like.userName === this.userName)
+    return this.currentUserName
+      ? likes.some((like) => like.userName === this.currentUserName)
       : false;
   }
 
