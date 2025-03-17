@@ -239,9 +239,15 @@ main {
   align-items: center;
   border-top: 2px solid #f9f9f9;
   .comments-count {
-    font-size: 1.5rem;
+    display: flex;
+    gap: 0.3rem;
+    align-items: end;
+    font-size: 1rem;
     color: #666;
     font-weight: 300;
+    i {
+      font-size: 1.5rem;
+    }
   }
   .post-date {
     padding: 0;
@@ -252,8 +258,9 @@ main {
 .like-section {
   border-top: 2px solid #f9f9f9;
   display: flex;
+  gap: 0.3rem;
   flex-direction: row;
-  align-items: center;
+  align-items: end;
 
   .like-btn {
     background: none;
@@ -278,7 +285,7 @@ main {
   }
 
   span {
-    font-size: 1.5rem;
+    font-size: 1rem;
     color: #666;
     font-weight: 300;
   }
@@ -312,6 +319,11 @@ main {
   &:hover {
     color: $primary-color;
   }
+}
+
+.rotate {
+  transform: rotateY(180deg);
+  transition: transform 0.3s;
 }
 
 .post-options {

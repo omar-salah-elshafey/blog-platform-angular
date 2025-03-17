@@ -215,6 +215,7 @@ export class PostService {
     return this.http
       .put<PostResponseModel>(`${this.baseUrl}/update-post/${id}`, formData)
       .pipe(
+        tap((post) => this.updateMediaUrls(post)),  
         catchError((error) => {
           console.error('Error Updating the Post', error);
           return throwError(() => error);
@@ -230,6 +231,7 @@ export class PostService {
     return this.http
       .post<PostResponseModel>(`${this.baseUrl}/create-post`, formData)
       .pipe(
+        tap((post) => this.updateMediaUrls(post)),
         catchError((error) => {
           console.error('Error Creating the Post', error);
           return throwError(() => error);

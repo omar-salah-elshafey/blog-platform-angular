@@ -27,11 +27,12 @@ import {
 import { ProfileService } from '../../services/profile/profile.service';
 import { PostDeletingConfermationComponent } from '../post-deleting-confermation/post-deleting-confermation.component';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   PostLikeDto,
   PostLikesService,
 } from '../../services/postLikes/post-likes.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-post',
@@ -64,6 +65,8 @@ export class PostComponent implements OnInit {
   postMenuOpen: number | null = null;
   showPostOptions = false;
   activeCommentMenu: number | null = null;
+  currentLang = 'en';
+  private langSubscription: Subscription | null = null;
 
   // New properties for likes
   likes: PostLikeDto[] = [];
@@ -88,16 +91,23 @@ export class PostComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef,
     private profileService: ProfileService,
     private dialog: MatDialog,
-    private postLikesService: PostLikesService
+    private postLikesService: PostLikesService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
+    this.currentLang = localStorage.getItem('language') || 'en';
+    this.translate.use(this.currentLang);
+    this.langSubscription = this.translate.onLangChange.subscribe((event) => {
+      this.currentLang = event.lang;
+      localStorage.setItem('language', this.currentLang);
+    });
     this.userName = this.profileService.getUserNameFromToken();
     this.userRole = this.profileService
       .getCurrentUserRoleFromToken()
       ?.toLowerCase();
     this.route.paramMap.subscribe((params) => {
-      const postId = +params.get('postId')!; // Get postId dynamically
+      const postId = +params.get('postId')!;
       this.initCommentForm(postId);
       if (postId) {
         this.fetchPostDetails(postId);
@@ -107,6 +117,12 @@ export class PostComponent implements OnInit {
         this.router.navigate(['/not-found']);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
+    }
   }
 
   fetchPostDetails(id: number) {

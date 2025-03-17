@@ -27,10 +27,7 @@
           </p>
           <div
             class="post-options"
-            *ngIf="
-              userRole === 'admin' ||
-              userRole === 'superadmin'
-            "
+            *ngIf="userRole === 'admin' || userRole === 'superadmin'"
           >
             <button class="ellipsis-btn" (click)="togglePostMenu(post.id)">
               ⋯
@@ -94,7 +91,7 @@
             {{ post.createdDate | date : "medium" }}
           </p>
           <a class="share-btn" (click)="sharePost(post.originalPost!.id)">
-            <i class="fa fa-share"></i>
+            <i class="fa fa-share" [class.rotate]="currentLang === 'ar'"></i>
           </a>
         </div>
       </div>
@@ -152,7 +149,7 @@
             <i class="far fa-comment"></i> {{ post.comments.length }}
           </small>
           <a class="share-btn" (click)="sharePost(post.id)">
-            <i class="fa fa-share"></i>
+            <i class="fa fa-share" [class.rotate]="currentLang === 'ar'"></i>
           </a>
         </div>
         <div class="comments-section" *ngIf="post.comments.length > 0">

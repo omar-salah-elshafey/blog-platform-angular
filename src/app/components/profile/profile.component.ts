@@ -12,7 +12,7 @@ import {
   PostResponseModel,
   PostService,
 } from '../../services/post/post.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../services/auth/auth-service.service';
 import {
   PostLikeDto,
@@ -20,6 +20,7 @@ import {
 } from '../../services/postLikes/post-likes.service';
 import { MatDialog } from '@angular/material/dialog';
 import { PostDeletingConfermationComponent } from '../post-deleting-confermation/post-deleting-confermation.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -43,6 +44,9 @@ export class ProfileComponent implements OnInit {
   showPostOptions = false;
   postMenuOpen: number | null = null;
 
+  currentLang = 'en';
+  private langSubscription: Subscription | null = null;
+
   constructor(
     private profileService: ProfileService,
     private toastr: ToastrService,
@@ -51,13 +55,27 @@ export class ProfileComponent implements OnInit {
     private postService: PostService,
     private authService: AuthService,
     private postLikesService: PostLikesService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
+    this.currentLang = localStorage.getItem('language') || 'en';
+    this.translate.use(this.currentLang);
+    this.langSubscription = this.translate.onLangChange.subscribe((event) => {
+      this.currentLang = event.lang;
+      localStorage.setItem('language', this.currentLang);
+    });
+
     this.fetchUserProfile();
     this.userName = this.profileService.getUserNameFromToken();
     this.fetchUserFeed(this.userName!);
+  }
+
+  ngOnDestroy(): void {
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
+    }
   }
 
   fetchUserProfile(): void {

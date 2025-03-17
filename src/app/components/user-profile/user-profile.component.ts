@@ -10,14 +10,14 @@ import {
   PostResponseModel,
   PostService,
 } from '../../services/post/post.service';
-import { SharedService } from '../../services/shared.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   PostLikeDto,
   PostLikesService,
 } from '../../services/postLikes/post-likes.service';
 import { MatDialog } from '@angular/material/dialog';
 import { PostDeletingConfermationComponent } from '../post-deleting-confermation/post-deleting-confermation.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-profile',
@@ -43,6 +43,9 @@ export class UserProfileComponent {
 
   currentUserName: string | null = null;
 
+  currentLang = 'en';
+  private langSubscription: Subscription | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private profileService: ProfileService,
@@ -50,10 +53,18 @@ export class UserProfileComponent {
     private router: Router,
     private postService: PostService,
     private postLikesService: PostLikesService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private translate: TranslateService
   ) {}
 
   ngOnInit() {
+    this.currentLang = localStorage.getItem('language') || 'en';
+    this.translate.use(this.currentLang);
+    this.langSubscription = this.translate.onLangChange.subscribe((event) => {
+      this.currentLang = event.lang;
+      localStorage.setItem('language', this.currentLang);
+    });
+
     this.userRole = this.profileService
       .getCurrentUserRoleFromToken()
       ?.toLowerCase();
@@ -68,6 +79,12 @@ export class UserProfileComponent {
     });
 
     this.currentUserName = this.profileService.getUserNameFromToken();
+  }
+
+  ngOnDestroy(): void {
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
+    }
   }
 
   getUserProfile(username: string) {

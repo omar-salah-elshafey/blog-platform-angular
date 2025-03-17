@@ -41,6 +41,7 @@ export class HeaderComponent {
 
   private notificationSubscription: Subscription | null = null;
   private profileSubscription: Subscription | null = null;
+  private langSubscription: Subscription | null = null;
 
   @ViewChild('mobileNav') mobileNav!: ElementRef;
   @ViewChild('mobileMenuButton')
@@ -50,6 +51,12 @@ export class HeaderComponent {
 
   ngOnInit(): void {
     this.currentLang = localStorage.getItem('language') || 'en';
+    this.translate.use(this.currentLang);
+    this.langSubscription = this.translate.onLangChange.subscribe((event) => {
+      this.currentLang = event.lang;
+      localStorage.setItem('language', this.currentLang);
+    });
+
     this.loadUserInfo();
 
     this.sharedService.userProfile$.subscribe((profile) => {
@@ -73,6 +80,9 @@ export class HeaderComponent {
     }
     if (this.profileSubscription) {
       this.profileSubscription.unsubscribe();
+    }
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
     }
   }
 

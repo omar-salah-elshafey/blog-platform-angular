@@ -2,28 +2,21 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { AuthService } from '../services/auth/auth-service.service';
 import { inject } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import {
-  catchError,
-  switchMap,
-  of,
-  EMPTY,
-  throwError,
-  BehaviorSubject,
-  filter,
-  take,
-} from 'rxjs';
+import { catchError, switchMap, throwError, BehaviorSubject, from } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-let isRefreshing = false;
+import { firstValueFrom } from 'rxjs';
+
+let refreshPromise: Promise<string | null> | null = null;
 const refreshTokenSubject = new BehaviorSubject<string | null>(null);
+
 export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
   const cookieService = inject(CookieService);
   const authService = inject(AuthService);
   const router = inject(Router);
   const toastr = inject(ToastrService);
 
-  const accessToken = cookieService.get('accessToken');
-  const refreshToken = cookieService.get('refreshToken');
+  let accessToken = cookieService.get('accessToken');
 
   if (accessToken) {
     req = req.clone({
@@ -36,55 +29,64 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error) => {
+      const refreshToken = cookieService.get('refreshToken');
       if (error.status === 401 && refreshToken) {
-        if (!isRefreshing) {
-          isRefreshing = true;
-          refreshTokenSubject.next(null);
-
-          return authService.refreshAccessToken(refreshToken).pipe(
-            switchMap((newTokens) => {
-              cookieService.set('accessToken', newTokens.accessToken, 1, '/');
-              cookieService.set('refreshToken', newTokens.refreshToken, 1, '/');
-
-              isRefreshing = false;
-              refreshTokenSubject.next(newTokens.accessToken);
-
-              req = req.clone({
-                setHeaders: {
-                  Authorization: `Bearer ${newTokens.accessToken}`,
-                  'ngrok-skip-browser-warning': 'true',
-                },
-              });
-              return next(req);
-            }),
-            catchError((refreshError) => {
-              console.error('Error during token refresh:', refreshError);
-
-              isRefreshing = false;
-
+        if (!refreshPromise) {
+          refreshPromise = firstValueFrom(
+            authService.refreshAccessToken(refreshToken)
+          )
+            .then((newTokens) => {
+              cookieService.set(
+                'accessToken',
+                newTokens.accessToken,
+                1,
+                '/',
+                undefined,
+                true,
+                'Strict'
+              );
+              cookieService.set(
+                'refreshToken',
+                newTokens.refreshToken,
+                1,
+                '/',
+                undefined,
+                true,
+                'Strict'
+              );
+              refreshTokenSubject.next(newTokens.refreshToken);
+              return newTokens.accessToken;
+            })
+            .catch((refreshError) => {
+              console.error(
+                `[${new Date().toISOString()}] Error during token refresh:`,
+                refreshError
+              );
               cookieService.delete('accessToken', '/');
               cookieService.delete('refreshToken', '/');
               router.navigate(['/login']);
               toastr.warning('Session expired, please login again.', 'Warning');
-
-              return EMPTY;
+              return null;
             })
-          );
-        } else {
-          return refreshTokenSubject.pipe(
-            filter((token) => token != null),
-            take(1),
-            switchMap((token) => {
-              req = req.clone({
-                setHeaders: {
-                  Authorization: `Bearer ${token}`,
-                  'ngrok-skip-browser-warning': 'true',
-                },
-              });
-              return next(req);
-            })
-          );
+            .finally(() => {
+              refreshPromise = null;
+            });
         }
+
+        return from(refreshPromise).pipe(
+          switchMap((newAccessToken) => {
+            if (!newAccessToken) {
+              return throwError(() => new Error('Token refresh failed'));
+            }
+            req = req.clone({
+              setHeaders: {
+                Authorization: `Bearer ${newAccessToken}`,
+                'ngrok-skip-browser-warning': 'true',
+              },
+            });
+            return next(req);
+          })
+        );
       }
       return throwError(() => error);
     })

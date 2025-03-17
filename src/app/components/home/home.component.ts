@@ -18,13 +18,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   PostLikeDto,
   PostLikesService,
 } from '../../services/postLikes/post-likes.service';
 import { MatDialog } from '@angular/material/dialog';
 import { PostDeletingConfermationComponent } from '../post-deleting-confermation/post-deleting-confermation.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -51,22 +52,39 @@ export class HomeComponent implements OnInit {
   showPostOptions = false;
   postMenuOpen: number | null = null;
 
+  currentLang = 'en';
+  private langSubscription: Subscription | null = null;
+
   constructor(
     private postService: PostService,
     private toastr: ToastrService,
     private profileService: ProfileService,
     private fb: FormBuilder,
     private postLikesService: PostLikesService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
+    this.currentLang = localStorage.getItem('language') || 'en';
+    this.translate.use(this.currentLang);
+    this.langSubscription = this.translate.onLangChange.subscribe((event) => {
+      this.currentLang = event.lang;
+      localStorage.setItem('language', this.currentLang);
+    });
+
     this.userRole = this.profileService
       .getCurrentUserRoleFromToken()
       ?.toLowerCase();
     this.userName = this.profileService.getUserNameFromToken();
     this.initializeForm();
     this.loadPosts();
+  }
+
+  ngOnDestroy(): void {
+    if (this.langSubscription) {
+      this.langSubscription.unsubscribe();
+    }
   }
 
   loadMorePosts(): void {

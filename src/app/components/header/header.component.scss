@@ -62,11 +62,6 @@ header {
   }
 }
 
-.rotate {
-  transform: rotate(180deg);
-  transition: transform 0.3s;
-}
-
 .dropdown {
   position: relative;
   display: inline-block;
@@ -147,7 +142,7 @@ header {
 
 .notification-count {
   position: absolute;
-  top: -10px;
+  top: -7px;
   inset-inline-start: -12px;
   background-color: red;
   color: white;

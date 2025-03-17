@@ -198,7 +198,7 @@
             <i class="far fa-comment"></i> {{ comments.length }}
           </small>
           <a class="share-btn" (click)="sharePost(post.id)">
-            <i class="fa fa-share"></i>
+            <i class="fa fa-share" [class.rotate]="currentLang === 'ar'"></i>
           </a>
         </div>
       </ng-template>
