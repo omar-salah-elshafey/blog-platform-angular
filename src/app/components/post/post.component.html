@@ -192,14 +192,13 @@
                 [ngClass]="isLikedByCurrentUser ? 'fa-solid' : 'fa-regular'"
               ></i>
             </button>
-            <span>{{ likes.length }} {{ "POST.LIKES" | translate }}</span>
+            <span>{{ likes.length }}</span>
           </div>
           <small class="comments-count">
-            {{ "POST.COMMENTS" | translate }}: {{ comments.length }}
+            <i class="far fa-comment"></i> {{ comments.length }}
           </small>
           <a class="share-btn" (click)="sharePost(post.id)">
             <i class="fa fa-share"></i>
-            {{ "POST.SHARE" | translate }}
           </a>
         </div>
       </ng-template>

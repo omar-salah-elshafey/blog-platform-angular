@@ -176,7 +176,6 @@
           </p>
           <a class="share-btn" (click)="sharePost(post.originalPost!.id)">
             <i class="fa fa-share"></i>
-            {{ "POST.SHARE" | translate }}
           </a>
         </div>
       </div>
@@ -233,15 +232,13 @@
             </button>
             <span>
               {{ (postLikesMap[post.id] || []).length }}
-              {{ "POST.LIKES" | translate }}
             </span>
           </div>
           <small class="comments-count">
-            {{ "POST.COMMENTS" | translate }}: {{ post.comments.length }}
+            <i class="far fa-comment"></i> {{ post.comments.length }}
           </small>
           <a class="share-btn" (click)="sharePost(post.id)">
             <i class="fa fa-share"></i>
-            {{ "POST.SHARE" | translate }}
           </a>
         </div>
         <div class="comments-section">

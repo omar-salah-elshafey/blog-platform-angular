@@ -28,11 +28,11 @@ export class HeaderComponent {
     private sharedService: SharedService,
     private translate: TranslateService,
     private notificationService: NotificationService
-  ) {
-  }
+  ) {}
 
   isMenuOpen = false;
   firstName: string | null = null;
+  lastName: string | null = null;
   isAdmin = false;
   currentLang = 'en';
   isDropdownOpen = false;
@@ -55,6 +55,7 @@ export class HeaderComponent {
     this.sharedService.userProfile$.subscribe((profile) => {
       if (profile) {
         this.firstName = profile.firstName;
+        this.lastName = profile.lastName;
         this.isAdmin =
           profile.role === 'Admin' || profile.role === 'SuperAdmin';
       }
@@ -64,7 +65,6 @@ export class HeaderComponent {
       this.notificationService.notifications$.subscribe((notifications) => {
         this.notifications = notifications;
       });
-
   }
 
   ngOnDestroy(): void {

@@ -239,31 +239,13 @@ main {
   align-items: center;
   border-top: 2px solid #f9f9f9;
   .comments-count {
-    font-size: 0.9rem;
+    font-size: 1.5rem;
     color: #666;
     font-weight: 300;
   }
   .post-date {
     padding: 0;
     margin: 0%;
-  }
-  @media (max-width: 480px) {
-    .like-section,
-    .comments-count,
-    .share-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .like-section {
-      gap: 0%;
-      span {
-        font-size: 0.8rem !important;
-      }
-    }
-    i {
-      font-size: 1rem !important;
-    }
   }
 }
 
@@ -272,7 +254,6 @@ main {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 0.5rem;
 
   .like-btn {
     background: none;
@@ -294,6 +275,12 @@ main {
     .fa-regular {
       color: #333;
     }
+  }
+
+  span {
+    font-size: 1.5rem;
+    color: #666;
+    font-weight: 300;
   }
 }
 
@@ -318,11 +305,12 @@ main {
 }
 
 .share-btn {
-  color: $primary-color;
+  color: $tertiary-color;
   cursor: pointer;
+  font-size: 1.5rem;
   transition: 0.3s;
   &:hover {
-    color: $hover-color;
+    color: $primary-color;
   }
 }
 

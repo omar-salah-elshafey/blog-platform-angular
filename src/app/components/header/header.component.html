@@ -6,20 +6,13 @@
   </div>
 
   <nav>
-    <span class="icon" id="menu-icon" (click)="toggleMenu()" #mobileMenuButton>
-      <span></span>
-      <span></span>
-      <span></span>
-    </span>
-    <ul id="nav-menu" [class.show]="isMenuOpen" #mobileNav>
+    <ul [class.show]="isMenuOpen">
       <li (click)="isMenuOpen = false">
-        <a routerLink="/">
-          <i class="fas fa-home"></i> {{ "HEADER.HOME" | translate }}</a
-        >
+        <a routerLink="/" [routerLinkActive]="'active'"  [routerLinkActiveOptions]="{exact: true}"> <i class="fas fa-home"></i></a>
       </li>
       <li (click)="isMenuOpen = false">
-        <a routerLink="/search">
-          <i class="fa fa-search"></i> {{ "HEADER.SEARCH" | translate }}
+        <a routerLink="/search" [routerLinkActive]="'active'">
+          <i class="fa fa-search"></i>
         </a>
       </li>
       <li class="notification-icon" (click)="toggleNotifications()">
@@ -29,15 +22,13 @@
             {{ notifications.length }}
           </span>
         </div>
-        {{ "HEADER.NOTIFICATIONS.TITLE" | translate }}
       </li>
       <li class="profile-dropdown" *ngIf="!isMenuOpen">
         <a>
           <div class="dropdown" #dropdown>
             <a class="dropbtn" (click)="toggleDropdown()">
               <div class="user-info">
-                <i class="fa fa-user-circle"></i>
-                <span> {{ firstName || ("HEADER.PROFILE" | translate) }}</span>
+                {{ firstName?.charAt(0) }} {{ lastName?.charAt(0) }}
               </div>
             </a>
             <div class="dropdown-content" [class.show]="isDropdownOpen">
@@ -67,29 +58,8 @@
           </div>
         </a>
       </li>
-
-      <li *ngIf="isMenuOpen">
-        <a routerLink="/profile" (click)="isMenuOpen = false">
-          <i class="fa fa-user"></i> {{ "HEADER.PROFILE" | translate }}
-        </a>
-      </li>
-      <li *ngIf="isMenuOpen && isAdmin">
-        <a routerLink="/dashboard" (click)="isMenuOpen = false">
-          <i class="fa fa-user-shield"></i> {{ "HEADER.ADMIN" | translate }}
-        </a>
-      </li>
-      <li *ngIf="isMenuOpen">
-        <a (click)="profileSettings(); isMenuOpen = false">
-          <i class="fas fa-cogs"></i> {{ "USER_PROFILE.SETTINGS" | translate }}
-        </a>
-      </li>
-      <li *ngIf="isMenuOpen">
-        <a (click)="logout(); isMenuOpen = false">
-          <i class="fa fa-sign-out" [class.rotate]="currentLang === 'ar'"></i>
-          {{ "HEADER.LOGOUT" | translate }}
-        </a>
-      </li>
     </ul>
+
     <div
       class="notification-list"
       *ngIf="isNotificationsOpen"
