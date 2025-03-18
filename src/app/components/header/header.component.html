@@ -8,7 +8,13 @@
   <nav>
     <ul [class.show]="isMenuOpen">
       <li (click)="isMenuOpen = false">
-        <a routerLink="/" [routerLinkActive]="'active'"  [routerLinkActiveOptions]="{exact: true}"> <i class="fas fa-home"></i></a>
+        <a
+          routerLink="/"
+          [routerLinkActive]="'active'"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <i class="fas fa-home"></i
+        ></a>
       </li>
       <li (click)="isMenuOpen = false">
         <a routerLink="/search" [routerLinkActive]="'active'">
@@ -18,8 +24,8 @@
       <li class="notification-icon" (click)="toggleNotifications()">
         <div class="notification-wrapper">
           <i class="fa fa-bell"></i>
-          <span class="notification-count" *ngIf="notifications.length > 0">
-            {{ notifications.length }}
+          <span class="notification-count" *ngIf="notificationCount > 0">
+            {{ notificationCount }}
           </span>
         </div>
       </li>

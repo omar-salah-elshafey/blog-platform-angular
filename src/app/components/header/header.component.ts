@@ -38,6 +38,7 @@ export class HeaderComponent {
   isDropdownOpen = false;
   isNotificationsOpen = false;
   notifications: Notification[] = [];
+  notificationCount = 0;
 
   private notificationSubscription: Subscription | null = null;
   private profileSubscription: Subscription | null = null;
@@ -71,6 +72,7 @@ export class HeaderComponent {
     this.notificationSubscription =
       this.notificationService.notifications$.subscribe((notifications) => {
         this.notifications = notifications;
+        this.notificationCount = notifications.length;
       });
   }
 
@@ -146,7 +148,9 @@ export class HeaderComponent {
   toggleNotifications() {
     this.isNotificationsOpen = !this.isNotificationsOpen;
     if (this.isNotificationsOpen) {
-      this.notificationService.loadNotifications();
+      setTimeout(() => {
+        this.notificationService.loadNotifications();
+      }, 100);
     }
   }
 
