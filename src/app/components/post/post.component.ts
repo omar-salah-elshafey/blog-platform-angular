@@ -131,6 +131,7 @@ export class PostComponent implements OnInit {
       next: (post) => {
         this.post = post;
         this.fetchPostComments(id);
+        this.comments = [];
       },
       error: (error) => {
         this.toastr.error(

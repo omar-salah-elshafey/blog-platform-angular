@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { ToastrService } from 'ngx-toastr';
 
 export interface Notification {
   id: number;
@@ -28,7 +29,8 @@ export class NotificationService {
   constructor(
     private http: HttpClient,
     private ngZone: NgZone,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private toastr: ToastrService
   ) {
     this.loadNotifications();
   }
@@ -77,8 +79,7 @@ export class NotificationService {
       console.warn('🔄 Reconnecting... Error:', error);
     });
 
-    this.hubConnection.onreconnected((connectionId) => {
-    });
+    this.hubConnection.onreconnected((connectionId) => {});
 
     this.hubConnection.onclose((error) => {
       console.error('🚨 Connection Closed! Reason:', error);
@@ -90,6 +91,7 @@ export class NotificationService {
       'ReceiveNotification',
       (notification: Notification) => {
         console.log('🔔 New Notification Received:', notification);
+        this.showPopup(notification.message);
         this.ngZone.run(() => {
           const currentNotifications = this.notificationsSubject.value;
           if (!currentNotifications.some((n) => n.id === notification.id)) {
@@ -128,5 +130,17 @@ export class NotificationService {
   private updateNotificationCount(): void {
     const unreadCount = this.notificationsSubject.value.length;
     console.log(`🔢 Unread Notifications Count: ${unreadCount}`);
+  }
+
+  private showPopup(message: string) {
+    this.toastr.info(message, 'New Notification');
+    this.playNotificationSound();
+  }
+
+  private playNotificationSound() {
+    const audio = new Audio();
+    audio.src = 'assets/sounds/notifications.mp3';
+    audio.load();
+    audio.play();
   }
 }
