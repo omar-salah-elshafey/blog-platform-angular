@@ -187,17 +187,17 @@
       </label>
       <div class="password-container">
         <input
-          [type]="showPassword ? 'text' : 'password'"
+          [type]="showConfirmPassword ? 'text' : 'password'"
           id="confirmPassword"
           formControlName="confirmPassword"
         />
         <button
           type="button"
           class="toggle-password"
-          (click)="togglePasswordVisibility()"
+          (click)="toggleConfirmPasswordVisibility()"
           aria-label="Toggle password visibility"
         >
-          <i [ngClass]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+          <i [ngClass]="showConfirmPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
         </button>
       </div>
       <div

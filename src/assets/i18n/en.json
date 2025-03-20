@@ -32,9 +32,9 @@
   "CONFIRMATION_FORM": {
     "CONFIRM_EMAIL_TITLE": "Confirm Your Email",
     "EMAIL_LABEL": "Email",
-    "TOKEN_LABEL": "Verification Token",
+    "TOKEN_LABEL": "OTP",
     "CONFIRM_BUTTON": "Confirm Email",
-    "RESEND_LINK": "Resend Confirmation Email"
+    "RESEND_LINK": "Resend OTP"
   },
   "ACTIONS": {
     "CANCEL": "Cancel",
@@ -87,7 +87,7 @@
     "SETTINGS": "Settings",
     "POSTS_HEADER": "User's Posts",
     "NO_POSTS": "This user has not shared any posts yet.",
-    "NO_DATA": "No profile data found.",
+    "ERROR_LOADING": "Error loading profile, Please Try again later.",
     "ROLES": {
       "ADMIN": "Admin",
       "WRITER": "Writer",
@@ -177,6 +177,17 @@
       "DELETE": "Delete",
       "SAVE": "Save",
       "CANCEL": "Cancel"
+    }
+  },
+  "RESET_PASSWORD": {
+    "TITLE":"Reset Your Password",
+    "SUBMIT":"Reset Password",
+    "REQUEST" :{
+      "TITLE" : "Reset Password Request",
+      "RESEND" : "Resend OTP",
+      "SEND" : "Send OTP",
+      "OTP": "OTP",
+      "VERIFY":"Verify OTP"
     }
   }
 }

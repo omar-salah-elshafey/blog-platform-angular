@@ -54,8 +54,7 @@ export class ConfirmEmailComponent {
             error.status
           );
           if (
-            error.status === 400 &&
-            error.error!.error === 'Token is not valid.'
+            error.status === 400 
           ) {
             this.showResendForm = true;
             this.toastr.warning(error.error!.error, 'Invalid Token');

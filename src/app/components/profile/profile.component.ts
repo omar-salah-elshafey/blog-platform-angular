@@ -86,20 +86,24 @@ export class ProfileComponent implements OnInit {
         this.userProfile = profile;
         this.sharedService.setUserProfile(profile);
       },
-      error: () => {
-        this.toastr.error(
-          'Failed to fetch user profile. Please try again later.',
-          'Error'
-        );
+      error: (error) => {
+        if (error.status === 401) {
+          this.authService.logout().subscribe({
+            next: () => {
+              this.router.navigate(['/login']);
+            },
+            error: () => {
+              this.router.navigate(['/login']);
+            },
+          });
+        } else {
+          this.toastr.error(
+            'Failed to fetch user profile. Please try again later.',
+            'Error'
+          );
+          console.error('Error fetching user profile:', error);
+        }
         this.isProfileLoading = false;
-        this.authService.logout().subscribe({
-          next: () => {
-            this.router.navigate(['/login']);
-          },
-          error: (logoutError) => {
-            this.router.navigate(['/login']);
-          },
-        });
       },
     });
   }

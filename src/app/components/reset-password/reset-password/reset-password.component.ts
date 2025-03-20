@@ -21,6 +21,8 @@ import { TranslateModule } from '@ngx-translate/core';
 export class ResetPasswordComponent {
   ResetPasswordForm!: FormGroup;
   showPassword: boolean = false;
+  showConfirmPassword: boolean = false;
+  loading = false;
 
   resetEmail = sessionStorage.getItem('resetEmail');
   resetToken = sessionStorage.getItem('resetToken');
@@ -67,7 +69,12 @@ export class ResetPasswordComponent {
     this.showPassword = !this.showPassword;
   }
 
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
   onSubmit() {
+    this.loading = true;
     const userData = {
       email: this.resetEmail,
       token: this.resetToken,
@@ -76,6 +83,7 @@ export class ResetPasswordComponent {
     };
     this.passwordService.resetPassword(userData).subscribe({
       next: (response) => {
+        this.loading = false;
         this.toastr.success('Password reset successfully', 'Success');
         this.ResetPasswordForm.reset();
         sessionStorage.removeItem('resetEmail');
@@ -83,6 +91,7 @@ export class ResetPasswordComponent {
         this.router.navigate(['/login']);
       },
       error: (error) => {
+        this.loading = false;
         console.error('Error Reseting the Password', error);
         this.toastr.error(error.error?.error, 'Error');
         if (error.status == 400)

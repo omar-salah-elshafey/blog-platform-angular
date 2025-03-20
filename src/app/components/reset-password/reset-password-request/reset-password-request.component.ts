@@ -6,7 +6,6 @@ import {
   FormGroup,
   Validators,
   ReactiveFormsModule,
-  AbstractControl,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
@@ -21,6 +20,7 @@ import { TranslateModule } from '@ngx-translate/core';
 export class ResetPasswordRequestComponent {
   resetPasswordRequestForm!: FormGroup;
   tokenSent: boolean = false;
+  loading = false;
 
   constructor(
     private passwordService: PasswordService,
@@ -32,32 +32,40 @@ export class ResetPasswordRequestComponent {
   ngOnInit(): void {
     this.resetPasswordRequestForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      token: ['', [Validators.required]],
+      token: [
+        '',
+        [Validators.required, Validators.minLength(6), Validators.maxLength(6)],
+      ],
     });
   }
 
   onSendToken() {
+    this.loading = true;
     this.passwordService
       .resetPasswordRequest(this.resetPasswordRequestForm.value.email)
       .subscribe({
-        next: (response) => {
+        next: () => {
           this.tokenSent = true;
-          this.toastr.success('Token sent to your email', 'Success');
+          this.loading = false;
+          this.toastr.success('OTP sent to your email', 'Success');
         },
         error: (err) => {
-          console.error('Error sending token', err.error!.error);
+          this.loading = false;
+          console.error('Error sending OTP', err.error!.error);
           this.toastr.error(err.error?.error, 'Error');
         },
       });
   }
 
   onSubmit() {
+    this.loading = true;
     const userData = {
       email: this.resetPasswordRequestForm.value.email,
       token: this.resetPasswordRequestForm.value.token,
     };
     this.passwordService.verifyResetPasswordToken(userData).subscribe({
       next: () => {
+        this.loading = false;
         sessionStorage.setItem(
           'resetEmail',
           this.resetPasswordRequestForm.value.email
@@ -70,6 +78,7 @@ export class ResetPasswordRequestComponent {
         this.router.navigate(['/reset-password']);
       },
       error: (err) => {
+        this.loading = false;
         console.error('Token verification failed', err.error!.error);
         this.toastr.error(err.error!.error, 'Error');
       },

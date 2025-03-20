@@ -21,6 +21,7 @@ import { TranslateModule } from '@ngx-translate/core';
 export class RegistrationComponent implements OnInit {
   registrationForm!: FormGroup;
   showPassword: boolean = false;
+  showConfirmPassword: boolean = false;
   isLoading = false;
 
   constructor(
@@ -67,6 +68,10 @@ export class RegistrationComponent implements OnInit {
 
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 
   onSubmit(): void {
