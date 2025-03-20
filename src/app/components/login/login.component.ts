@@ -28,7 +28,7 @@ export class LoginComponent {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private toastr: ToastrService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -59,16 +59,23 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.isLoading = true;
       this.authService.login(trimmedFormValue).subscribe({
-        next: (response) => {
+        next: () => {
           this.loginForm.reset();
           this.router.navigate(['/profile']);
           this.isLoading = false;
         },
         error: (error) => {
-          this.toastr.error(
-            error.error?.error || 'An unexpected error occurred.',
-            'Error'
-          );
+          if (error.status === 429) {
+            this.toastr.warning(
+              'Too many requests. Please wait a moment and try again.',
+              'Rate Limit Exceeded'
+            );
+          } else {
+            this.toastr.error(
+              error.error?.error || 'An unexpected error occurred.',
+              'Error'
+            );
+          }
           this.isLoading = false;
         },
       });
