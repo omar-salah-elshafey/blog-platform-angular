@@ -60,6 +60,8 @@ export class HeaderComponent {
 
     this.loadUserInfo();
 
+    this.notificationService.loadNotifications();
+
     this.sharedService.userProfile$.subscribe((profile) => {
       if (profile) {
         this.firstName = profile.firstName;

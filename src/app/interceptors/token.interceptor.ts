@@ -17,6 +17,7 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
   const toastr = inject(ToastrService);
 
   let accessToken = cookieService.get('accessToken');
+  const refreshToken = cookieService.get('refreshToken');
 
   if (accessToken) {
     req = req.clone({
@@ -29,7 +30,6 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error) => {
-      const refreshToken = cookieService.get('refreshToken');
       if (error.status === 401 && refreshToken) {
         if (!refreshPromise) {
           refreshPromise = firstValueFrom(

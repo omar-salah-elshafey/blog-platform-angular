@@ -11,7 +11,6 @@ import { environment } from '../../environments/environment';
 export class AuthService {
   private baseUrl = `${environment.apiUrl}/api/Auth`;
   private accessTokenSubject = new BehaviorSubject<string | null>(null);
-  // private refreshTimer: any;
   constructor(
     private http: HttpClient,
     private cookieService: CookieService,
@@ -30,8 +29,8 @@ export class AuthService {
     );
     this.cookieService.set(
       'refreshToken',
-      encodeURIComponent(refreshToken),
-      1,
+      refreshToken,
+      7,
       '/',
       '',
       true,
@@ -76,8 +75,13 @@ export class AuthService {
 
   // Refresh the token
   refreshAccessToken(refreshToken: string) {
+    console.log('refreshing token');
+
     return this.http
-      .get<any>(`${this.baseUrl}/refreshtoken?refreshToken=${refreshToken}`)
+      .post<any>(
+        `${this.baseUrl}/refreshtoken?refreshToken=${refreshToken}`,
+        {}
+      )
       .pipe(
         catchError((error) => {
           console.error('Token refresh failed:', error);
@@ -89,6 +93,7 @@ export class AuthService {
   //logout
   logout(): Observable<any> {
     const refreshToken = this.cookieService.get('refreshToken');
+
     return this.http
       .post(`${this.baseUrl}/logout?refreshToken=${refreshToken}`, {})
       .pipe(
